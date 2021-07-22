@@ -6,10 +6,8 @@ import path from 'path';
 import { FfmpegSettings } from '../../../models/ffmpegSettings.model';
 import { paths } from '../path-constants';
 
-export async function execute(settings: FfmpegSettings): Promise<void> {
-  const executeAudioPath = await combineAudioIfNecessary(
-    settings.audioFiles,
-  );
+export async function combineFrames(settings: FfmpegSettings): Promise<void> {
+  const executeAudioPath = await combineAudioIfNecessary(settings.audioFiles);
   //Arguments for ffmpeg
   const args = [
     '-framerate',
@@ -40,7 +38,7 @@ export async function combineAudioIfNecessary(audioFiles: string[]): Promise<str
   return new Promise<string>(async (resolve, reject) => {
     // if we have a directory, read the files in the directory
     if (audioFiles.length > 1) {
-      //Seperate mp3 and wav files
+      // Separate mp3 and wav files
       const mp3Files = audioFiles.filter((f: string) => f.endsWith('.mp3'));
       const wavFiles = audioFiles.filter((f: string) => f.endsWith('.wav'));
       // If this folder contains wav and mp3 files, then throw error

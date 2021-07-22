@@ -3,6 +3,7 @@ import { persist } from 'mobx-persist';
 import _ from 'lodash';
 import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR } from '../constants';
 import Store from '.';
+import { ProgressState } from '../../../public/models/progressState.model';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -14,9 +15,9 @@ const SAMPLE_VERSES = [
   'God called the light Day, and the darkness he called Night. And there was evening and there was morning, the first day.',
 ];
 
-const list = (dict: Object, sortKey: string = 'name'): any[] => _.sortBy(_.values(dict), sortKey);
+const list = <T = any>(dict: { [name: string]: T }, sortKey: string = 'name'): T[] => _.sortBy(_.values(dict), sortKey);
 
-const dict = (list: any[], classType: { new (item: any): any } | null = null, key: string = 'name'): Object => {
+const dict = <T = any>(list: T[], classType?: { new (item: any): T }, key: string = 'name'): { [name: string]: T } => {
   return list.reduce((items, item) => {
     items[item[key]] = classType ? new classType(item) : item;
     return items;
@@ -91,7 +92,7 @@ class Book {
   constructor({ name, chapters }: { name: string; chapters: Object[] }) {
     this.name = name;
     this.chapterList = chapters.map((chapter: any) => new Chapter(chapter));
-    this.chapters = dict(this.chapterList);
+    this.chapters = dict<Chapter>(this.chapterList);
   }
 
   @observable
@@ -128,11 +129,13 @@ class Book {
 
 class Project {
   name: string;
+  fullPath: string;
 
-  constructor({ name, books }: { name: string; books: Object[] }) {
+  constructor({ name, fullPath, books }: { name: string; fullPath: string; books: Object[] }) {
     this.name = name;
+    this.fullPath = fullPath;
     this.bookList = books.map((book: any) => new Book(book));
-    this.books = dict(this.bookList);
+    this.books = dict<Book>(this.bookList);
     this.bookList.forEach((book: Book) => {
       reaction(
         () => book.isSelected,
@@ -193,6 +196,7 @@ class Project {
   selectionToJS(): Object {
     return {
       name: this.name,
+      fullPath: this.fullPath,
       books: this.selectedBooks.map((book) => ({
         name: book.name,
         chapters: book.selectedChapters.map((chapter) => ({
@@ -206,7 +210,7 @@ class Project {
 
 class ProjectList {
   constructor() {
-    ipcRenderer.on('did-finish-getprojectstructure', (_event: Event, projects: { name: string }[]) => {
+    ipcRenderer.on('did-finish-getprojectstructure', (_event: Event, projects: Project[]) => {
       this.setProjects(projects);
     });
   }
@@ -241,8 +245,8 @@ class ProjectList {
   }
 
   @action.bound
-  setProjects(projectList: { name: string }[]): void {
-    this.items = dict(projectList, Project) as { [name: string]: Project };
+  setProjects(projectList: Project[]): void {
+    this.items = dict<Project>(projectList, Project);
     if (projectList.length === 1) {
       this.activeProjectName = projectList[0].name;
     } else if (!this.items[this.activeProjectName]) {
@@ -259,7 +263,7 @@ class ProjectList {
 
 export class Progress {
   constructor() {
-    ipcRenderer.on('on-progress', (_event: Event, progress: Progress) => {
+    ipcRenderer.on('on-progress', (_event: Event, progress: ProgressState) => {
       this.setProgress(progress);
     });
     ipcRenderer.on('did-finish-conversion', (_event: Event, args: any) => {
@@ -314,7 +318,7 @@ export class Progress {
   }
 
   @action.bound
-  setProgress({ status, percent }: Progress): void {
+  setProgress({ status, percent }: ProgressState): void {
     this.status = status;
     this.percent = percent;
     this.inProgress = true;
@@ -420,7 +424,7 @@ class AppState {
         return book.selectionToString();
       })
       .join('_');
-    return `${selection}.${videoType}`;
+    return `${this.projects.activeProject.name}_${selection}.${videoType}`;
   }
 
   @action.bound
@@ -464,12 +468,16 @@ class AppState {
       project,
       combined,
       sourceDirectory,
-      textLocation: toJS(this.textLocation),
-      background: _.pick(toJS(this.background), 'file', 'color', 'type'),
-      text: toJS(this.text),
-      speechBubble: toJS(this.speechBubble),
-      output: this.getVideoName(),
-      outputDirectory: toJS(this.root.settings.outputDirectory),
+      animationSettings: {
+        textLocation: toJS(this.textLocation),
+        background: _.pick(toJS(this.background), 'file', 'color', 'type'),
+        text: toJS(this.text),
+        speechBubble: toJS(this.speechBubble),
+        output: {
+          filename: this.getVideoName(),
+          directory: toJS(this.root.settings.outputDirectory),
+        },
+      },
     };
     this.progress.start(args);
   }

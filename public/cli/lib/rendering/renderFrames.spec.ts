@@ -53,8 +53,13 @@ function mockStyle(): AnimationSettings {
       rgba: '',
       opacity: 1,
     },
-    output: '',
-    textLocation: '',
+    output: {
+      directory: '',
+      filename: '',
+    },
+    textLocation: {
+      location: 'center',
+    },
   };
 }
 

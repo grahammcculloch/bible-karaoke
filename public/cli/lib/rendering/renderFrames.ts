@@ -3,7 +3,6 @@ import { EventEmitter } from 'events';
 import fs from 'fs';
 import { template } from 'lodash';
 import path from 'path';
-// import { allowedNodeEnvironmentFlags } from 'process'; //unsure if we will need this or not
 import { record } from './recordFrames';
 import { AnimationSettings } from '../../../models/animationSettings.model';
 import { ProjectData } from '../../../models/projectData.model';
@@ -17,11 +16,8 @@ export async function render(
 ): Promise<void> {
   const logEachFrame = false;
   const fps = 15;
-
   const htmlContent = await getHtml(timings, animationSettings, fps);
-
   const durationInSeconds = timings[timings.length - 1].end / 1000;
-
   await record(htmlContent, Math.round(durationInSeconds * fps), projectData.outputLocation, logEachFrame, notify);
 }
 

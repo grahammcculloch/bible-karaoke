@@ -2,8 +2,8 @@ export interface AnimationSettings {
   readonly text: TextSettings;
   readonly background: BackgroundSettings;
   readonly speechBubble: SpeechBubbleSettings;
-  readonly output: string;
-  readonly textLocation: string;
+  readonly output: OutputSettings;
+  readonly textLocation: TextLocationSettings;
 }
 
 export interface TextSettings {
@@ -19,11 +19,20 @@ export interface TextSettings {
 export interface BackgroundSettings {
   readonly color: string;
   readonly file: string;
-  readonly type: 'image' | 'video' | 'color';
+  readonly type?: 'image' | 'video' | 'color';
 }
 
 export interface SpeechBubbleSettings {
   readonly color: string;
   readonly rgba: string;
   readonly opacity: number;
+}
+
+export interface OutputSettings {
+  readonly directory: string;
+  readonly filename: string;
+}
+
+export interface TextLocationSettings {
+  readonly location: 'center' | 'subtitle';
 }

@@ -67,10 +67,11 @@
       }
     </style>
     <script>
-      var animations = [];
+      let animations = [];
+      let fps = 15;
 
       window.onLoad = function () {
-        const fps = <%= fps %>;
+        fps = <%= fps %>;
         const timings = <%= timings %>;
         const backgroundDataUri = '<%= backgroundDataUri %>';
         const backgroundVideoUrl = '<%= animationSettings.background.file %>';
@@ -125,7 +126,7 @@
               j++;
             });
 
-            // this makes the phrase timeing easier for later
+            // this makes the phrase timing easier for later
             phraseTiming.push({
               id: "p" + i,
               start: line.start,
@@ -345,11 +346,11 @@
           }
         }
 
-        // call the create fuction now
+        // call the create function now
         createSubtitle(timings);
       };
-      // the app will call this function and we will need to determin what the UI should
-      // look like at a given moment in time with the fps converted into a time in miliseconds
+      // the app will call this function and we will need to determine what the UI should
+      // look like at a given moment in time with the fps converted into a time in milliseconds
       let curPos = 0;
       function renderNextFrame(time) {
         if (time) {

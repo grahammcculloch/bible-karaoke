@@ -37,13 +37,19 @@ export async function record(
     });
 
     const paddedIndex = `${i}`.padStart(6, '0');
-    const fileName = `frame_${paddedIndex}.png`;
+    const filename = `frame_${paddedIndex}.png`;
     await page.screenshot({
       omitBackground: false,
-      path: path.join(outputLocation, fileName),
+      path: path.join(outputLocation, filename),
     });
     if (notifyEvent != null) {
-      notifyEvent.emit('rendered', { curr: i, total: numberOfFrames });
+      const eventData: RecordFrameEventData = { currentFrame: i, totalFrames: numberOfFrames };
+      notifyEvent.emit('rendered', eventData);
     }
   }
+}
+
+export interface RecordFrameEventData {
+  currentFrame: number;
+  totalFrames: number;
 }

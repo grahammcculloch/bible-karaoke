@@ -45,7 +45,7 @@ export default function FontEditor(props: any): JSX.Element {
   const [fonts, setFonts] = React.useState<IOptionProps[]>();
 
   React.useEffect(() => {
-    ipcRenderer.on('did-finish-getfonts', (event, newFonts) => {
+    ipcRenderer.on('did-finish-getfonts', (_event, newFonts) => {
       if (Array.isArray(newFonts)) {
         setFonts(
           newFonts.map((fontName: string): IOptionProps => {

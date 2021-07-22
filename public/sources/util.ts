@@ -13,11 +13,13 @@ export function getDirectories(source: string): string[] {
 export class Project {
   projectType: string;
   name: string;
+  fullPath: string;
   books: Book[];
 
   constructor(projectType: string) {
     this.projectType = projectType;
     this.name = '';
+    this.fullPath = '';
     this.books = [];
   }
 }
