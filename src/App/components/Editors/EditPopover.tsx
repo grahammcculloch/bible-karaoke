@@ -6,7 +6,14 @@ import { Box, Flex } from 'reflexbox';
 import { Tooltip, Popover, PopoverInteractionKind, PopoverPosition, IconName, MaybeElement } from '@blueprintjs/core';
 import { Button, H5 } from '../../blueprint';
 
-const Wrapper = styled(Box)`
+interface WrapperProps {
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+}
+
+const Wrapper = styled(Box)<WrapperProps>`
   ${position}
   position: absolute;
 `;
@@ -20,17 +27,24 @@ export const EditRow = styled(Flex).attrs({
   alignItems: 'center',
 })``;
 
-export default function EditPopover(prop: { icon?: IconName | MaybeElement, title?: string | JSX.Element, children: JSX.Element, props: any }): JSX.Element {
+interface PopoverProps {
+  icon?: IconName | MaybeElement,
+  title?: string | JSX.Element,
+  children?: JSX.Element,
+  props?: any[]
+}
+
+export default function EditPopover( { icon = "annotation", title, children, ...props }: PopoverProps): JSX.Element {
   return useObserver(() => {
     return (
-      <Wrapper top="8px" right="8px" {...prop.props}>
+      <Wrapper top="8px" right="8px" {...props}>
         <Popover position={PopoverPosition.RIGHT_TOP} interactionKind={PopoverInteractionKind.CLICK}>
-          <Tooltip content={prop.title}>
-            <Button minimal icon={prop.icon || "annotation"} />
+          <Tooltip content={title}>
+            <Button minimal icon={icon} />
           </Tooltip>
           <Box p={3}>
-            <Title>{prop.title}</Title>
-            {prop.children}
+            <Title>{title}</Title>
+            {children}
           </Box>
         </Popover>
       </Wrapper>
