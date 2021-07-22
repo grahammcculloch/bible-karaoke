@@ -8,8 +8,6 @@ Head on over to [biblek.info](http://biblek.info) to download and get started.
 
 ## Developers
 
-Notice: This repo utilizes the [Git Large File Storage (LFS) extension](https://git-lfs.github.com/). Before cloning, install and setup git lfs.
-
 Clone this repo:
 
 ```sh
