@@ -2,6 +2,7 @@ import { observable, computed, action, reaction, toJS } from 'mobx';
 import { persist } from 'mobx-persist';
 import _ from 'lodash';
 import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR } from '../constants';
+import Store from '.';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -13,9 +14,9 @@ const SAMPLE_VERSES = [
   'God called the light Day, and the darkness he called Night. And there was evening and there was morning, the first day.',
 ];
 
-const list = (dict, sortKey = 'name') => _.sortBy(_.values(dict), sortKey);
+const list = (dict: Object, sortKey: string = 'name'): any[] => _.sortBy(_.values(dict), sortKey);
 
-const dict = (list, classType = null, key = 'name') => {
+const dict = (list: any[], classType: { new (item: any): any } | null = null, key: string = 'name'): Object => {
   return list.reduce((items, item) => {
     items[item[key]] = classType ? new classType(item) : item;
     return items;
@@ -34,7 +35,7 @@ class Background {
   file = '';
 
   @computed
-  get type() {
+  get type(): string {
     if (!this.file) {
       return BACKGROUND_TYPE.color;
     }
@@ -43,26 +44,29 @@ class Background {
   }
 
   @action.bound
-  setFile(file) {
+  setFile(file: string): void {
     this.color = '';
     this.file = file;
   }
 
   @action.bound
-  setColor(color) {
+  setColor(color: string): void {
     this.color = color;
     this.file = '';
   }
 
   @action.bound
-  update({ file, color }) {
+  update({ file, color }: { file: string; color: string }): void {
     this.file = file;
     this.color = color;
   }
 }
 
 class Chapter {
-  constructor({ name, fullPath }) {
+  name: string;
+  fullPath: string;
+
+  constructor({ name, fullPath }: { name: string; fullPath: string }) {
     this.name = name;
     this.fullPath = fullPath;
   }
@@ -71,20 +75,22 @@ class Chapter {
   isSelected = false;
 
   @action.bound
-  setIsSelected(isSelected) {
+  setIsSelected(isSelected: boolean): void {
     this.isSelected = isSelected;
   }
 
   @action.bound
-  toggleIsSelected() {
+  toggleIsSelected(): void {
     this.isSelected = !this.isSelected;
   }
 }
 
 class Book {
-  constructor({ name, chapters }) {
+  name: string;
+
+  constructor({ name, chapters }: { name: string; chapters: Object[] }) {
     this.name = name;
-    this.chapterList = chapters.map((chapter) => new Chapter(chapter));
+    this.chapterList = chapters.map((chapter: any) => new Chapter(chapter));
     this.chapters = dict(this.chapterList);
   }
 
@@ -92,43 +98,45 @@ class Book {
   chapters = {};
 
   @observable
-  chapterList = [];
+  chapterList: Chapter[] = [];
 
   @computed({ keepAlive: true })
-  get selectedChapters() {
+  get selectedChapters(): Chapter[] {
     return _.filter(this.chapterList, 'isSelected');
   }
 
   @computed({ keepAlive: true })
-  get isSelected() {
+  get isSelected(): boolean {
     return _.some(this.chapterList, 'isSelected');
   }
 
   @computed({ keepAlive: true })
-  get allSelected() {
+  get allSelected(): boolean {
     return _.every(this.chapterList, 'isSelected');
   }
 
   @action.bound
-  toggleAllChapters() {
+  toggleAllChapters(): void {
     const isSelected = this.allSelected;
-    this.chapterList.forEach((chapter) => chapter.setIsSelected(!isSelected));
+    this.chapterList.forEach((chapter: Chapter) => chapter.setIsSelected(!isSelected));
   }
 
-  selectionToString() {
-    return `${this.name}_${this.selectedChapters.map((chapter) => chapter.name).join('-')}`;
+  selectionToString(): string {
+    return `${this.name}_${this.selectedChapters.map((chapter: Chapter) => chapter.name).join('-')}`;
   }
 }
 
 class Project {
-  constructor({ name, books }) {
+  name: string;
+
+  constructor({ name, books }: { name: string; books: Object[] }) {
     this.name = name;
-    this.bookList = books.map((book) => new Book(book));
+    this.bookList = books.map((book: any) => new Book(book));
     this.books = dict(this.bookList);
-    this.bookList.forEach((book) => {
+    this.bookList.forEach((book: Book) => {
       reaction(
         () => book.isSelected,
-        (isSelected) => {
+        (isSelected: boolean) => {
           this.updateBookSelection(book.name, isSelected);
         }
       );
@@ -139,21 +147,21 @@ class Project {
   books = {};
 
   @observable
-  bookList = [];
+  bookList: Book[] = [];
 
   @observable
-  bookSelection = [];
+  bookSelection: string[] = [];
 
   @observable
-  activeBookName = null;
+  activeBookName: string = '';
 
   @computed({ keepAlive: true })
-  get selectedBooks() {
+  get selectedBooks(): Book[] {
     return _.filter(this.bookList, 'isSelected');
   }
 
   @computed({ keepAlive: true })
-  get selectedChapterCount() {
+  get selectedChapterCount(): number {
     return _.reduce(
       this.selectedBooks,
       (count, book) => {
@@ -165,24 +173,24 @@ class Project {
   }
 
   @computed({ keepAlive: true })
-  get activeBook() {
+  get activeBook(): Book {
     return _.get(this.books, [this.activeBookName]);
   }
 
   @action.bound
-  setActiveBook(bookName) {
+  setActiveBook(bookName: string): void {
     this.activeBookName = bookName;
   }
 
   @action.bound
-  updateBookSelection(bookName, isSelected) {
-    this.bookSelection.remove(bookName);
+  updateBookSelection(bookName: string, isSelected: boolean): void {
+    _.remove(this.bookSelection, (book: string) => book === bookName);
     if (isSelected) {
       this.bookSelection.push(bookName);
     }
   }
 
-  selectionToJS() {
+  selectionToJS(): Object {
     return {
       name: this.name,
       books: this.selectedBooks.map((book) => ({
@@ -198,43 +206,43 @@ class Project {
 
 class ProjectList {
   constructor() {
-    ipcRenderer.on('did-finish-getprojectstructure', (event, projects) => {
+    ipcRenderer.on('did-finish-getprojectstructure', (_event: Event, projects: { name: string }[]) => {
       this.setProjects(projects);
     });
   }
 
   @observable
-  items = {};
+  items: { [name: string]: Project } = {};
 
   @observable
   activeProjectName = '';
 
   @computed({ keepAlive: true })
-  get list() {
+  get list(): Project[] {
     return list(this.items);
   }
 
   @computed({ keepAlive: true })
-  get activeProject() {
+  get activeProject(): Project {
     return this.items[this.activeProjectName];
   }
 
   @computed({ keepAlive: true })
-  get selectedChapters() {
-    return this.activeProject.selectedBooks.reduce((acc, book) => {
+  get selectedChapters(): Chapter[] {
+    return this.activeProject.selectedBooks.reduce((acc: Chapter[], book: Book) => {
       acc.concat(book.selectedChapters);
       return acc;
     }, []);
   }
 
   @computed({ keepAlive: true })
-  get firstSelectedChapter() {
+  get firstSelectedChapter(): Chapter | undefined {
     return _.get(this, ['activeProject', 'selectedBooks', '0', 'selectedChapters', '0']);
   }
 
   @action.bound
-  setProjects(projectList) {
-    this.items = dict(projectList, Project);
+  setProjects(projectList: { name: string }[]): void {
+    this.items = dict(projectList, Project) as { [name: string]: Project };
     if (projectList.length === 1) {
       this.activeProjectName = projectList[0].name;
     } else if (!this.items[this.activeProjectName]) {
@@ -243,18 +251,18 @@ class ProjectList {
   }
 
   @action.bound
-  setActiveProject(projectName = '') {
+  setActiveProject(projectName = ''): void {
     this.activeProjectName = projectName;
-    this.list.forEach((project) => project.setActiveBook(null));
+    this.list.forEach((project) => project.setActiveBook(''));
   }
 }
 
 export class Progress {
   constructor() {
-    ipcRenderer.on('on-progress', (_, progress) => {
+    ipcRenderer.on('on-progress', (_event: Event, progress: Progress) => {
       this.setProgress(progress);
     });
-    ipcRenderer.on('did-finish-conversion', (_, args) => {
+    ipcRenderer.on('did-finish-conversion', (_event: Event, args: any) => {
       if (args.outputDirectory) {
         this.finish();
       } else {
@@ -270,7 +278,7 @@ export class Progress {
   status = '';
 
   @observable
-  error = null;
+  error = '';
 
   @observable
   inProgress = false;
@@ -279,49 +287,53 @@ export class Progress {
   combined = false;
 
   @action.bound
-  start(args) {
+  start(args: any): void {
     console.log('Requesting processing', args);
     ipcRenderer.send('did-start-conversion', args);
     this.combined = args.combined;
-    this.error = null;
+    this.error = '';
     this.status = 'Getting things started...';
     this.percent = 0;
     this.inProgress = true;
   }
 
   @action.bound
-  reset() {
-    this.error = null;
+  reset(): void {
+    this.error = '';
     this.status = '';
     this.percent = 0;
     this.inProgress = false;
   }
 
   @action.bound
-  finish() {
-    this.error = null;
+  finish(): void {
+    this.error = '';
     this.status = '';
     this.percent = 0;
     this.inProgress = false;
   }
 
   @action.bound
-  setProgress({ status, percent }) {
+  setProgress({ status, percent }: Progress): void {
     this.status = status;
     this.percent = percent;
     this.inProgress = true;
   }
 
   @action.bound
-  setError(error) {
+  setError(error: any): void {
     this.error = error;
   }
 }
 
 class AppState {
-  constructor(root) {
+  root: Store;
+  timingFile: string;
+
+  constructor(root: Store) {
     this.root = root;
-    ipcRenderer.on('did-finish-getverses', (event, verses) => {
+    this.timingFile = '';
+    ipcRenderer.on('did-finish-getverses', (_event: Event, verses: string[]) => {
       if (Array.isArray(verses) && verses.length) {
         this.setVerses(verses);
       } else {
@@ -344,7 +356,7 @@ class AppState {
 
   // Temporary migration function from old localStorage persistance.
   // See issue #76.
-  migrateFromLocalStorage() {
+  migrateFromLocalStorage(): void {
     [
       { key: 'speechBubble', setter: this.setSpeechBubbleProps },
       { key: 'textLocation', setter: this.setTextLocation },
@@ -397,7 +409,7 @@ class AppState {
     opacity: 1,
   };
 
-  getVideoName() {
+  getVideoName(): string {
     // E.g
     // 'Mark_1.mp4'
     // 'Mark_1-2-3.mp4'
@@ -412,32 +424,32 @@ class AppState {
   }
 
   @action.bound
-  setVerses(verses) {
+  setVerses(verses: string[]): void {
     this.verses = verses;
   }
 
   @action.bound
-  setTimingFile(file) {
+  setTimingFile(file: string): void {
     this.timingFile = file;
   }
 
   @action.bound
-  setTextLocation(textLocationProps) {
+  setTextLocation(textLocationProps: any): void {
     this.textLocation = { ...this.textLocation, ...textLocationProps };
   }
 
   @action.bound
-  setTextProps(textProps) {
+  setTextProps(textProps: any): void {
     this.text = { ...this.text, ...textProps };
   }
 
   @action.bound
-  setSpeechBubbleProps(speechBubbleProps) {
+  setSpeechBubbleProps(speechBubbleProps: any): void {
     this.speechBubble = { ...this.speechBubble, ...speechBubbleProps };
   }
 
   @action.bound
-  generateVideo(combined) {
+  generateVideo(combined: boolean): void {
     // TODO: Pass selected project structure to the CLI
     const project = this.projects.activeProject.selectionToJS();
     const sourceDirectory = _.get(this.projects, [
