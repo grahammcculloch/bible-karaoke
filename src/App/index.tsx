@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron';
 import React from 'react';
 import { useObserver } from 'mobx-react';
 import styled, { StyledComponent } from 'styled-components';
@@ -12,9 +13,8 @@ import Actions from './components/Actions';
 import { useStores } from './store';
 import { IAnalyticsContext, useAnalytics } from './components/Analytics';
 import './index.scss';
-const { ipcRenderer } = window.require('electron');
 
-const AppWrapper: StyledComponent<BoxType, any, {}, never> = styled(Flex)`
+const AppWrapper: StyledComponent<BoxType, any, {}> = styled(Flex)`
   position: relative;
 `;
 

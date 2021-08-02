@@ -1,11 +1,10 @@
+import { ipcRenderer } from 'electron';
 import { observable, computed, action, reaction, toJS } from 'mobx';
 import { persist } from 'mobx-persist';
 import _ from 'lodash';
 import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR } from '../constants';
 import Store from '.';
 import { ProgressState } from '../../../public/models/progressState.model';
-
-const { ipcRenderer } = window.require('electron');
 
 const SAMPLE_VERSES = [
   'In the beginning, God created the heavens and the earth.',
@@ -24,7 +23,7 @@ const dict = <T = any>(list: T[], classType?: { new (item: any): T }, key: strin
   }, {});
 };
 
-const isVideo = _.memoize((ext) => ['mpeg4', 'mp4', 'webm'].includes(ext));
+const isVideo = _.memoize((ext: string): boolean => ['mpeg4', 'mp4', 'webm'].includes(ext.toLowerCase()));
 
 class Background {
   @persist
@@ -40,7 +39,7 @@ class Background {
     if (!this.file) {
       return BACKGROUND_TYPE.color;
     }
-    const ext = this.file.split('.').pop();
+    const ext: string = this.file.split('.').pop() ?? '';
     return isVideo(ext) ? BACKGROUND_TYPE.video : BACKGROUND_TYPE.image;
   }
 

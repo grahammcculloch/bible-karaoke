@@ -30,12 +30,6 @@ const TextHighlight = styled(Text).attrs({
   mr: 2
 })``;
 
-// interface FontData extends IOptionProps {
-//   value: string;
-//   label: string;
-//   prevState?: null
-// }
-
 interface HTMLSelectValueElement extends HTMLSelectElement {
   value: any;
 }
