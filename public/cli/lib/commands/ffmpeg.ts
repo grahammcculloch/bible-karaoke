@@ -1,29 +1,39 @@
 import fs from 'fs';
 import shell from 'shelljs';
+import { spawnSync } from 'child_process';
 import tempy from 'tempy';
 import path from 'path';
 import { FfmpegSettings } from '../../../models/ffmpegSettings.model';
 import { paths } from '../path-constants';
 
 export async function execute(settings: FfmpegSettings): Promise<void> {
-  const executeAudioPath = await combineAudioIfNecessary(settings.audioFiles);
+  const executeAudioPath = await combineAudioIfNecessary(
+    settings.audioFiles,
+  );
+  //Arguments for ffmpeg
+  const args = [
+    '-framerate',
+    settings.framerateIn.toString(),
+    '-loglevel',
+    'error',
+    '-i',
+    path.join(settings.imagesPath,'frame_%06d.png'),
+    "-i",
+    executeAudioPath,
+    "-r",
+    settings.framerateOut.toString(),
+    "-pix_fmt",
+    "yuv420p",
+    settings.outputName
+   ];
 
-  return new Promise<void>((resolve, reject) => {
-    shell.exec(
-      `"${paths.ffmpeg}" -framerate ${settings.framerateIn} -i "${path.join(settings.imagesPath, 'frame_%06d.png')}" -i
-      "${executeAudioPath}" ${settings.framerateOut ? `${settings.framerateOut} ` : ''} -pix_fmt yuv420p "${
-        settings.outputName
-      }"`,
-      (code, stdout, stderr) => {
-        if (code != 0) {
-          const error = new Error(stderr || stdout);
-          reject(error);
-        } else {
-          resolve();
-        }
-      }
-    );
-  });
+  const ffmpegProcess = spawnSync(paths.ffmpeg, args, { stdio: 'pipe' });
+
+  //Check for errrors running ffmpeg
+  const stderr = ffmpegProcess.stderr.toString();
+  if (stderr !== '') {
+    throw new Error(stderr);
+  }
 }
 
 export async function combineAudioIfNecessary(audioFiles: string[]): Promise<string> {
