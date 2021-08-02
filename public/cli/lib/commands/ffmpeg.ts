@@ -16,15 +16,14 @@ export async function combineFrames(settings: FfmpegSettings): Promise<void> {
     'error',
     '-i',
     path.join(settings.imagesPath, 'frame_%06d.png'),
-    '-i',
-    executeAudioPath,
-    '-pix_fmt',
-    'yuv420p',
-    settings.outputName,
   ];
+  if (executeAudioPath != null) {
+    args.push('-i', executeAudioPath);
+  }
   if (settings.framerateOut != null) {
     args.push('-r', settings.framerateOut.toString());
   }
+  args.push('-pix_fmt', 'yuv420p', settings.outputName);
 
   const ffmpegProcess = spawnSync(paths.ffmpeg, args, { stdio: 'pipe' });
 
@@ -35,32 +34,29 @@ export async function combineFrames(settings: FfmpegSettings): Promise<void> {
   }
 }
 
-export async function combineAudioIfNecessary(audioFiles: string[]): Promise<string> {
-  return new Promise<string>(async (resolve, reject) => {
-    // if we have a directory, read the files in the directory
-    if (audioFiles.length > 1) {
-      // Separate mp3 and wav files
-      const mp3Files = audioFiles.filter((f: string) => f.endsWith('.mp3'));
-      const wavFiles = audioFiles.filter((f: string) => f.endsWith('.wav'));
-      // If this folder contains wav and mp3 files, then throw error
-      if (mp3Files.length > 0 && wavFiles.length > 0) {
-        reject(new Error('Conflicting audio types'));
-      }
-      // if we have wav files, then we merge them into one file
-      // and return the combined file path
-      else if (wavFiles.length > 0) {
-        resolve(await mergeWavFiles(wavFiles));
-      }
-      // if we have mp3 files, return the glob format with .mp3 files
-      else if (mp3Files.length > 0) {
-        resolve(getGlobFormat(mp3Files));
-      }
-    }
+export async function combineAudioIfNecessary(audioFiles: string[]): Promise<string | undefined> {
+  if (audioFiles.length === 1) {
     // if we only have 1 file return it
-    else {
-      resolve(audioFiles[0]);
+    return audioFiles[0];
+  } else {
+    // Separate mp3 and wav files
+    const mp3Files = audioFiles.filter((f: string) => f.toLowerCase().endsWith('.mp3'));
+    const wavFiles = audioFiles.filter((f: string) => f.toLowerCase().endsWith('.wav'));
+
+    if (mp3Files.length + wavFiles.length !== audioFiles.length) {
+      // if there are more then just wav and mp3 files, then throw error
+      throw new Error('Unsupported audio types');
+    } else if (mp3Files.length > 0 && wavFiles.length > 0) {
+      // if there are a combination of wav and mp3 files, then throw error
+      throw new Error('Conflicting audio types');
+    } else if (wavFiles.length > 0) {
+      // if we have wav files, then we merge them into one file and return the combined file path
+      return await mergeWavFiles(wavFiles);
+    } else if (mp3Files.length > 0) {
+      // if we have mp3 files, return the glob format with .mp3 files
+      return getGlobFormat(mp3Files);
     }
-  });
+  }
 }
 
 /* Note: FFMPEG cannot merge WAV files and MP3 files in the same way.  MP3 files can be merged using something called
