@@ -10,7 +10,8 @@
     "strict": true,
     "suppressImplicitAnyIndexErrors": true,
     "jsx": "react",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "sourceMap": true
   },
   "include": ["public/*.ts", "public/**/*.ts", "typings"],
   "exclude": ["node_modules", "**/*.integration.ts"]

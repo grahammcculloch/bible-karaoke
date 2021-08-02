@@ -30,6 +30,8 @@ binaries/ffprobe
 
 .eslintcache
 
+*.js.map
+
 # incrementally move to typescript.  Here are ignored JS files that are compiled
 /public/**/*.js
 /start/
