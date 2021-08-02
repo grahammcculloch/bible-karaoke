@@ -12,7 +12,7 @@ export async function render(
   animationSettings: AnimationSettings,
   projectData: ProjectData,
   timings: Timings,
-  notify: EventEmitter
+  notify?: EventEmitter
 ): Promise<void> {
   const logEachFrame = false;
   const fps = 15;

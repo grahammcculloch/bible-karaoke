@@ -18,7 +18,7 @@ export interface TextSettings {
 
 export interface BackgroundSettings {
   readonly color: string;
-  readonly file: string;
+  readonly file?: string;
   readonly type?: 'image' | 'video' | 'color';
 }
 
