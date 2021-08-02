@@ -15,19 +15,20 @@ export async function combineFrames(settings: FfmpegSettings): Promise<void> {
     '-loglevel',
     'error',
     '-i',
-    path.join(settings.imagesPath,'frame_%06d.png'),
-    "-i",
+    path.join(settings.imagesPath, 'frame_%06d.png'),
+    '-i',
     executeAudioPath,
-    "-r",
-    settings.framerateOut.toString(),
-    "-pix_fmt",
-    "yuv420p",
-    settings.outputName
-   ];
+    '-pix_fmt',
+    'yuv420p',
+    settings.outputName,
+  ];
+  if (settings.framerateOut != null) {
+    args.push('-r', settings.framerateOut.toString());
+  }
 
   const ffmpegProcess = spawnSync(paths.ffmpeg, args, { stdio: 'pipe' });
 
-  //Check for errrors running ffmpeg
+  //Check for errors running ffmpeg
   const stderr = ffmpegProcess.stderr.toString();
   if (stderr !== '') {
     throw new Error(stderr);
