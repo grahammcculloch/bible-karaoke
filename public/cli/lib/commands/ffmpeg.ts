@@ -4,20 +4,17 @@ import shell from 'shelljs';
 import tempy from 'tempy';
 import path from 'path';
 import { FfmpegSettings } from '../../../models/ffmpegSettings.model';
+import { paths } from '../path-constants'
 
 export async function execute(settings: FfmpegSettings): Promise<void> {
-  // set default value
-  settings.ffmpegPath = settings.ffmpegPath || 'ffmpeg';
-
   const executeAudioPath = await combineAudioIfNecessary(
-    settings.ffmpegPath,
     settings.audioFileOrFolderPath,
     settings.skipAudioFiles
   );
 
   return new Promise<void>((resolve, reject) => {
     shell.exec(
-      `"${settings.ffmpegPath}" -framerate ${settings.framerateIn} -i "${path.join(
+      `"${paths.ffmpeg}" -framerate ${settings.framerateIn} -i "${path.join(
         settings.imagesPath,
         'frame_%06d.png'
       )}" -i
@@ -37,7 +34,6 @@ export async function execute(settings: FfmpegSettings): Promise<void> {
 }
 
 export async function combineAudioIfNecessary(
-  ffmpegExe: string,
   fileOrFolderPath: string,
   skipAudioFiles: string[]
 ): Promise<string> {
@@ -57,7 +53,7 @@ export async function combineAudioIfNecessary(
         // if we have wav files, then we merge them into one file
         // and return the combined file path
         else if (wavFiles.length > 0) {
-          resolve(await mergeWavFiles(ffmpegExe, wavFiles, skipAudioFiles));
+          resolve(await mergeWavFiles(wavFiles, skipAudioFiles));
         }
         // if we have mp3 files, return the glob format with .mp3 files
         else if (mp3Files.length > 0) {
@@ -77,7 +73,7 @@ export async function combineAudioIfNecessary(
  * See https://superuser.com/questions/587511/concatenate-multiple-wav-files-using-single-command-without-extra-file
  * for more information.
  */
-export async function mergeWavFiles(ffmpegExe: string, wavFiles: string[], skipAudioFiles: string[]): Promise<string> {
+export async function mergeWavFiles(wavFiles: string[], skipAudioFiles: string[]): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     // NOTE: cannot use glob format with .wav files
     // we will combine them into a single file and use that in our encode.
@@ -100,7 +96,7 @@ export async function mergeWavFiles(ffmpegExe: string, wavFiles: string[], skipA
 
     // combine wav files
     shell.exec(
-      `"${ffmpegExe}" -f concat -safe 0 -i "${fileDir}" -c copy "${combinedWavFilePath}"`,
+      `"${paths.ffmpeg}" -f concat -safe 0 -i "${fileDir}" -c copy "${combinedWavFilePath}"`,
       { silent: true },
       (err) => {
         err ? reject(err) : resolve(combinedWavFilePath);

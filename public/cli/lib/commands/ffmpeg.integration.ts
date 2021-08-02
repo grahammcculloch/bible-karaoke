@@ -2,7 +2,6 @@ import test from 'ava';
 import fs from 'fs';
 import path from 'path';
 import { mergeWavFiles } from './ffmpeg';
-import { paths } from '../path-constants';
 import { testPaths } from '../test/test-path-constants';
 
 test('mergeWavFiles smoke test: multiple files: success', async (t) => {
@@ -11,7 +10,7 @@ test('mergeWavFiles smoke test: multiple files: success', async (t) => {
     path.join(testPaths.exampleHearThisProject, 'Book1', '1', '2.wav'),
   ];
   const skipFiles: string[] = [];
-  const newFilePath = await mergeWavFiles(paths.ffmpeg, wavFiles, skipFiles);
+  const newFilePath = await mergeWavFiles(wavFiles, skipFiles);
 
   t.true(fs.existsSync(newFilePath));
 });

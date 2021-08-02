@@ -1,5 +1,4 @@
 export interface FfmpegSettings {
-  ffmpegPath?: string;
   readonly audioFileOrFolderPath: string;
   readonly skipAudioFiles: string[];
   readonly imagesPath: string;
