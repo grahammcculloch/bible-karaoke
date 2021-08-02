@@ -9,8 +9,7 @@ test('mergeWavFiles smoke test: multiple files: success', async (t) => {
     path.join(testPaths.exampleHearThisProject, 'Book1', '1', '1.wav'),
     path.join(testPaths.exampleHearThisProject, 'Book1', '1', '2.wav'),
   ];
-  const skipFiles: string[] = [];
-  const newFilePath = await mergeWavFiles(wavFiles, skipFiles);
+  const newFilePath = await mergeWavFiles(wavFiles);
 
   t.true(fs.existsSync(newFilePath));
 });

@@ -1,23 +1,16 @@
 import fs from 'fs';
-import readdirSorted from 'readdir-sorted';
 import shell from 'shelljs';
 import tempy from 'tempy';
 import path from 'path';
 import { FfmpegSettings } from '../../../models/ffmpegSettings.model';
-import { paths } from '../path-constants'
+import { paths } from '../path-constants';
 
 export async function execute(settings: FfmpegSettings): Promise<void> {
-  const executeAudioPath = await combineAudioIfNecessary(
-    settings.audioFileOrFolderPath,
-    settings.skipAudioFiles
-  );
+  const executeAudioPath = await combineAudioIfNecessary(settings.audioFiles);
 
   return new Promise<void>((resolve, reject) => {
     shell.exec(
-      `"${paths.ffmpeg}" -framerate ${settings.framerateIn} -i "${path.join(
-        settings.imagesPath,
-        'frame_%06d.png'
-      )}" -i
+      `"${paths.ffmpeg}" -framerate ${settings.framerateIn} -i "${path.join(settings.imagesPath, 'frame_%06d.png')}" -i
       "${executeAudioPath}" ${settings.framerateOut ? `${settings.framerateOut} ` : ''} -pix_fmt yuv420p "${
         settings.outputName
       }"`,
@@ -33,37 +26,30 @@ export async function execute(settings: FfmpegSettings): Promise<void> {
   });
 }
 
-export async function combineAudioIfNecessary(
-  fileOrFolderPath: string,
-  skipAudioFiles: string[]
-): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
+export async function combineAudioIfNecessary(audioFiles: string[]): Promise<string> {
+  return new Promise<string>(async (resolve, reject) => {
     // if we have a directory, read the files in the directory
-    if (fs.lstatSync(fileOrFolderPath).isDirectory()) {
-      // read files in the directory
-      readdirSorted(fileOrFolderPath, { numeric: true }).then(async (filesSorted: string[]) => {
-        const files = (filesSorted || []).map((fileName: string) => path.join(fileOrFolderPath, fileName)),
-          mp3Files = files.filter((f: string) => f.endsWith('.mp3')),
-          wavFiles = files.filter((f: string) => f.endsWith('.wav'));
-
-        // If this folder contains wav and mp3 files, then throw error
-        if (mp3Files.length > 0 && wavFiles.length > 0) {
-          reject(new Error('Conflicting audio types'));
-        }
-        // if we have wav files, then we merge them into one file
-        // and return the combined file path
-        else if (wavFiles.length > 0) {
-          resolve(await mergeWavFiles(wavFiles, skipAudioFiles));
-        }
-        // if we have mp3 files, return the glob format with .mp3 files
-        else if (mp3Files.length > 0) {
-          resolve(getGlobFormat(mp3Files, skipAudioFiles));
-        }
-      });
+    if (audioFiles.length > 1) {
+      //Seperate mp3 and wav files
+      const mp3Files = audioFiles.filter((f: string) => f.endsWith('.mp3'));
+      const wavFiles = audioFiles.filter((f: string) => f.endsWith('.wav'));
+      // If this folder contains wav and mp3 files, then throw error
+      if (mp3Files.length > 0 && wavFiles.length > 0) {
+        reject(new Error('Conflicting audio types'));
+      }
+      // if we have wav files, then we merge them into one file
+      // and return the combined file path
+      else if (wavFiles.length > 0) {
+        resolve(await mergeWavFiles(wavFiles));
+      }
+      // if we have mp3 files, return the glob format with .mp3 files
+      else if (mp3Files.length > 0) {
+        resolve(getGlobFormat(mp3Files));
+      }
     }
-    // if we have a wav/mp3 file
+    // if we only have 1 file return it
     else {
-      resolve(fileOrFolderPath);
+      resolve(audioFiles[0]);
     }
   });
 }
@@ -73,19 +59,17 @@ export async function combineAudioIfNecessary(
  * See https://superuser.com/questions/587511/concatenate-multiple-wav-files-using-single-command-without-extra-file
  * for more information.
  */
-export async function mergeWavFiles(wavFiles: string[], skipAudioFiles: string[]): Promise<string> {
+export async function mergeWavFiles(wavFiles: string[]): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     // NOTE: cannot use glob format with .wav files
     // we will combine them into a single file and use that in our encode.
-    // but skip the ones we've been told to skip
-    const audioFiles = wavFiles.filter((f) => !skipAudioFiles.includes(f));
 
     const combinedWavFilePath = path.join(tempy.directory(), 'bbkAudio.wav');
     const fileDir = path.join(path.dirname(combinedWavFilePath), 'listAudioFiles.txt');
 
     // write a list of wav file to prepare to combine
     let fileText = '';
-    audioFiles.forEach((fileName) => {
+    wavFiles.forEach((fileName) => {
       if (!path.isAbsolute(fileName)) {
         fileName = path.join(process.cwd(), fileName);
       }
@@ -105,7 +89,6 @@ export async function mergeWavFiles(wavFiles: string[], skipAudioFiles: string[]
   });
 }
 
-export function getGlobFormat(mp3Files: string[], skipAudioFiles: string[]): string {
-  const audioFiles = mp3Files.filter((f) => !skipAudioFiles.includes(f));
-  return `concat:${audioFiles.join('|')}`;
+export function getGlobFormat(mp3Files: string[]): string {
+  return `concat:${mp3Files.join('|')}`;
 }
