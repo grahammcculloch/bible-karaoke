@@ -1,8 +1,9 @@
 import test from 'ava';
 import fs from 'fs';
 import path from 'path';
-import { mergeWavFiles } from './ffmpeg';
+import { execute, mergeWavFiles } from './ffmpeg';
 import { testPaths } from '../test/test-path-constants';
+import tempy from 'tempy';
 
 test('mergeWavFiles smoke test: multiple files: success', async (t) => {
   const wavFiles = [
@@ -13,3 +14,20 @@ test('mergeWavFiles smoke test: multiple files: success', async (t) => {
 
   t.true(fs.existsSync(newFilePath));
 });
+
+test('ffmpeg execute creates video', async(t) => {
+  await tempy.directory.task(async (dir: string) => {
+    const ffmpegSettings = {
+      audioFiles: [
+        path.join(testPaths.exampleHearThisProject, 'Book1', '1', '1.wav'),
+        path.join(testPaths.exampleHearThisProject, 'Book1', '1', '2.wav'),
+      ],
+      imagesPath: testPaths.frameImages,
+      framerateIn: 15,
+      framerateOut: 15,
+      outputName: path.join(dir, 'test.mp4')
+    }
+    await execute(ffmpegSettings);
+    t.true(fs.existsSync(ffmpegSettings.outputName));
+  });
+})
