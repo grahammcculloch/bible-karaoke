@@ -44,7 +44,6 @@ FileSelector.propTypes = {
   save: PropTypes.bool,
   buttonText: PropTypes.string,
   buttonIcon: PropTypes.string || PropTypes.object,
-  // buttonIcon: PropTypes.any,
   file: PropTypes.string,
   options: PropTypes.object,
   onFileSelected: PropTypes.func,
