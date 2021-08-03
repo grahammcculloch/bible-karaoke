@@ -6,11 +6,11 @@ import { Text } from '../blueprint';
 import { AnalyticsInterface } from '../../../public/models/analytic.model';
 import styled from 'styled-components';
 
-export interface IAnalyticsContext {
-  analytics: AnalyticsInterface
+export interface AnalyticsContext {
+  analytics: AnalyticsInterface;
 }
 
-const analyticsContext = React.createContext<IAnalyticsContext>({ analytics: new Analytics({ enableAnalytics: true }) });
+const analyticsContext = React.createContext<AnalyticsContext>({ analytics: new Analytics({ enableAnalytics: true }) });
 
 interface AnalyticsProviderSettings {
   enableAnalytics: boolean;
@@ -21,7 +21,7 @@ const StyleText = styled(Text).attrs({
   mb: 2,
 })``;
 
-export function AnalyticsProvider(prop: {settings: AnalyticsProviderSettings, children: JSX.Element[] | JSX.Element}): JSX.Element {
+export function AnalyticsProvider(prop: {settings: AnalyticsProviderSettings; children: JSX.Element[] | JSX.Element}): JSX.Element {
   const [analyticsNoticeDisplayed, setAnalyticsNoticeDisplayed] = React.useState(localStorage.analyticsNoticeDisplayed);
   const [analytics,] = React.useState<AnalyticsInterface>(new Analytics(prop.settings));
 
@@ -59,6 +59,6 @@ AnalyticsProvider.propTypes = {
   children: PropTypes.node,
 };
 
-export function useAnalytics(): IAnalyticsContext {
+export function useAnalytics(): AnalyticsContext {
   return React.useContext(analyticsContext);
 }
