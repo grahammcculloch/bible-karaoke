@@ -43,7 +43,7 @@ export default function BookSelector(props: any): JSX.Element | null {
                 active={project.activeBookName === book.name}
               >
                 {book.name}
-                {book.isSelected && (
+                {book.isSelected && project.bookSelection.length > 1 && (
                   <BookTag round intent={Intent.SUCCESS}>
                     {selectionCount}
                   </BookTag>
