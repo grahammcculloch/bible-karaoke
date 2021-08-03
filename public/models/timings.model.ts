@@ -10,6 +10,7 @@ export interface LineTiming {
   readonly content: string;
   readonly text: string; // not used
   readonly words: WordTiming[];
+  readonly isHeading: Boolean;
 }
 
 interface WordTiming {

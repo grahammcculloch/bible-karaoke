@@ -14,6 +14,7 @@ export function chapterFormatToTimings(chapter: BKChapter): Timings {
       content: segment.text,
       text: '',
       words: [],
+      isHeading: segment.isHeading,
     };
     formatWords(contentWords, lineTiming);
     timings.push(lineTiming);
