@@ -39,6 +39,7 @@ test('timings.chapterFormatToTimings test', (t) => {
       duration: 5300,
       content: 'In the beginning God created the heavens and the earth.',
       text: '',
+      isHeading: false,
       words: [
         { end: 1329, start: 1040, word: 'In' },
         { end: 1714, start: 1329, word: 'the' },
@@ -61,6 +62,7 @@ test('timings.chapterFormatToTimings test', (t) => {
       content:
         'Now the earth was formless and empty, darkness was over the surface of the deep, and the Spirit of God was hovering over the waters.',
       text: '',
+      isHeading: false,
       words: [
         { end: 7322, start: 7040, word: 'Now' },
         { end: 7604, start: 7322, word: 'the' },

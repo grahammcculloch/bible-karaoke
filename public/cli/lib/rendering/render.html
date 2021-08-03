@@ -50,6 +50,11 @@
       .karaoke-caption .words {
         display: inline-block;
       }
+
+      .karaoke-heading {
+        font-weight: "bold";
+      }
+
       #imgParent {
         width: 720px;
         height: 480px;
@@ -134,7 +139,12 @@
               next: "p" + (i + 1),
             });
             // concat the lines together with all words inside
-            lyrics += "<div class='phrase' id='p" + i + "'>" + text + "</div>";
+            lyrics += "<div class='phrase";
+            //Add karaoke-heading class if the line is a heading;
+            if(line.isHeading) {
+              lyrics += " karaoke-heading";
+            }
+            lyrics += "' id='p" + i + "'>" + text + "</div>";
             i++;
           });
 
