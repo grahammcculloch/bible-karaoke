@@ -278,6 +278,9 @@ export class Progress {
   percent = 0;
 
   @observable
+  remainingTime = '';
+
+  @observable
   status = '';
 
   @observable
@@ -297,6 +300,7 @@ export class Progress {
     this.error = '';
     this.status = 'Getting things started...';
     this.percent = 0;
+    this.remainingTime = '';
     this.inProgress = true;
   }
 
@@ -305,6 +309,7 @@ export class Progress {
     this.error = '';
     this.status = '';
     this.percent = 0;
+    this.remainingTime = '';
     this.inProgress = false;
   }
 
@@ -313,13 +318,15 @@ export class Progress {
     this.error = '';
     this.status = '';
     this.percent = 0;
+    this.remainingTime = '';
     this.inProgress = false;
   }
 
   @action.bound
-  setProgress({ status, percent }: ProgressState): void {
+  setProgress({ status, percent, remainingTime }: ProgressState): void {
     this.status = status;
     this.percent = percent;
+    this.remainingTime = remainingTime ?? '';
     this.inProgress = true;
   }
 

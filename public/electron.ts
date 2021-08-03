@@ -105,8 +105,8 @@ interface SubmissionReturn {
 
 export function handleSubmission(): void {
   ipcMain.on('did-start-conversion', async (event: IpcMainEvent, args: SubmissionArgs) => {
-    const onProgress = ({ status, percent }: ProgressState): void => {
-      const progress: ProgressState = { status: `${status} ${percent}%`, percent };
+    const onProgress = ({ status, percent, remainingTime }: ProgressState): void => {
+      const progress: ProgressState = { status: `${status} ${percent}%`, percent, remainingTime };
       event.sender.send('on-progress', progress);
     };
     console.log('Starting conversion', args);
