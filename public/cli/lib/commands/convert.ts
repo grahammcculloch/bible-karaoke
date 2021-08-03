@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import fs from 'fs';
 import path from 'path';
 import { AnimationSettings } from '../../../models/animationSettings.model';
 import { ProgressState } from '../../../models/progressState.model';
@@ -16,8 +17,12 @@ export async function convert(
   animationSettings: AnimationSettings,
   onProgress: (progress: ProgressState) => void
 ): Promise<string> {
+
+  // Fix #178: make sure output directory exists
+  fs.mkdirSync(animationSettings.output.directory, {recursive: true});
   const outputFilePath = path.join(animationSettings.output.directory, animationSettings.output.filename);
   // const videoPathsToCombine: string[] = [];
+
   const projectData: ProjectData = { outputLocation: animationSettings.output.directory };
   let percent = 0;
   const onRenderedProgress = ({ currentFrame, totalFrames }: RecordFrameEventData): void => {
