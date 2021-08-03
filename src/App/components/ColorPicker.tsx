@@ -45,12 +45,12 @@ const Swatch = styled(Box).attrs({
 `;
 
 interface ColorPickerSettings {
-  value?: Color,
-  presetColors?: { color: string; title: string }[] | string[],
-  disableAlpha?: boolean,
-  disabled?: boolean,
-  onChange?: ColorChangeHandler,
-  props?: any
+  value?: Color;
+  presetColors?: { color: string; title: string }[] | string[];
+  disableAlpha?: boolean;
+  disabled?: boolean;
+  onChange?: ColorChangeHandler;
+  props?: any;
 }
 
 export default class ColorPicker extends React.Component<ColorPickerSettings> {

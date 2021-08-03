@@ -44,7 +44,7 @@ export default class Analytics implements AnalyticsInterface {
     }
   }
 
-  async trackEvent(category: string, action: string, label: string = '', value: number = 0): Promise<void> {
+  async trackEvent(category: string, action: string, label = '', value = 0): Promise<void> {
     const params = { ec: category, ea: action, el: label, ev: value };
     if (this.isEnabled && this.ga) {
       await this.ga.send('event', params);

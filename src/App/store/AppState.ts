@@ -14,9 +14,9 @@ const SAMPLE_VERSES = [
   'God called the light Day, and the darkness he called Night. And there was evening and there was morning, the first day.',
 ];
 
-const list = <T = any>(dict: { [name: string]: T }, sortKey: string = 'name'): T[] => _.sortBy(_.values(dict), sortKey);
+const list = <T = any>(dict: { [name: string]: T }, sortKey = 'name'): T[] => _.sortBy(_.values(dict), sortKey);
 
-const dict = <T = any>(list: T[], classType?: { new (item: any): T }, key: string = 'name'): { [name: string]: T } => {
+const dict = <T = any>(list: T[], classType?: { new (item: any): T }, key = 'name'): { [name: string]: T } => {
   return list.reduce((items, item) => {
     items[item[key]] = classType ? new classType(item) : item;
     return items;
@@ -88,7 +88,7 @@ class Chapter {
 class Book {
   name: string;
 
-  constructor({ name, chapters }: { name: string; chapters: Object[] }) {
+  constructor({ name, chapters }: { name: string; chapters: Record<string, any>[] }) {
     this.name = name;
     this.chapterList = chapters.map((chapter: any) => new Chapter(chapter));
     this.chapters = dict<Chapter>(this.chapterList);
@@ -130,7 +130,7 @@ class Project {
   name: string;
   fullPath: string;
 
-  constructor({ name, fullPath, books }: { name: string; fullPath: string; books: Object[] }) {
+  constructor({ name, fullPath, books }: { name: string; fullPath: string; books: Record<string, any>[] }) {
     this.name = name;
     this.fullPath = fullPath;
     this.bookList = books.map((book: any) => new Book(book));
@@ -155,7 +155,7 @@ class Project {
   bookSelection: string[] = [];
 
   @observable
-  activeBookName: string = '';
+  activeBookName = '';
 
   @computed({ keepAlive: true })
   get selectedBooks(): Book[] {
@@ -192,7 +192,7 @@ class Project {
     }
   }
 
-  selectionToJS(): Object {
+  selectionToJS(): Record<string, any> {
     return {
       name: this.name,
       fullPath: this.fullPath,

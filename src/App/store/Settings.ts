@@ -46,7 +46,7 @@ class Settings {
 
   @persist
   @observable
-  enableAnalytics: boolean = false;
+  enableAnalytics = false;
 
   @computed({ keepAlive: true })
   get rootDirectories(): { [x: string]: string[] } {

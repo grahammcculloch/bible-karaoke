@@ -28,10 +28,10 @@ export const EditRow = styled(Flex).attrs({
 })``;
 
 interface PopoverProps {
-  icon?: IconName | MaybeElement,
-  title?: string | JSX.Element,
-  children?: JSX.Element,
-  props?: any[]
+  icon?: IconName | MaybeElement;
+  title?: string | JSX.Element;
+  children?: JSX.Element;
+  props?: any[];
 }
 
 export default function EditPopover( { icon = "annotation", title, children, ...props }: PopoverProps): JSX.Element {

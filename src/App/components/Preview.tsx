@@ -75,7 +75,7 @@ const PreviewWord = styled.div`
   padding: 0 5px;
   margin: 0 -5px;
   display: inline-block;
-  ${(prop: { isHighlighted: boolean, highlightColor: string }): string => {
+  ${(prop: { isHighlighted: boolean; highlightColor: string }): string => {
     return `background-color: ${prop.isHighlighted ? prop.highlightColor || 'transparent' : 'transparent'};`;
   }}
 `;
@@ -99,7 +99,7 @@ const getImageSrc = _.memoize((file: string): string => {
   return '';
 });
 
-const PreviewVerse = (prop: { verse: string, highlightVerse: boolean, highlightColor: string }): JSX.Element => {
+const PreviewVerse = (prop: { verse: string; highlightVerse: boolean; highlightColor: string }): JSX.Element => {
   return <>{prop.verse.split(' ').map((word, index) => {
     const isHighlighted = prop.highlightVerse && HIGHLIGHT_WORD_INDEXES.includes(index);
     return (
