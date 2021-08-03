@@ -14,9 +14,9 @@ const FileSelector = (prop: {
   file?: string;
   options: SaveDialogOptions | OpenDialogOptions;
   onFileSelected: (file: string) => void;
-}) => {
-  const selectFile = async () => {
-    let filePath = "";
+}): JSX.Element => {
+  const selectFile = async (): Promise<void> => {
+    let filePath = '';
 
     if (prop.save) {
       filePath = (await dialog.showSaveDialog(prop.options as SaveDialogOptions)).filePath || '';

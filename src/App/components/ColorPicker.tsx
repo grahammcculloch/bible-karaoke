@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Box } from 'reflexbox';
 import { Popover } from '@blueprintjs/core';
 import { Color, ColorChangeHandler, ColorResult, SketchPicker } from 'react-color';
-import { isConstructorTypeNode } from 'typescript';
 
 const SWATCH_COLORS = [
   '#ff3b30',
