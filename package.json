@@ -27,7 +27,7 @@
     "preelectron-pack-mac": "npm run build",
     "preelectron-pack-win": "npm run build",
     "preelectron-pack-linux": "npm run build",
-    "lint": "eslint -c .eslintrc.json --ignore-path .eslintignore --cache --fix",
+    "lint": "eslint --ext ts,tsx --cache src public",
     "prettier": "prettier --write \"**/*.{ts,js,json,css,scss,less,html,md,yml}\"",
     "prettier:test": "prettier --list-different \"**/*.{ts,js,json,css,scss,less,html,md,yml}\"",
     "electron-pack-mac": "electron-builder -m",

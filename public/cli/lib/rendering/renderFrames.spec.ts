@@ -73,6 +73,7 @@ function mockTimings(): Timings {
       duration: 100,
       content: 'Hello World',
       text: '',
+      isHeading: false,
       words: [
         { word: 'Hello', start: 1, end: 5 },
         { word: 'World', start: 6, end: 10 },

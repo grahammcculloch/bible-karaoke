@@ -14,7 +14,7 @@ const Wrapper = styled(Box)`
 `;
 
 interface AnimatedVisibilityProps {
-  visible: boolean,
+  visible: boolean;
   children: JSX.Element[] | JSX.Element;
 }
 

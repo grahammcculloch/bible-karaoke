@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Box } from 'reflexbox';
 import { Popover } from '@blueprintjs/core';
 import { Color, ColorChangeHandler, ColorResult, SketchPicker } from 'react-color';
-import { isConstructorTypeNode } from 'typescript';
 
 const SWATCH_COLORS = [
   '#ff3b30',
@@ -45,12 +44,12 @@ const Swatch = styled(Box).attrs({
 `;
 
 interface ColorPickerSettings {
-  value?: Color,
-  presetColors?: { color: string; title: string }[] | string[],
-  disableAlpha?: boolean,
-  disabled?: boolean,
-  onChange?: ColorChangeHandler,
-  props?: any
+  value?: Color;
+  presetColors?: { color: string; title: string }[] | string[];
+  disableAlpha?: boolean;
+  disabled?: boolean;
+  onChange?: ColorChangeHandler;
+  props?: any;
 }
 
 export default class ColorPicker extends React.Component<ColorPickerSettings> {

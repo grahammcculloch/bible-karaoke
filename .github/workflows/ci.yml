@@ -28,6 +28,7 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
       - run: npm ci
+      - run: npm run lint
       - run: npm run build
         env:
           # ToDo: remove this.

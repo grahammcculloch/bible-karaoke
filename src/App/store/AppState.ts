@@ -1,11 +1,10 @@
+import { ipcRenderer } from 'electron';
 import { observable, computed, action, reaction, toJS } from 'mobx';
 import { persist } from 'mobx-persist';
 import _ from 'lodash';
 import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR } from '../constants';
 import Store from '.';
 import { ProgressState } from '../../../public/models/progressState.model';
-
-const { ipcRenderer } = window.require('electron');
 
 const SAMPLE_VERSES = [
   'In the beginning, God created the heavens and the earth.',
@@ -15,16 +14,16 @@ const SAMPLE_VERSES = [
   'God called the light Day, and the darkness he called Night. And there was evening and there was morning, the first day.',
 ];
 
-const list = <T = any>(dict: { [name: string]: T }, sortKey: string = 'name'): T[] => _.sortBy(_.values(dict), sortKey);
+const list = <T = any>(dict: { [name: string]: T }, sortKey = 'name'): T[] => _.sortBy(_.values(dict), sortKey);
 
-const dict = <T = any>(list: T[], classType?: { new (item: any): T }, key: string = 'name'): { [name: string]: T } => {
+const dict = <T = any>(list: T[], classType?: { new (item: any): T }, key = 'name'): { [name: string]: T } => {
   return list.reduce((items, item) => {
     items[item[key]] = classType ? new classType(item) : item;
     return items;
   }, {});
 };
 
-const isVideo = _.memoize((ext) => ['mpeg4', 'mp4', 'webm'].includes(ext));
+const isVideo = _.memoize((ext: string): boolean => ['mpeg4', 'mp4', 'webm'].includes(ext.toLowerCase()));
 
 class Background {
   @persist
@@ -40,7 +39,7 @@ class Background {
     if (!this.file) {
       return BACKGROUND_TYPE.color;
     }
-    const ext = this.file.split('.').pop();
+    const ext: string = this.file.split('.').pop() ?? '';
     return isVideo(ext) ? BACKGROUND_TYPE.video : BACKGROUND_TYPE.image;
   }
 
@@ -89,7 +88,7 @@ class Chapter {
 class Book {
   name: string;
 
-  constructor({ name, chapters }: { name: string; chapters: Object[] }) {
+  constructor({ name, chapters }: { name: string; chapters: Record<string, any>[] }) {
     this.name = name;
     this.chapterList = chapters.map((chapter: any) => new Chapter(chapter));
     this.chapters = dict<Chapter>(this.chapterList);
@@ -131,7 +130,7 @@ class Project {
   name: string;
   fullPath: string;
 
-  constructor({ name, fullPath, books }: { name: string; fullPath: string; books: Object[] }) {
+  constructor({ name, fullPath, books }: { name: string; fullPath: string; books: Record<string, any>[] }) {
     this.name = name;
     this.fullPath = fullPath;
     this.bookList = books.map((book: any) => new Book(book));
@@ -156,7 +155,7 @@ class Project {
   bookSelection: string[] = [];
 
   @observable
-  activeBookName: string = '';
+  activeBookName = '';
 
   @computed({ keepAlive: true })
   get selectedBooks(): Book[] {
@@ -193,7 +192,7 @@ class Project {
     }
   }
 
-  selectionToJS(): Object {
+  selectionToJS(): Record<string, any> {
     return {
       name: this.name,
       fullPath: this.fullPath,
@@ -279,6 +278,9 @@ export class Progress {
   percent = 0;
 
   @observable
+  remainingTime = '';
+
+  @observable
   status = '';
 
   @observable
@@ -298,6 +300,7 @@ export class Progress {
     this.error = '';
     this.status = 'Getting things started...';
     this.percent = 0;
+    this.remainingTime = '';
     this.inProgress = true;
   }
 
@@ -306,6 +309,7 @@ export class Progress {
     this.error = '';
     this.status = '';
     this.percent = 0;
+    this.remainingTime = '';
     this.inProgress = false;
   }
 
@@ -314,13 +318,15 @@ export class Progress {
     this.error = '';
     this.status = '';
     this.percent = 0;
+    this.remainingTime = '';
     this.inProgress = false;
   }
 
   @action.bound
-  setProgress({ status, percent }: ProgressState): void {
+  setProgress({ status, percent, remainingTime }: ProgressState): void {
     this.status = status;
     this.percent = percent;
+    this.remainingTime = remainingTime ?? '';
     this.inProgress = true;
   }
 

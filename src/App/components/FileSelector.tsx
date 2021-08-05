@@ -7,22 +7,22 @@ import { remote, OpenDialogOptions, SaveDialogOptions } from 'electron';
 const { dialog } = remote;
 
 const FileSelector = (prop: {
-  save?: boolean,
-  buttonText?: React.ReactNode,
-  buttonIcon?: IconName | MaybeElement,
-  disabled?: boolean,
-  file?: string,
-  options: SaveDialogOptions | OpenDialogOptions,
-  onFileSelected: (file: string) => void,
-}) => {
-  const selectFile = async () => {
-    let filePath: string = "";
+  save?: boolean;
+  buttonText?: React.ReactNode;
+  buttonIcon?: IconName | MaybeElement;
+  disabled?: boolean;
+  file?: string;
+  options: SaveDialogOptions | OpenDialogOptions;
+  onFileSelected: (file: string) => void;
+}): JSX.Element => {
+  const selectFile = async (): Promise<void> => {
+    let filePath = '';
 
     if (prop.save) {
       filePath = (await dialog.showSaveDialog(prop.options as SaveDialogOptions)).filePath || '';
     }
     else {
-      let filePaths = (await dialog.showOpenDialog(prop.options as OpenDialogOptions)).filePaths;
+      const filePaths = (await dialog.showOpenDialog(prop.options as OpenDialogOptions)).filePaths;
       filePath = filePaths && filePaths.length === 1 ? filePaths[0] : '';
     }
 

@@ -61,9 +61,11 @@ const ProgressText = (prop: { progress: Progress }): JSX.Element => {
   if (prop.progress.error) {
     return <Text>{prop.progress.error.toString()}</Text>;
   }
-  const progressText = prop.progress.status.replace('% (', '%\n(').split('\n');
+  const progressText: string[] = prop.progress.status.replace('% (', '%\n(').split('\n');
   return <Text my={1}>
     {progressText}
+    <br />
+    {prop.progress.remainingTime ? `${prop.progress.remainingTime}` : ''}
   </Text>;
   // NOTE: TextWrapper's children should be JSX.Element (not JSX.Element[])
   // return progressText.map((line: string, index: number): JSX.Element => (
@@ -73,7 +75,9 @@ const ProgressText = (prop: { progress: Progress }): JSX.Element => {
   // ));
 };
 
-const Action = (prop: { icon: IconName | MaybeElement, intent: Intent, disabled: boolean, onClick: (event: React.MouseEvent<HTMLElement>) => void, combined: boolean, mainText: string, subText: string }): JSX.Element => {
+const Action = (prop: { icon: IconName | MaybeElement; intent: Intent; disabled: boolean;
+  onClick: (event: React.MouseEvent<HTMLElement>) => void; combined: boolean; mainText: string; subText: string; }
+): JSX.Element => {
   const { appState } = useStores();
   return useObserver(() => {
     const progress: Progress = appState.progress.combined === prop.combined ? appState.progress : null;

@@ -56,7 +56,7 @@ export const Tag = styled(BP.Tag)<SLFPProps>`
   ${space} ${layout} ${flexbox} ${position}
 `;
 
-export const Colors = {
+export const Colors: { [x: string]: string } = {
   logo: '#006666',
   background1: '#30404d',
   background2: '#293742',

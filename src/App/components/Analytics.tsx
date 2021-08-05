@@ -5,11 +5,11 @@ import Analytics from '../analytics';
 import { Text } from '../blueprint';
 import { AnalyticsInterface } from '../../../public/models/analytic.model';
 
-export interface IAnalyticsContext {
-  analytics: AnalyticsInterface
+export interface AnalyticsContext {
+  analytics: AnalyticsInterface;
 }
 
-const analyticsContext = React.createContext<IAnalyticsContext>({ analytics: new Analytics({ enableAnalytics: true }) });
+const analyticsContext = React.createContext<AnalyticsContext>({ analytics: new Analytics({ enableAnalytics: true }) });
 
 interface AnalyticsProviderSettings {
   enableAnalytics: boolean;
@@ -54,6 +54,6 @@ AnalyticsProvider.propTypes = {
   children: PropTypes.node,
 };
 
-export function useAnalytics(): IAnalyticsContext {
+export function useAnalytics(): AnalyticsContext {
   return React.useContext(analyticsContext);
 }

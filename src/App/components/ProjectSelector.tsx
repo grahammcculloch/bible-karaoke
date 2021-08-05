@@ -15,6 +15,13 @@ export default function ProjectSelector(): JSX.Element {
         return;
       }
       appState.projects.setActiveProject(event.target.value);
+
+      // If a chapter has already been selected in the project set the first one as active.
+      // This will show the chapters when returning to a project.
+      const project = appState.projects.activeProject;
+      if (project.bookSelection.length > 0){
+        project.setActiveBook(project.bookSelection[0])
+      }
       analytics.trackEvent('User Interaction', 'Project Loaded');
     },
     [appState, analytics]
