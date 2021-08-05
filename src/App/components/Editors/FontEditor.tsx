@@ -2,7 +2,6 @@ import { ipcRenderer } from 'electron';
 import React from 'react';
 import { useObserver } from 'mobx-react';
 import { ColorResult } from 'react-color';
-import styled from 'styled-components';
 import EditPopover, { EditRow } from './EditPopover';
 import { useStores } from '../../store';
 import ColorPicker from '../ColorPicker';
@@ -14,21 +13,6 @@ const FONT_SIZES = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((n) => ({
   label: `${n}pt`,
 }));
 
-const FontSelector = styled(HTMLSelect).attrs({
-  mr: 2
-})``;
-
-const ButtonGrouping = styled(ButtonGroup).attrs({
-  mr: 3
-})``;
-
-const TextBold = styled(Text).attrs({})`bold`;
-
-const TextItalic = styled(Text).attrs({})`italic`;
-
-const TextHighlight = styled(Text).attrs({
-  mr: 2
-})``;
 
 // interface FontData extends IOptionProps {
 //   value: string;
@@ -94,16 +78,16 @@ export default function FontEditor(props: any): JSX.Element {
     return (
       <EditPopover icon="font" title="Edit font" {...props}>
         <EditRow>
-          <FontSelector value={text.fontFamily} onChange={setFontFamily} options={fonts} />
-          <FontSelector value={text.fontSize} onChange={setFontSize} options={FONT_SIZES} />
+          <HTMLSelect mr={2} value={text.fontFamily} onChange={setFontFamily} options={fonts} />
+          <HTMLSelect mr={2} value={text.fontSize} onChange={setFontSize} options={FONT_SIZES} />
           <ColorPicker value={text.color} onChange={setTextColor} />
         </EditRow>
         <EditRow mt={3}>
-          <ButtonGrouping>
-            <Button active={text.bold} text={<TextBold>B</TextBold>} onClick={toggleBold} />
-            <Button active={text.italic} text={<TextItalic>i</TextItalic>} onClick={toggleItalic} />
-          </ButtonGrouping>
-          <TextHighlight>Highlight:</TextHighlight>
+          <ButtonGroup mr={3}>
+            <Button active={text.bold} text={<Text fontWeight="bold">B</Text>} onClick={toggleBold} />
+            <Button active={text.italic} text={<Text fontStyle="italic">i</Text>} onClick={toggleItalic} />
+          </ButtonGroup>
+          <Text mr={2}>Highlight:</Text>
           <ColorPicker value={text.highlightColor} onChange={setHighlightColor} />
         </EditRow>
       </EditPopover>

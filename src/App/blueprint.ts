@@ -1,56 +1,64 @@
 import * as BP from '@blueprintjs/core';
-import styled, { StyledComponent } from 'styled-components';
-import { space, position, flexbox, typography, layout } from 'styled-system';
+import styled from 'styled-components';
+import { space, position, flexbox, typography, layout, SpaceProps, PositionProps, FlexboxProps, TypographyProps, LayoutProps } from 'styled-system';
 
-export const Text: StyledComponent<typeof BP.Text, any, {}, never> = styled(BP.Text)`
+type STLProps = SpaceProps & TypographyProps & LayoutProps;
+
+type SLFProps = SpaceProps & LayoutProps & FlexboxProps;
+
+type SLPProps = SpaceProps & LayoutProps & PositionProps;
+
+type SLFPProps = SpaceProps & LayoutProps & FlexboxProps & PositionProps;
+
+export const Text = styled(BP.Text)<STLProps>`
   ${space} ${typography} ${layout}
 `;
-export const H1: StyledComponent<typeof BP.H1, any, {}, never> = styled(BP.H1)`
+export const H1 = styled(BP.H1)<STLProps>`
   ${space} ${typography} ${layout}
 `;
-export const H2: StyledComponent<typeof BP.H2, any, {}, never> = styled(BP.H2)`
+export const H2 = styled(BP.H2)<STLProps>`
   ${space} ${typography} ${layout}
 `;
-export const H3: StyledComponent<typeof BP.H3, any, {}, never> = styled(BP.H3)`
+export const H3 = styled(BP.H3)<STLProps>`
   ${space} ${typography} ${layout}
 `;
-export const H4: StyledComponent<typeof BP.H4, any, {}, never> = styled(BP.H4)`
+export const H4 = styled(BP.H4)<STLProps>`
   ${space} ${typography} ${layout}
 `;
-export const H5: StyledComponent<typeof BP.H5, any, {}, never> = styled(BP.H5)`
+export const H5 = styled(BP.H5)<STLProps>`
   ${space} ${typography} ${layout}
 `;
-export const H6: StyledComponent<typeof BP.H6, any, {}, never> = styled(BP.H6)`
+export const H6 = styled(BP.H6)<STLProps>`
   ${space} ${typography} ${layout}
 `;
-export const Button: StyledComponent<typeof BP.Button, any, {}, never> = styled(BP.Button)`
+export const Button = styled(BP.Button)<SLPProps>`
   ${space} ${layout} ${position}
 `;
-export const ButtonGroup: StyledComponent<typeof BP.ButtonGroup, any, {}, never> = styled(BP.ButtonGroup)`
+export const ButtonGroup = styled(BP.ButtonGroup)<SLPProps>`
   ${space} ${layout} ${position}
 `;
-export const Icon: StyledComponent<typeof BP.Icon, any, {}, never> = styled(BP.Icon)`
+export const Icon = styled(BP.Icon)<SLPProps>`
   ${space} ${layout} ${position}
 `;
-export const Card: StyledComponent<typeof BP.Card, any, {}, never> = styled(BP.Card)`
+export const Card = styled(BP.Card)<SLFProps>`
   ${space} ${layout} ${flexbox}
 `;
-export const Checkbox: StyledComponent<typeof BP.Checkbox, any, {}, never> = styled(BP.Checkbox)`
+export const Checkbox = styled(BP.Checkbox)<SLFProps>`
   ${space} ${layout} ${flexbox}
 `;
-export const Radio: StyledComponent<typeof BP.Radio, any, {}, never> = styled(BP.Radio)`
+export const Radio = styled(BP.Radio)<SLFProps>`
   ${space} ${layout} ${flexbox}
 `;
-export const HTMLSelect: StyledComponent<typeof BP.HTMLSelect, any, {}, never> = styled(BP.HTMLSelect)`
+export const HTMLSelect = styled(BP.HTMLSelect)<SLFProps>`
   ${space} ${layout} ${flexbox}
 `;
-export const Tag: StyledComponent<typeof BP.Tag, any, {}, never> = styled(BP.Tag)`
+export const Tag = styled(BP.Tag)<SLFPProps>`
   ${space} ${layout} ${flexbox} ${position}
 `;
 
-export const Colors: { [x: string]: string } = {
-	logo: '#006666',
-	background1: '#30404d',
-	background2: '#293742',
-	background3: '#28323a',
+export const Colors = {
+  logo: '#006666',
+  background1: '#30404d',
+  background2: '#293742',
+  background3: '#28323a',
 };

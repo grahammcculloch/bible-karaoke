@@ -47,18 +47,6 @@ const ActionIcon = styled(Icon).attrs({
   flex: 0
 })``;
 
-const TextProgress = styled(Text).attrs({
-  my: 1
-})``;
-
-const TextMain = styled(Text).attrs({
-  fontSize: "200%"
-})``;
-
-const TextSub = styled(Text).attrs({
-  mt: 2
-})``;
-
 const TextWrapper = styled(Flex).attrs({
   flex: 1,
   ml: 4,
@@ -68,17 +56,18 @@ const TextWrapper = styled(Flex).attrs({
   flexDirection: 'column',
 })``;
 
+
 const ProgressText = (prop: { progress: Progress }): JSX.Element => {
   if (prop.progress.error) {
     return <Text>{prop.progress.error.toString()}</Text>;
   }
   const progressText = prop.progress.status.replace('% (', '%\n(').split('\n');
-  return <TextProgress>
+  return <Text my={1}>
     {progressText}
-  </TextProgress>;
+  </Text>;
   // NOTE: TextWrapper's children should be JSX.Element (not JSX.Element[])
   // return progressText.map((line: string, index: number): JSX.Element => (
-  //   <TextProgress key={index}>
+  //   <TextProgress key={index} my={1}>
   //     {line}
   //   </TextProgress>
   // ));
@@ -104,8 +93,8 @@ const Action = (prop: { icon: IconName | MaybeElement, intent: Intent, disabled:
               <ProgressText progress={progress} />
             ) : (
               <React.Fragment>
-                <TextMain>{prop.mainText}</TextMain>
-                <TextSub>{prop.subText}</TextSub>
+                <Text fontSize="200%">{prop.mainText}</Text>
+                <Text mt={2}>{prop.subText}</Text>
               </React.Fragment>
             )}
           </TextWrapper>

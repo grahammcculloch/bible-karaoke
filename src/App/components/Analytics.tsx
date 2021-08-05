@@ -4,7 +4,6 @@ import { Alert, Intent, Classes } from '@blueprintjs/core';
 import Analytics from '../analytics';
 import { Text } from '../blueprint';
 import { AnalyticsInterface } from '../../../public/models/analytic.model';
-import styled from 'styled-components';
 
 export interface IAnalyticsContext {
   analytics: AnalyticsInterface
@@ -16,10 +15,6 @@ interface AnalyticsProviderSettings {
   enableAnalytics: boolean;
   setEnableAnalytics(confirmed: boolean): void;
 }
-
-const StyleText = styled(Text).attrs({
-  mb: 2,
-})``;
 
 export function AnalyticsProvider(prop: {settings: AnalyticsProviderSettings, children: JSX.Element[] | JSX.Element}): JSX.Element {
   const [analyticsNoticeDisplayed, setAnalyticsNoticeDisplayed] = React.useState(localStorage.analyticsNoticeDisplayed);
@@ -46,8 +41,8 @@ export function AnalyticsProvider(prop: {settings: AnalyticsProviderSettings, ch
         intent={Intent.SUCCESS}
         onClose={onClose}
       >
-        <StyleText>We&apos;d like to use Google Analytics to help improve Bible Karaoke.</StyleText>
-        <StyleText>Is this okay?</StyleText>
+        <Text mb={2}>We&apos;d like to use Google Analytics to help improve Bible Karaoke.</Text>
+        <Text mb={2}>Is this okay?</Text>
       </Alert>
       {prop.children}
     </analyticsContext.Provider>

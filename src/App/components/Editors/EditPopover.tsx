@@ -1,26 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { position } from 'styled-system';
+import { position, PositionProps } from 'styled-system';
 import { useObserver } from 'mobx-react';
 import { Box, Flex } from 'reflexbox';
 import { Tooltip, Popover, PopoverInteractionKind, PopoverPosition, IconName, MaybeElement } from '@blueprintjs/core';
 import { Button, H5 } from '../../blueprint';
 
-interface WrapperProps {
-  top?: string;
-  bottom?: string;
-  left?: string;
-  right?: string;
-}
-
-const Wrapper = styled(Box)<WrapperProps>`
+const Wrapper = styled(Box)<PositionProps>`
   ${position}
   position: absolute;
 `;
-
-const Title = styled(H5)`
-  mb: 3
-`
 
 export const EditRow = styled(Flex).attrs({
   flexDirection: 'row',
@@ -43,7 +32,7 @@ export default function EditPopover( { icon = "annotation", title, children, ...
             <Button minimal icon={icon} />
           </Tooltip>
           <Box p={3}>
-            <Title>{title}</Title>
+            <H5 mb={3}>{title}</H5>
             {children}
           </Box>
         </Popover>

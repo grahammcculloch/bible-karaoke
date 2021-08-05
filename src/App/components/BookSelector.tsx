@@ -1,23 +1,10 @@
 import React from 'react';
 import { useObserver } from 'mobx-react';
 import _ from 'lodash';
-import styled from 'styled-components';
 import { Flex } from 'reflexbox';
 import { Intent } from '@blueprintjs/core';
 import { Tag, H3, Card, Button } from '../blueprint';
 import { useStores } from '../store';
-
-const BookButton = styled(Button).attrs({
-  position: "relative",
-  m: 1
-})``;
-
-const BookTag = styled(Tag).attrs({
-  position: "absolute",
-  zIndex: 2,
-  right: "-10px",
-  top: "-10px"
-})``;
 
 export default function BookSelector(props: any): JSX.Element | null {
   const { appState } = useStores();
@@ -36,7 +23,9 @@ export default function BookSelector(props: any): JSX.Element | null {
               selectionCount = _.indexOf(project.bookSelection, book.name) + 1;
             }
             return (
-              <BookButton
+              <Button
+                position="relative"
+                m={1}
                 key={book.name}
                 intent={book.isSelected ? Intent.PRIMARY : undefined}
                 onClick={(): void => { project.setActiveBook(book.name); }}
@@ -44,11 +33,11 @@ export default function BookSelector(props: any): JSX.Element | null {
               >
                 {book.name}
                 {book.isSelected && (
-                  <BookTag round intent={Intent.SUCCESS}>
+                  <Tag position="absolute" zIndex={2} right="-10px" top="-10px"round intent={Intent.SUCCESS}>
                     {selectionCount}
-                  </BookTag>
+                  </Tag>
                 )}
-              </BookButton>
+              </Button>
             );
           })}
         </Flex>
