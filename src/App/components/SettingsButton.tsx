@@ -2,15 +2,9 @@ import React from 'react';
 import { useObserver } from 'mobx-react';
 import { Drawer, Classes, Tooltip, Position } from '@blueprintjs/core';
 import { Flex } from 'reflexbox';
-import styled from 'styled-components';
 import { Button, Text } from '../blueprint';
 import Settings from './Settings';
 import { version } from '../../../package.json';
-
-const TextVersion = styled(Text)`
-  fontSize: 70%;
-  mr: 2;
-`;
 
 export default function SettingsButton(): JSX.Element {
   const [settingsOpen, setSettingsOpen] = React.useState(false);
@@ -27,9 +21,9 @@ export default function SettingsButton(): JSX.Element {
         title={
           <Flex justifyContent="space-between" alignItems="center">
             Settings
-            <TextVersion className={Classes.TEXT_MUTED}>
+            <Text fontSize="70%" mr={2} className={Classes.TEXT_MUTED}>
               v{version}
-            </TextVersion>
+            </Text>
           </Flex>
         }
         position={Position.RIGHT}

@@ -13,14 +13,6 @@ const StyleColorPicker = styled(ColorPicker).attrs({
   mr: 3,
 })``;
 
-const StyleText = styled(Text).attrs({
-  mr: 4,
-})``;
-
-const StyleBox = styled(Box).attrs({
-  mr: 3,
-})``;
-
 export default function SpeechBubbleEditor(props: any): JSX.Element {
   const { appState } = useStores();
 
@@ -41,10 +33,10 @@ export default function SpeechBubbleEditor(props: any): JSX.Element {
       <EditPopover title="Edit verse background" {...props}>
         <EditRow>
           <StyleColorPicker value={speechBubble.color} onChange={setSpeechBubbleColor} />
-          <StyleText mr={4}>Opacity:</StyleText>
-          <StyleBox mr={3} maxWidth="200px">
+          <Text mr={4}>Opacity:</Text>
+          <Box mr={3} maxWidth="200px">
             <Slider value={speechBubble.opacity} min={0} max={1} stepSize={0.05} onChange={setSpeechBubbleOpacity} />
-          </StyleBox>
+          </Box>
         </EditRow>
       </EditPopover>
     );
