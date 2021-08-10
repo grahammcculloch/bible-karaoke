@@ -24,39 +24,6 @@ const descriptionTextClass = classnames(Classes.TEXT_SMALL, Classes.TEXT_MUTED);
 const defaultHearThisDirectory = getDefaultHearThisDirectory();
 const defaultAppBuilderDirectory = getDefaultScriptureAppBuilderDirectory();
 
-const CardMb3 = styled(Card).attrs({
-  mb: 3
-})``;
-
-const H5Mb0 = styled(H5).attrs({
-  mb: 0
-})``;
-
-const H5Mb3 = styled(H5).attrs({
-  mb: 3
-})``;
-
-const ButtonMr2 = styled(Button).attrs({
-  mr: 2
-})``;
-
-const ButtonMt2 = styled(Button).attrs({
-  mt: 2
-})``;
-
-const TextPx2 = styled(Text).attrs({
-  tx: 2
-})``;
-
-const TextMy3 = styled(Text).attrs({
-  my: 3
-})``;
-
-const TextMt3 = styled(Text).attrs({
-  mt: 3,
-  textAlign: "center"
-})``;
-
 interface DirectoriesCardInterface {
   name: string;
   directories: string[];
@@ -78,12 +45,12 @@ const DirectoriesCard = (prop: DirectoriesCardInterface): JSX.Element => {
   };
 
   return (
-    <CardMb3 className="settings__card">
+    <Card mb={3} className="settings__card">
       <Flex alignItems="center" justifyContent="space-between" mb={2}>
-        <H5Mb0>{prop.name} Projects Folders</H5Mb0>
+        <H5 mb={0}>{prop.name} Projects Folders</H5>
         <DirectoryHeading alignItems="center">
           <Tooltip content="Reset to default directory">
-            <ButtonMr2 minimal icon="reset" onClick={resetDirectories} />
+            <Button mr={2} minimal icon="reset" onClick={resetDirectories} />
           </Tooltip>
           <FileSelector
             buttonText="Add folder..."
@@ -100,9 +67,9 @@ const DirectoriesCard = (prop: DirectoriesCardInterface): JSX.Element => {
         <Flex alignItems="center" key={dir}>
           <Icon icon="folder-close" />
           {/* <TextPx2 ellipsize title={dir}> */}
-          <TextPx2 ellipsize>
+          <Text px={2} ellipsize>
             {dir}
-          </TextPx2>
+          </Text>
           <Button
             minimal
             icon="cross"
@@ -112,7 +79,7 @@ const DirectoriesCard = (prop: DirectoriesCardInterface): JSX.Element => {
           />
         </Flex>
       ))}
-    </CardMb3>
+    </Card>
   );
 };
 
@@ -151,8 +118,8 @@ export default function Settings(): JSX.Element {
         onSetDirectories={settings.setScriptureAppBuilderRootDirectories}
         defaultDirectory={defaultAppBuilderDirectory}
       />
-      <CardMb3>
-        <H5Mb3>Output</H5Mb3>
+      <Card mb={3}>
+        <H5 mb={3}>Output</H5>
         <FileSelector
           buttonText="Save videos to..."
           file={settings.outputDirectory}
@@ -162,14 +129,14 @@ export default function Settings(): JSX.Element {
           }}
           onFileSelected={settings.setOutputDirectory}
         />
-      </CardMb3>
-      <CardMb3>
+      </Card>
+      <Card mb={3}>
         <Flex alignItems="center" justifyContent="space-between">
-          <H5Mb0>Google Analytics</H5Mb0>
+          <H5 mb={0}>Google Analytics</H5>
         </Flex>
-        <TextMy3 className={descriptionTextClass}>
+        <Text my={3} className={descriptionTextClass}>
           Google Analytics helps us understand how Bible Karaoke is being used and when errors occur.
-        </TextMy3>
+        </Text>
         <Checkbox
           checked={settings.enableAnalytics}
           onChange={(event): void => {
@@ -177,19 +144,20 @@ export default function Settings(): JSX.Element {
           }}
           label="Enable Google Analytics"
         />
-        <ButtonMt2
+        <Button
+          mt={2}
           text="Reset tracking ID"
           icon="reset"
           disabled={!settings.enableAnalytics}
           onClick={analytics.resetClientId}
         />
-      </CardMb3>
-      <TextMt3 className={descriptionTextClass}>
+      </Card>
+      <Text mt={3} textAlign="center" className={descriptionTextClass}>
         This software is released under the{' '}
         <a target="_blank" rel="noopener noreferrer" href={`${repoUrl}/blob/master/LICENSE.md`}>
           MIT License
         </a>
-      </TextMt3>
+      </Text>
     </Flex>
   ));
 }
