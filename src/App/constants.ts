@@ -20,7 +20,26 @@ export const TEXT_LOCATION = {
   center: 'center',
 };
 
-export const DEFAULT_OUTPUT_DIRECTORY = path.join(os.homedir(), 'Bible Karaoke Videos');
+export const DEFAULT_OUTPUT_DIRECTORY = (function(): string {
+  const BK_DIR_NAME = 'Bible Karaoke Videos';
+  switch (process.platform) {
+    case 'win32': {
+      const version = os.release();
+      // if windows 7
+      if (/^6\.1/.test(version)) {
+        return path.join(os.homedir(), 'My Videos', BK_DIR_NAME);
+      }
+      else {
+        return path.join(os.homedir(), 'Videos', BK_DIR_NAME);
+      }
+    }
+    case 'darwin':
+      return path.join(os.homedir(), BK_DIR_NAME);
+    case 'linux':
+    default:
+      return path.join(os.homedir(), 'Videos', BK_DIR_NAME);
+  }
+})();
 
 const allFiles = {
   name: 'All files',

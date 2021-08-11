@@ -12,6 +12,7 @@ import { useStores } from '../store';
 import { useAnalytics } from './Analytics';
 import { getDefaultHearThisDirectory, getDefaultScriptureAppBuilderDirectory } from '../store/Settings';
 import FileSelector from './FileSelector';
+import { DEFAULT_OUTPUT_DIRECTORY } from '../constants';
 
 const DirectoryHeading = styled(Flex)`
   .file-selector > * {
@@ -119,16 +120,22 @@ export default function Settings(): JSX.Element {
         defaultDirectory={defaultAppBuilderDirectory}
       />
       <Card mb={3}>
-        <H5 mb={3}>Output</H5>
-        <FileSelector
-          buttonText="Save videos to..."
-          file={settings.outputDirectory}
-          options={{
-            title: 'Select Output Folder',
-            properties: ['openDirectory'],
-          }}
-          onFileSelected={settings.setOutputDirectory}
-        />
+        <H5 mb={2}>Output</H5>
+        <Flex alignItems="center">
+          <FileSelector
+            buttonText="Save videos to..."
+            file={settings.outputDirectory}
+            options={{
+              title: 'Select Output Folder',
+              properties: ['openDirectory'],
+            }}
+            onFileSelected={settings.setOutputDirectory}
+          />
+          <Tooltip content="Reset to default directory">
+              <Button minimal icon="reset" onClick={(): Function => settings.setOutputDirectory(DEFAULT_OUTPUT_DIRECTORY)} />
+          </Tooltip>
+        </Flex>
+
       </Card>
       <Card mb={3}>
         <Flex alignItems="center" justifyContent="space-between">
