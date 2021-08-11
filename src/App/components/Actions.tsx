@@ -27,6 +27,8 @@ const ActionButton = styled(Button).attrs({
 })`
   position: relative;
   width: 440px;
+  max-width: 100%;
+  min-width: 245px;
   .bp3-button-text {
     flex: 1;
   }
