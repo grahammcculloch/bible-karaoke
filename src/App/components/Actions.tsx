@@ -67,12 +67,6 @@ const ProgressText = (prop: { progress: Progress }): JSX.Element => {
     <br />
     {prop.progress.remainingTime ? `${prop.progress.remainingTime}` : ''}
   </Text>;
-  // NOTE: TextWrapper's children should be JSX.Element (not JSX.Element[])
-  // return progressText.map((line: string, index: number): JSX.Element => (
-  //   <TextProgress key={index} my={1}>
-  //     {line}
-  //   </TextProgress>
-  // ));
 };
 
 const Action = (prop: { icon: IconName | MaybeElement; intent: Intent; disabled: boolean;
