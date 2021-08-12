@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import _ from 'lodash';
 import styled from 'styled-components';
 import { Flex } from 'reflexbox';
-import { Icon, Tooltip, Classes } from '@blueprintjs/core';
+import { Icon, Tooltip, Classes, Position} from '@blueprintjs/core';
 import { useObserver } from 'mobx-react';
 import { repository } from '../../../package.json';
 import { H5, Colors, Text, Card, Button, Checkbox } from '../blueprint';
@@ -95,6 +95,7 @@ export default function Settings(): JSX.Element {
   const { settings } = useStores();
   const { analytics } = useAnalytics();
   const repoUrl = repository.url.replace(/\.git$/, '');
+  const resetOutputDir = (): Function => settings.setOutputDirectory(DEFAULT_OUTPUT_DIRECTORY);
   React.useEffect(() => {
     analytics.trackScreenview('Settings');
   }, []);
@@ -131,8 +132,8 @@ export default function Settings(): JSX.Element {
             }}
             onFileSelected={settings.setOutputDirectory}
           />
-          <Tooltip content="Reset to default directory">
-              <Button minimal icon="reset" onClick={(): Function => settings.setOutputDirectory(DEFAULT_OUTPUT_DIRECTORY)} />
+          <Tooltip content="Reset to default directory" position={Position.BOTTOM}>
+              <Button minimal icon="reset" onClick={resetOutputDir} />
           </Tooltip>
         </Flex>
       </Card>
