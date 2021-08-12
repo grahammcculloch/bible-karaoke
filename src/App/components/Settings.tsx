@@ -135,7 +135,6 @@ export default function Settings(): JSX.Element {
               <Button minimal icon="reset" onClick={(): Function => settings.setOutputDirectory(DEFAULT_OUTPUT_DIRECTORY)} />
           </Tooltip>
         </Flex>
-
       </Card>
       <Card mb={3}>
         <Flex alignItems="center" justifyContent="space-between">
