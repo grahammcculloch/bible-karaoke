@@ -31,7 +31,7 @@ export default function App(): JSX.Element {
   }, []);
 
   return useObserver(() => (
-    <AppWrapper backgroundColor={Colors.background3} height="100%" className={Classes.DARK} flexDirection="column">
+    <AppWrapper minWidth="1024px" backgroundColor={Colors.background3} height="100%" className={Classes.DARK} flexDirection="column">
       <AppHeader />
       <Flex flex={1} flexDirection="column" overflowY="auto">
         <Flex flex={1}>

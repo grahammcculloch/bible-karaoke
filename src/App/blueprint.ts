@@ -40,19 +40,19 @@ export const ButtonGroup: StyledComponent<typeof BP.ButtonGroup, any, {} & SLPPr
 export const Icon: StyledComponent<typeof BP.Icon, any, {} & SLPProps> = styled(BP.Icon)`
   ${space} ${layout} ${position}
 `;
-export const Card: StyledComponent<typeof BP.Card, any, {} & SLFPProps> = styled(BP.Card)`
+export const Card: StyledComponent<typeof BP.Card, any, {} & SLFProps> = styled(BP.Card)`
   ${space} ${layout} ${flexbox}
 `;
-export const Checkbox: StyledComponent<typeof BP.Checkbox, any, {} & SLFPProps> = styled(BP.Checkbox)`
+export const Checkbox: StyledComponent<typeof BP.Checkbox, any, {} & SLFProps> = styled(BP.Checkbox)`
   ${space} ${layout} ${flexbox}
 `;
-export const Radio: StyledComponent<typeof BP.Radio, any, {} & SLFPProps> = styled(BP.Radio)`
+export const Radio: StyledComponent<typeof BP.Radio, any, {} & SLFProps> = styled(BP.Radio)`
   ${space} ${layout} ${flexbox}
 `;
-export const HTMLSelect: StyledComponent<typeof BP.HTMLSelect, any, {} & SLFPProps> = styled(BP.HTMLSelect)`
+export const HTMLSelect: StyledComponent<typeof BP.HTMLSelect, any, {} & SLFProps> = styled(BP.HTMLSelect)`
   ${space} ${layout} ${flexbox}
 `;
-export const Tag: StyledComponent<typeof BP.Tag, any, {} & SLFPProps> = styled(BP.Tag)<SLFPProps>`
+export const Tag: StyledComponent<typeof BP.Tag, any, {} & SLFPProps> = styled(BP.Tag)`
   ${space} ${layout} ${flexbox} ${position}
 `;
 
