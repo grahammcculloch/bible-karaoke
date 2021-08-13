@@ -95,7 +95,7 @@ export default function Settings(): JSX.Element {
   const { settings } = useStores();
   const { analytics } = useAnalytics();
   const repoUrl = repository.url.replace(/\.git$/, '');
-  const resetOutputDir = (): Function => settings.setOutputDirectory(DEFAULT_OUTPUT_DIRECTORY);
+  const resetOutputDir = (): void => settings.setOutputDirectory(DEFAULT_OUTPUT_DIRECTORY);
   React.useEffect(() => {
     analytics.trackScreenview('Settings');
   }, []);
