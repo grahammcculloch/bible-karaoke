@@ -75,7 +75,7 @@
       let animations = [];
       let fps = 15;
 
-      window.onLoad = function () {
+      window.onload = function () {
         fps = <%= fps %>;
         const timings = <%= timings %>;
         const backgroundDataUri = '<%= backgroundDataUri %>';
@@ -91,7 +91,7 @@
         if (backgroundType == "color") {
           showSpeechBubble = false;
           document.getElementById("bgVideo").style.display = "none";
-        } else if (bgType == "image") {
+        } else if (backgroundType == "image") {
           let imageParent = document.getElementById("imgParent");
           imageParent.style.backgroundImage = "url(" + backgroundImage + ")";
           document.getElementById("bgVideo").style.display = "none";
