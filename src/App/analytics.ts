@@ -26,21 +26,16 @@ export default class Analytics implements AnalyticsInterface {
         updateProxy(enableAnalytics);
       }
     );
-
-    this.resetClientId = this.resetClientId.bind(this);
-    this.trackScreenview = this.trackScreenview.bind(this);
-    this.trackEvent = this.trackEvent.bind(this);
-    this.trackError = this.trackError.bind(this);
   }
   isEnabled: boolean;
   ga: GoogleAnalytics | undefined = undefined;
 
-  resetClientId(): void {
+  resetClientId = (): void => {
     if (this.isEnabled) resetClientId();
     else console.log('Resetting Google Analytics Client ID');
-  }
+  };
 
-  async trackScreenview(screenName: string): Promise<void> {
+  trackScreenview = async (screenName: string): Promise<void> => {
     const params = { cd: screenName };
 
     if (this.isEnabled && this.ga) {
@@ -48,23 +43,23 @@ export default class Analytics implements AnalyticsInterface {
     } else {
       console.log('Analytics Screenview', params);
     }
-  }
+  };
 
-  async trackEvent(category: string, action: string, label = '', value = 0): Promise<void> {
+  trackEvent = async (category: string, action: string, label = '', value = 0): Promise<void> => {
     const params = { ec: category, ea: action, el: label, ev: value };
     if (this.isEnabled && this.ga) {
       await this.ga.send('event', params);
     } else {
       console.log('Analytics Event', params);
     }
-  }
+  };
 
-  async trackError(error: object | string, fatal: number): Promise<void> {
+  trackError = async (error: object | string, fatal: number): Promise<void> => {
     const params = { exd: error, exf: fatal == null ? 1 : fatal };
     if (this.isEnabled && this.ga) {
       await this.ga.send('exception', params);
     } else {
       console.log('Analytics Error', params);
     }
-  }
+  };
 }
