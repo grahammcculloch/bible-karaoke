@@ -13,10 +13,10 @@ test('getHtml() loads html from template', async (t) => {
     /color: #555;/,
     /font-style: "italic";/,
     /font-weight: "normal";/,
-    /const highlightColor = 'yellow';/,
+    /const highlightColor = 'rgba\(255, 255, 0, 1\)';/,
     /background: #333;/,
     /const backgroundType = 'color';/,
-    /const speechBubbleColor = '#FFF'/,
+    /const speechBubbleColor = 'rgba\(255, 255, 255, 1\)'/,
     /const speechBubbleOpacity = 1;/,
   ];
   t.plan(regexPatterns.length);
@@ -41,7 +41,7 @@ function mockStyle(): AnimationSettings {
       italic: true,
       bold: false,
       highlightColor: 'yellow',
-      highlightRGB: '',
+      highlightRGB: 'rgba(255, 255, 0, 1)',
     },
     background: {
       type: 'color',
@@ -50,7 +50,7 @@ function mockStyle(): AnimationSettings {
     },
     speechBubble: {
       color: '#FFF',
-      rgba: '',
+      rgba: 'rgba(255, 255, 255, 1)',
       opacity: 1,
     },
     output: {
