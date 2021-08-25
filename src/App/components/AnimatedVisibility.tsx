@@ -7,9 +7,11 @@ import { Box } from 'reflexbox';
 const Wrapper = styled(Box)`
   opacity: 0;
   transition: opacity 0ms;
+  visibility: hidden;
   &.visible {
     transition: opacity 500ms ease-in-out;
     opacity: 1;
+    visibility: visible;
   }
 `;
 

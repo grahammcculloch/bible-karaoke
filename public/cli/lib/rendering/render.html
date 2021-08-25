@@ -79,21 +79,17 @@
         fps = <%= fps %>;
         const timings = <%= timings %>;
         const backgroundDataUri = '<%= backgroundDataUri %>';
-        const backgroundVideoUrl = '<%= animationSettings.background.file %>';
-        const highlightColor = '<%= animationSettings.text.highlightColor %>';
-        const speechBubbleColor = '<%= animationSettings.speechBubble.color %>';
+        const highlightColor = '<%= animationSettings.text.highlightRGB %>';
+        const speechBubbleColor = '<%= animationSettings.speechBubble.rgba %>';
         const speechBubbleOpacity = <%= animationSettings.speechBubble.opacity %>;
         const backgroundType = '<%= animationSettings.background.type %>';
-        const bgFilePath = '<%= animationSettings.background.file %>';
         const phraseLocation = '<%= animationSettings.textLocation %>';
 
-        let showSpeechBubble = true;
         if (backgroundType == "color") {
-          showSpeechBubble = false;
           document.getElementById("bgVideo").style.display = "none";
         } else if (backgroundType == "image") {
           let imageParent = document.getElementById("imgParent");
-          imageParent.style.backgroundImage = "url(" + backgroundImage + ")";
+          imageParent.style.backgroundImage = "url(" + backgroundDataUri + ")";
           document.getElementById("bgVideo").style.display = "none";
         }
 
@@ -236,8 +232,8 @@
           function movePhrase(phrase) {
             const elem = document.querySelector("#subtitles2");
             const line = document.querySelector("#" + phrase.id);
-            const nextPos = line.clientHeight;
             const curPos = linePos;
+            let nextPos = line.clientHeight;
             if (phraseLocation == "subtitle") {
               const nextLine = document.querySelector("#" + phrase.next);
               nextPos = nextLine ? nextLine.clientHeight : 0;
@@ -263,54 +259,53 @@
             phraseAnimate.pause();
             // push them all into the main animations array
             animations.push(phraseAnimate);
-            if (showSpeechBubble) {
-              const phraseBackgroundOn = line.animate(
-                [
-                  {
-                    background: speechBubbleColor.replace(/,[^,]*$/, ",0)"),
-                  },
-                  {
-                    background: speechBubbleColor.replace(
-                      /,[^,]*$/,
-                      "," + speechBubbleOpacity + ")"
-                    ),
-                  },
-                ],
+            const phraseBackgroundOn = line.animate(
+              [
                 {
-                  duration: 500,
-                  delay: phrase.start,
-                  iterations: 1,
-                  fill: "forwards",
-                }
-              );
-              // pause for playback later
-              phraseBackgroundOn.pause();
-              // push them all into the main animations array
-              animations.push(phraseBackgroundOn);
-              const phraseBackgroundOff = line.animate(
-                [
-                  {
-                    background: speechBubbleColor.replace(
-                      /,[^,]*$/,
-                      "," + speechBubbleOpacity + ")"
-                    ),
-                  },
-                  {
-                    background: speechBubbleColor.replace(/,[^,]*$/, ",0)"),
-                  },
-                ],
+                  background: speechBubbleColor.replace(/,[^,]*$/, ",0)"),
+                },
                 {
-                  duration: 500,
-                  delay: phrase.end,
-                  iterations: 1,
-                  fill: "forwards",
-                }
-              );
-              // pause for playback later
-              phraseBackgroundOff.pause();
-              // push them all into the main animations array
-              animations.push(phraseBackgroundOff);
-            }
+                  background: speechBubbleColor.replace(
+                    /,[^,]*$/,
+                    "," + speechBubbleOpacity + ")"
+                  ),
+                },
+              ],
+              {
+                duration: 500,
+                delay: phrase.start,
+                iterations: 1,
+                fill: "forwards",
+              }
+            );
+            // pause for playback later
+            phraseBackgroundOn.pause();
+            // push them all into the main animations array
+            animations.push(phraseBackgroundOn);
+            const phraseBackgroundOff = line.animate(
+              [
+                {
+                  background: speechBubbleColor.replace(
+                    /,[^,]*$/,
+                    "," + speechBubbleOpacity + ")"
+                  ),
+                },
+                {
+                  background: speechBubbleColor.replace(/,[^,]*$/, ",0)"),
+                },
+              ],
+              {
+                duration: 500,
+                delay: phrase.end,
+                iterations: 1,
+                fill: "forwards",
+              }
+            );
+            // pause for playback later
+            phraseBackgroundOff.pause();
+            // push them all into the main animations array
+            animations.push(phraseBackgroundOff);
+
             if (phraseLocation == "subtitle") {
               const phraseFadeIn = line.animate(
                 [

@@ -475,8 +475,8 @@ class AppState {
       combined,
       sourceDirectory,
       animationSettings: {
-        textLocation: toJS(this.textLocation),
-        background: _.pick(toJS(this.background), 'file', 'color', 'type'),
+        textLocation: toJS(this.textLocation.location),
+        background: _.pick(this.background, 'file', 'color', 'type'),
         text: toJS(this.text),
         speechBubble: toJS(this.speechBubble),
         output: {
