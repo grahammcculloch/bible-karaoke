@@ -23,22 +23,36 @@ export async function convert(
   let outputFilePath = path.join(animationSettings.output.directory, animationSettings.output.filename);
   const videoPathsToCombine: string[] = [];
   let percent = 0;
+  let chapterIndex = 0;
+  const totalChapters = (function(): number {
+    let total = 0;
+    for (const book of project.books) {
+      total += Object.keys(book.chapters).length;
+    }
+    return total
+  })();
+  const progressSegment = 100 / totalChapters;
+
   const onRenderedProgress = ({ currentFrame, totalFrames }: RecordFrameEventData): void => {
-    percent = (100 * currentFrame) / totalFrames;
+    const progressStart = progressSegment * chapterIndex;
+    const currentPercent = (100 * currentFrame) / totalFrames;
+    percent = progressStart + (currentPercent / 100) * progressSegment;
+    const remainingTime: string = calculateRemainTime(percent, startDate);
     percent = Math.floor(percent > 100 ? 100 : percent);
-    const remainingTime: string = calculateRemainTime({ currentFrame, totalFrames });
     onProgress({ status: 'Rendering video frames...', percent, remainingTime });
   };
   const notify = new EventEmitter();
   notify.addListener('rendered', onRenderedProgress);
   tmp.setGracefulCleanup();
   const { path: combineDirectory, cleanup: cleanupCombineDirectory } = await tmp.dir({ unsafeCleanup: true });
+  const startDate = new Date();
   for (const book of project.books) {
     for (const chapter of book.chapters) {
       const { path: imagesPath, cleanup: cleanupImagesPath } = await tmp.dir({ unsafeCleanup: true });
 
       const timings: Timings = chapterFormatToTimings(chapter);
       await render(animationSettings, imagesPath, timings, notify);
+      chapterIndex += 1;
 
       let outputName = getOutputFilePath(
         isCombined,
@@ -101,54 +115,36 @@ export function checkOverwrite(outputFilePath: string, overwriteOutputFiles: boo
   return filePath;
 }
 
-let lastCurrentFrame = 0;
-let lastUpdateFrameDate: Date | undefined;
-function calculateRemainTime({ currentFrame, totalFrames }: RecordFrameEventData): string {
+function calculateRemainTime(percent: number, startDate: Date): string {
   let result = '';
   const currentDate: Date = new Date();
 
-  // Skip calculating if it is the first run
-  if (lastUpdateFrameDate != null) {
-    // ((currentDate - lastUpdateFrameDate) / (currFrame - lastCurrentFrame)) * (totalFrame - currFrame)
-    const spendTime = currentDate.valueOf() - lastUpdateFrameDate.valueOf(); // milliseconds
-    const progressFrame = currentFrame - lastCurrentFrame;
-    const spendTimePerFrame = spendTime / progressFrame;
-    const remainingFrames = totalFrames - currentFrame;
+  const totalTime = currentDate.valueOf() - startDate.valueOf();  // milliseconds
 
-    const estimateTime = remainingFrames * spendTimePerFrame; // milliseconds
+  const estimateTime = (totalTime / percent) * (100 - percent);  // milliseconds
 
-    // Convert milliseconds to days, hours, minutes, seconds
-    const days: number = parseFloat((estimateTime / 86400000).toFixed(0));
-    const hours: number = parseFloat((estimateTime / 3600000).toFixed(0));
-    const minutes: number = parseFloat((estimateTime / 60000).toFixed(0));
-    const seconds: number = parseFloat((estimateTime / 1000).toFixed(0));
+  // Convert milliseconds to days, hours, minutes, seconds
+  const days: number = parseFloat((estimateTime / 86400000).toFixed(0));
+  const hours: number = parseFloat((estimateTime / 3600000).toFixed(0));
+  const minutes: number = parseFloat((estimateTime / 60000).toFixed(0));
+  const seconds: number = parseFloat((estimateTime / 1000).toFixed(0));
 
-    if (seconds < 1) {
-      result = '';
-    } else if (seconds < 60) {
-      result = `${seconds} second${seconds > 1 ? 's' : ''}`;
-    } else if (minutes == 1) {
-      result = `1 minute ${seconds - 60} seconds`;
-    } else if (minutes < 60) {
-      result = `${minutes} minutes`;
-    } else if (hours < 24) {
-      result = `${hours} hour${hours > 1 ? 's' : ''}`;
-    } else {
-      result = `${days} day${days > 1 ? 's' : ''}`;
-    }
-
-    if (result) {
-      result = `Approximately ${result} remaining`;
-    }
+  if (seconds < 1) {
+    result = '';
+  } else if (seconds < 60) {
+    result = `${seconds} second${seconds > 1 ? 's' : ''}`;
+  } else if (minutes == 1) {
+    result = `1 minute ${seconds - 60} seconds`;
+  } else if (minutes < 60) {
+    result = `${minutes} minutes`;
+  } else if (hours < 24) {
+    result = `${hours} hour${hours > 1 ? 's' : ''}`;
+  } else {
+    result = `${days} day${days > 1 ? 's' : ''}`;
   }
 
-  lastUpdateFrameDate = currentDate;
-  lastCurrentFrame = currentFrame;
-
-  // clear when it done
-  if (currentFrame >= totalFrames) {
-    lastUpdateFrameDate = undefined;
-    lastCurrentFrame = 0;
+  if (result) {
+    result = `Approximately ${result} remaining`;
   }
 
   return result;
