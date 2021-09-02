@@ -24,19 +24,13 @@ export async function convert(
   const videoPathsToCombine: string[] = [];
   let percent = 0;
   let chapterIndex = 0;
-  const totalChapters = (function(): number {
-    let total = 0;
-    for (const book of project.books) {
-      total += Object.keys(book.chapters).length;
-    }
-    return total
-  })();
+  const totalChapters = getTotalChapters(project)
   const progressSegment = 100 / totalChapters;
 
   const onRenderedProgress = ({ currentFrame, totalFrames }: RecordFrameEventData): void => {
     const progressStart = progressSegment * chapterIndex;
-    const currentPercent = (100 * currentFrame) / totalFrames;
-    percent = progressStart + (currentPercent / 100) * progressSegment;
+    const segmentRatio = currentFrame / totalFrames;
+    percent = (segmentRatio * progressSegment) + progressStart;
     const remainingTime: string = calculateRemainTime(percent, startDate);
     percent = Math.floor(percent > 100 ? 100 : percent);
     onProgress({ status: 'Rendering video frames...', percent, remainingTime });
@@ -167,4 +161,12 @@ function getOutputFilePath(
     // when not combining the output, then generate multiple files.
     return path.join(outputDirectory, outputFilename);
   }
+}
+
+function getTotalChapters(project: BKProject): number {
+  let total = 0;
+  for (const book of project.books) {
+    total += book.chapters.length;
+  }
+  return total
 }
