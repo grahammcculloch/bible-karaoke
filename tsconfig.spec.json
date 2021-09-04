@@ -14,5 +14,5 @@
     "sourceMap": true
   },
   "include": ["public/*.ts", "public/**/*.ts", "typings"],
-  "exclude": ["node_modules", "**/*.integration.ts"]
+  "exclude": ["node_modules"]
 }

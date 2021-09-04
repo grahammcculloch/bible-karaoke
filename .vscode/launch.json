@@ -7,6 +7,22 @@
       "request": "attach",
       "skipFiles": ["<node_internals>/**"],
       "type": "node"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug AVA test file",
+      "preLaunchTask": "npm: preintegration",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ava",
+      "runtimeArgs": [
+        "--serial",
+        "${fileDirname}/${fileBasenameNoExtension}.*",
+        "${file}"
+      ],
+      "outputCapture": "std",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
     }
   ]
 }

@@ -42,22 +42,30 @@ npm run integration
 Unit tests are placed in a `<unit>.spec.ts` file alongside the `<unit>.ts` file under test. Integration tests are placed in a `*.integration.ts` file. Our project looks for compiled test files ending in `\*.spec.js` or `\*.integration.js` depending on what type of test is being run.
 If a test is more complex with sample data and/or scenarios, a test folder can optionally be created with additional supporting files to keep things tidy.
 
+### Debugging AVA Test Files in VS Code
+
+1. Open the test file in VS Code.
+2. On the side bar select the **Run and Debug** view.
+3. Select the configuration named _Debug Ava test file_ and click **Start Debugging** (F5).
+
+Learn more about [VS Code debugging](https://code.visualstudio.com/docs/editor/debugging).
+
 ### Debugging/Running the application
 
 ```sh
 npm run electron-dev
 ```
 
-### Debugging the Node Backend in VSCode
+### Debugging the Node Backend in VS Code
 
-We provide a debugging configuration for VSCode (defined in `.vscode/launch.json`)
+We provide a debugging configuration for VS Code (defined in `.vscode/launch.json`)
 
-1. set a breakpoint in VSCode somewhere in the Node backend JS code (not front-end React code)
+1. set a breakpoint in VS Code somewhere in the Node backend JS code (not front-end React code)
 2. `npm run electron-dev` (the Node debugger listens on port 9229)
-3. In VSCode, run the Debug Configuration named _Node Backend_. The VSCode status bar will turn orange when it is successfully attached to the debugger
-4. Use the Bible Karaoke application - the application will pause when a breakpoint is hit in VSCode
+3. In VS Code, run the Debug Configuration named _Node Backend_. The VS Code status bar will turn orange when it is successfully attached to the debugger
+4. Use the Bible Karaoke application - the application will pause when a breakpoint is hit in VS Code
 
-### Debugging the React Frontend in VSCode
+### Debugging the React Frontend in VS Code
 
 TODO
 

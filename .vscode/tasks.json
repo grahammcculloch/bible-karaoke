@@ -5,7 +5,9 @@
       "type": "typescript",
       "tsconfig": "tsconfig.json",
       "option": "watch",
-      "problemMatcher": ["$tsc-watch"],
+      "problemMatcher": [
+        "$tsc-watch"
+      ],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -19,6 +21,13 @@
       "problemMatcher": [],
       "label": "npm: test",
       "detail": "tsc && ava"
+    },
+    {
+      "type": "shell",
+      "command": "npm run preintegration",
+      "problemMatcher": [],
+      "label": "npm: preintegration",
+      "detail": "tsc --project tsconfig.spec.json && npm run ff"
     }
   ]
 }
