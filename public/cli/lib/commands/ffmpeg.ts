@@ -1,7 +1,6 @@
 import { spawnSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import shell from 'shelljs';
 import tmp from 'tmp-promise';
 import winston from 'winston';
 import { FfmpegSettings } from '../../../models/ffmpegSettings.model';
@@ -70,32 +69,33 @@ export async function combineAudioIfNecessary(audioFiles: string[]): Promise<str
  */
 export async function mergeWavFiles(wavFiles: string[]): Promise<string> {
   const { path: directory } = await tmp.dir();
-  return new Promise<string>((resolve, reject) => {
-    // NOTE: cannot use glob format with .wav files
-    // we will combine them into a single file and use that in our encode.
-    const combinedWavFilePath = path.join(directory, 'bbkAudio.wav');
-    const fileDir = path.join(directory, 'listAudioFiles.txt');
+  // NOTE: cannot use glob format with .wav files. We will combine them into a single file and use that in our encode.
+  const combinedWavFilePath = path.join(directory, 'bbkAudio.wav');
+  const fileDir = path.join(directory, 'listAudioFiles.txt');
 
-    // write a list of wav file to prepare to combine
-    let fileText = '';
-    wavFiles.forEach((fileName) => {
-      if (!path.isAbsolute(fileName)) {
-        fileName = path.join(process.cwd(), fileName);
-      }
+  // write a list of wav file to prepare to combine
+  let fileText = '';
+  wavFiles.forEach((fileName) => {
+    if (!path.isAbsolute(fileName)) {
+      fileName = path.join(process.cwd(), fileName);
+    }
 
-      fileText += `file '${fileName}'\n`;
-    });
-    fs.writeFileSync(fileDir, fileText);
-
-    // combine wav files
-    shell.exec(
-      `"${paths.ffmpeg}" -f concat -safe 0 -i "${fileDir}" -c copy "${combinedWavFilePath}"`,
-      { silent: true },
-      (err) => {
-        err ? reject(err) : resolve(combinedWavFilePath);
-      }
-    );
+    fileText += `file '${fileName}'\n`;
   });
+  fs.writeFileSync(fileDir, fileText);
+
+  const args = ['-f', 'concat', '-safe', '0', '-i', fileDir, '-c', 'copy', combinedWavFilePath];
+  // Do not echo the console output (ignore stdout).
+  const ffmpegProcess = spawnSync(paths.ffmpeg, args, { stdio: 'ignore' });
+
+  //Check for errors running ffmpeg
+  const stderr = ffmpegProcess.stderr?.toString() ?? '';
+  if (stderr !== '') {
+    winston.error(stderr);
+    throw new Error(stderr);
+  }
+
+  return combinedWavFilePath;
 }
 
 export function getGlobFormat(mp3Files: string[]): string {
