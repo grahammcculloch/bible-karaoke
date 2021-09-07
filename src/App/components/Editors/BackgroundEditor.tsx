@@ -23,7 +23,7 @@ export default function BackgroundEditor(props: any): JSX.Element {
       <EditPopover title="Edit background" {...props}>
         <EditRow>
           <EditRadio
-            label="Image"
+            label="Image or Video"
             checked={!background.color}
             onChange={(): void => {
               appState.background.setFile('');

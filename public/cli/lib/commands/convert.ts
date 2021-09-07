@@ -66,7 +66,14 @@ export async function convert(
         audioFiles = chapter.audio.files.map((f) => f.filename);
       }
       onProgress({ status: 'Combining video frames...', percent });
-      await combineFrames({ audioFiles, imagesPath, framerateIn: 15, outputName });
+      await combineFrames({
+        audioFiles,
+        imagesPath,
+        framerateIn: 15,
+        outputName,
+        backgroundType: animationSettings.background.type,
+        backgroundVideoUrl: animationSettings.background.file,
+      });
       if (isCombined) {
         videoPathsToCombine.push(outputName);
       }

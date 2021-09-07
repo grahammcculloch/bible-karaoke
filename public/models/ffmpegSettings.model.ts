@@ -4,4 +4,6 @@ export interface FfmpegSettings {
   readonly framerateIn: number;
   readonly framerateOut?: number;
   readonly outputName: string;
+  readonly backgroundType: string | undefined;
+  readonly backgroundVideoUrl: string | undefined;
 }

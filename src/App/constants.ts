@@ -71,7 +71,7 @@ export const fileFilters = {
   background: [
     {
       name: 'Background files',
-      extensions: ['jpg', 'png' /*, 'mpeg4', 'mp4', 'webm' */],
+      extensions: ['jpg', 'png', 'mpeg4', 'mp4', 'webm'],
     },
   ],
   output: [

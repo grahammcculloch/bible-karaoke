@@ -28,6 +28,8 @@ test('ffmpeg combineFrames creates video', async (t) => {
     framerateIn: 15,
     framerateOut: 15,
     outputName: path.join(directory, 'test.mp4'),
+    backgroundType: 'color',
+    backgroundVideoUrl: '',
   };
 
   await combineFrames(ffmpegSettings);

@@ -39,7 +39,7 @@ export async function record(
     const paddedIndex = `${i}`.padStart(6, '0');
     const filename = `frame_${paddedIndex}.png`;
     await page.screenshot({
-      omitBackground: false,
+      omitBackground: true,
       path: path.join(frameDirectory, filename),
     });
     if (notifyEvent != null) {
