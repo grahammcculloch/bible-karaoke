@@ -57,7 +57,7 @@ export async function combineFrames(settings: FfmpegSettings): Promise<void> {
   if (settings.backgroundType === "image" || settings.backgroundType === "video") {
     args.push(
       '-filter_complex',
-      '[0:v] scale=iw*max(720/iw\\,480/ih):ih*max(720/iw\\,480/ih), crop=720:480 [crop]; [crop][1:v] overlay [layered]',
+      '[0:v] scale=round(iw*max(720/iw\\,480/ih)):round(ih*max(720/iw\\,480/ih)), crop=720:480 [crop]; [crop][1:v] overlay [layered]',
       '-map', '[layered]'
     )
     if (executeAudioPath != null) {
