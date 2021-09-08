@@ -32,6 +32,7 @@ const Background = styled(Editable)`
 const PreviewVideo = styled.video.attrs({
   loop: true,
   autoPlay: true,
+  muted: true,
   width: PREVIEW_WIDTH,
   height: PREVIEW_HEIGHT,
 })`
@@ -113,6 +114,27 @@ const PreviewVerse = (prop: { verse: string; highlightVerse: boolean; highlightC
   })}</>;
 };
 
+interface BackgroundSettings {
+  file: string;
+  color: string;
+  type: string;
+}
+
+const getViewBlob = (background: BackgroundSettings): string => {
+  if (!background.file) {
+    return "";
+  }
+  const URL = window.URL || window.webkitURL;
+  let video = null;
+  try {
+    video = fs.readFileSync(background.file);
+    const fileURL = URL.createObjectURL(new Blob([video], { "type": "video/mp4" }));
+    return fileURL;
+  } catch (err) {
+    return "";
+  }
+};
+
 const Preview = (): JSX.Element => {
   const { appState } = useStores();
   return useObserver(() => {
@@ -145,7 +167,7 @@ const Preview = (): JSX.Element => {
       }
     };
 
-    const file: string = 'file:' + background.file;
+    const file: string = getViewBlob(background);
     const versesClassName: string = classnames({
       subtitle: textLocation.location === TEXT_LOCATION.subtitle,
     });
