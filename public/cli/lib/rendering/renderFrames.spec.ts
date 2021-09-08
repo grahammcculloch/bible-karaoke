@@ -15,7 +15,6 @@ test('getHtml() loads html from template', async (t) => {
     /font-weight: "normal";/,
     /const highlightColor = 'rgba\(255, 255, 0, 1\)';/,
     /background: #333;/,
-    /const backgroundType = 'color';/,
     /const speechBubbleColor = 'rgba\(255, 255, 255, 1\)'/,
     /const speechBubbleOpacity = 1;/,
   ];
