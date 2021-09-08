@@ -5,5 +5,5 @@ export interface FfmpegSettings {
   readonly framerateOut?: number;
   readonly outputName: string;
   readonly backgroundType: string | undefined;
-  readonly backgroundVideoUrl: string | undefined;
+  readonly backgroundUrl: string | undefined;
 }

@@ -72,7 +72,7 @@ export async function convert(
         framerateIn: 15,
         outputName,
         backgroundType: animationSettings.background.type,
-        backgroundVideoUrl: animationSettings.background.file,
+        backgroundUrl: animationSettings.background.file,
       });
       if (isCombined) {
         videoPathsToCombine.push(outputName);

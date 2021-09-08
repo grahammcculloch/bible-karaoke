@@ -9,8 +9,10 @@ import { paths } from '../path-constants';
 export async function combineFrames(settings: FfmpegSettings): Promise<void> {
   const executeAudioPath = await combineAudioIfNecessary(settings.audioFiles);
   let audioLength = 1;
-  if (settings.backgroundType === "video") {
+  const args = ['-v', 'error'];
 
+  // calculate the audio duration
+  if (settings.backgroundType === "video" || settings.backgroundType === "image") {
     const ffprobeArgs = [];
 
     if (executeAudioPath != null) {
@@ -36,66 +38,48 @@ export async function combineFrames(settings: FfmpegSettings): Promise<void> {
       winston.error('No audio duration found');
       throw new Error('No audio duration found');
     }
+  }
 
-    const ffmpegArgs = ['-v', 'error'];
+  if (settings.backgroundUrl) {
+    if (settings.backgroundType === "image") {
+      args.push('-framerate', settings.framerateIn.toString());
+    }
+    args.push('-stream_loop', '-1', '-t', audioLength.toString(), '-i', settings.backgroundUrl);
+  }
 
-    if (settings.backgroundVideoUrl != null) {
-      ffmpegArgs.push('-stream_loop', '-1','-t', audioLength.toString(), '-i', settings.backgroundVideoUrl);
-    }
-    ffmpegArgs.push('-framerate', settings.framerateIn.toString(), '-i', path.join(settings.imagesPath, 'frame_%06d.png'));
-    if (executeAudioPath != null) {
-      ffmpegArgs.push('-i', executeAudioPath);
-    }
-    ffmpegArgs.push(
+  args.push('-framerate', settings.framerateIn.toString(), '-i', path.join(settings.imagesPath, 'frame_%06d.png'));
+
+  if (executeAudioPath != null) {
+    args.push('-i', executeAudioPath);
+  }
+
+  // combine background image/video with bkframes
+  if (settings.backgroundType === "image" || settings.backgroundType === "video") {
+    args.push(
       '-filter_complex',
       '[0:v] scale=iw*max(720/iw\\,480/ih):ih*max(720/iw\\,480/ih), crop=720:480 [crop]; [crop][1:v] overlay [layered]',
       '-map', '[layered]'
-    );
+    )
     if (executeAudioPath != null) {
-      ffmpegArgs.push('-map', '2:a');
+      args.push('-map', '2:a');
     }
-    ffmpegArgs.push('-c:v', 'libx264');
-    ffmpegArgs.push('-shortest');
-    if (settings.framerateOut != null) {
-      ffmpegArgs.push('-r', settings.framerateOut.toString());
-    }
-    ffmpegArgs.push('-pix_fmt', 'yuv420p', settings.outputName);
+    args.push('-c:v', 'libx264');
+    args.push('-shortest');
+  }
 
-    const videoBackground = spawnSync(paths.ffmpeg, ffmpegArgs, { stdio: 'pipe' });
+  if (settings.framerateOut != null) {
+    args.push('-r', settings.framerateOut.toString());
+  }
 
-    //Check for errors running ffmpeg
-    const ffmpegStderr = videoBackground.stderr.toString();
-    if (ffmpegStderr !== '') {
-      winston.error(ffmpegStderr);
-      throw new Error(ffmpegStderr);
-    }
+  args.push('-pix_fmt', 'yuv420p', settings.outputName);
 
-  } else {
-    //Arguments for ffmpeg
-    const args = [
-      '-framerate',
-      settings.framerateIn.toString(),
-      '-loglevel',
-      'error',
-      '-i',
-      path.join(settings.imagesPath, 'frame_%06d.png'),
-    ];
-    if (executeAudioPath != null) {
-      args.push('-i', executeAudioPath);
-    }
-    if (settings.framerateOut != null) {
-      args.push('-r', settings.framerateOut.toString());
-    }
-    args.push('-pix_fmt', 'yuv420p', settings.outputName);
+  const ffmpegProcess = spawnSync(paths.ffmpeg, args, { stdio: 'pipe' });
 
-    const ffmpegProcess = spawnSync(paths.ffmpeg, args, { stdio: 'pipe' });
-
-    //Check for errors running ffmpeg
-    const stderr = ffmpegProcess.stderr.toString();
-    if (stderr !== '') {
-      winston.error(stderr);
-      throw new Error(stderr);
-    }
+  //Check for errors running ffmpeg
+  const stderr = ffmpegProcess.stderr.toString();
+  if (stderr !== '') {
+    winston.error(stderr);
+    throw new Error(stderr);
   }
 }
 

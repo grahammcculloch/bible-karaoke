@@ -73,17 +73,10 @@
       window.onload = function () {
         fps = <%= fps %>;
         const timings = <%= timings %>;
-        const backgroundDataUri = '<%= backgroundDataUri %>';
         const highlightColor = '<%= animationSettings.text.highlightRGB %>';
         const speechBubbleColor = '<%= animationSettings.speechBubble.rgba %>';
         const speechBubbleOpacity = <%= animationSettings.speechBubble.opacity %>;
-        const backgroundType = '<%= animationSettings.background.type %>';
         const phraseLocation = '<%= animationSettings.textLocation %>';
-
-        if (backgroundType === "image") {
-          let imageParent = document.getElementById("imgParent");
-          imageParent.style.backgroundImage = "url(" + backgroundDataUri + ")";
-        }
 
         const subtitles = document.querySelector("#subtitles2");
         let rawSubTitle = "";
