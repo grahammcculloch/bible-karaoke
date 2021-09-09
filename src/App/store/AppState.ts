@@ -23,7 +23,7 @@ const dict = <T = any>(list: T[], classType?: { new (item: any): T }, key = 'nam
   }, {});
 };
 
-const isVideo = _.memoize((ext: string): boolean => ['mpeg4', 'mp4', 'webm'].includes(ext.toLowerCase()));
+const isVideo = _.memoize((ext: string): boolean => ['mp4', 'webm', 'mov', 'avi'].includes(ext.toLowerCase()));
 
 class Background {
   @persist

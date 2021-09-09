@@ -8,43 +8,15 @@ import { paths } from '../path-constants';
 
 export async function combineFrames(settings: FfmpegSettings): Promise<void> {
   const executeAudioPath = await combineAudioIfNecessary(settings.audioFiles);
-  let audioLength = 1;
+
   const args = ['-v', 'error'];
-
-  // calculate the audio duration
-  if (settings.backgroundType === 'video' || settings.backgroundType === 'image') {
-    const ffprobeArgs = [];
-
-    if (executeAudioPath != null) {
-      ffprobeArgs.push('-i', executeAudioPath);
-    }
-    ffprobeArgs.push('-v', 'error', '-select_streams', 'a:0', '-show_format', '-show_streams');
-
-    const ffprobeAudioDuration = spawnSync(paths.ffprobe, ffprobeArgs, { stdio: 'pipe' });
-
-    //Check for errors running ffmpeg
-    const ffprobeStderr = ffprobeAudioDuration.stderr.toString();
-    if (ffprobeStderr !== '') {
-      winston.error(ffprobeStderr);
-      throw new Error(ffprobeStderr);
-    }
-
-    const stdout = ffprobeAudioDuration.stdout.toString();
-    const match = stdout.match(/duration="?(\d*\.\d*)"?/);
-
-    if (match && match[1]) {
-      audioLength = parseFloat(match[1]);
-    } else {
-      winston.error('No audio duration found');
-      throw new Error('No audio duration found');
-    }
-  }
 
   if (settings.backgroundUrl) {
     if (settings.backgroundType === 'image') {
       args.push('-framerate', settings.framerateIn.toString());
     }
-    args.push('-stream_loop', '-1', '-t', audioLength.toString(), '-i', settings.backgroundUrl);
+    const audioDurationInSeconds = (settings.audioDuration / 1000).toString();
+    args.push('-stream_loop', '-1', '-t', audioDurationInSeconds, '-i', settings.backgroundUrl);
   }
 
   args.push('-framerate', settings.framerateIn.toString(), '-i', path.join(settings.imagesPath, 'frame_%06d.png'));

@@ -82,12 +82,19 @@ export async function bkImport(project: ConvertProject): Promise<BKProject> {
 
 // Adapted from https://github.com/caffco/get-audio-duration:
 async function getAudioDurationInMilliseconds(filePath: string): Promise<number> {
-  const { output } = spawnSync(paths.ffprobe, ['-show_format', filePath], { stdio: 'pipe' });
-  const matched = (output ?? '').toString().match(/duration="?(\d*\.\d*)"?/);
+  const ffprobe = spawnSync(paths.ffprobe, ['-v', 'error', '-show_format', filePath], { stdio: 'pipe' });
+
+  const stderr = ffprobe.stderr.toString();
+  if (stderr !== '') {
+    winston.error(stderr);
+    throw new Error(stderr);
+  }
+
+  const matched = (ffprobe.stdout ?? '').toString().match(/duration="?(\d*\.\d*)"?/);
   if (matched && matched[1]) {
     return parseFloat(matched[1]) * 1000;
   } else {
-    const message = `No duration found! (ffprobe : "${output}")`;
+    const message = `No duration found! (ffprobe : "${ffprobe.stdout}")`;
     winston.error(message);
     throw new Error(message);
   }

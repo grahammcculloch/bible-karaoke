@@ -12,6 +12,7 @@ import { TEXT_LOCATION } from '../constants';
 import { BackgroundEditor, FontEditor, SpeechBubbleEditor } from './Editors';
 import TextLocationToggle from './TextLocationToggle';
 import AnimatedVisibility from './AnimatedVisibility';
+import { BackgroundSettings } from '../../../public/models/animationSettings.model';
 
 const PREVIEW_WIDTH = '720px';
 const PREVIEW_HEIGHT = '480px';
@@ -90,7 +91,7 @@ const getImageSrc = _.memoize((file: string): string => {
   }
   try {
     const ext: string = file.split('.').pop() || '';
-    if (['png', 'jpg', 'jpeg', 'gif'].includes(ext)) {
+    if (['png', 'jpg', 'jpeg', 'gif'].includes(ext.toLowerCase())) {
       const img = fs.readFileSync(file).toString('base64');
       return `url(data:image/${ext};base64,${img})`;
     }
@@ -113,12 +114,6 @@ const PreviewVerse = (prop: { verse: string; highlightVerse: boolean; highlightC
     );
   })}</>;
 };
-
-interface BackgroundSettings {
-  file: string;
-  color: string;
-  type: string;
-}
 
 const getViewBlob = (background: BackgroundSettings): string => {
   if (!background.file) {

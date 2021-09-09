@@ -65,9 +65,16 @@ export async function convert(
       } else {
         audioFiles = chapter.audio.files.map((f) => f.filename);
       }
+      let audioDuration = 0;
+      if (chapter.audio.length) {
+        audioDuration = chapter.audio.length;
+      } else if ('files' in chapter.audio) {
+        chapter.audio.files.forEach((f) => (audioDuration += f.length));
+      }
       onProgress({ status: 'Combining video frames...', percent });
       await combineFrames({
         audioFiles,
+        audioDuration,
         imagesPath,
         framerateIn: 15,
         outputName,
