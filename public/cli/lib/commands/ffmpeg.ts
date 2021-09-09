@@ -12,11 +12,11 @@ export async function combineFrames(settings: FfmpegSettings): Promise<void> {
   const args = ['-v', 'error'];
 
   // calculate the audio duration
-  if (settings.backgroundType === "video" || settings.backgroundType === "image") {
+  if (settings.backgroundType === 'video' || settings.backgroundType === 'image') {
     const ffprobeArgs = [];
 
     if (executeAudioPath != null) {
-      ffprobeArgs.push('-i', executeAudioPath)
+      ffprobeArgs.push('-i', executeAudioPath);
     }
     ffprobeArgs.push('-v', 'error', '-select_streams', 'a:0', '-show_format', '-show_streams');
 
@@ -41,7 +41,7 @@ export async function combineFrames(settings: FfmpegSettings): Promise<void> {
   }
 
   if (settings.backgroundUrl) {
-    if (settings.backgroundType === "image") {
+    if (settings.backgroundType === 'image') {
       args.push('-framerate', settings.framerateIn.toString());
     }
     args.push('-stream_loop', '-1', '-t', audioLength.toString(), '-i', settings.backgroundUrl);
@@ -54,12 +54,13 @@ export async function combineFrames(settings: FfmpegSettings): Promise<void> {
   }
 
   // combine background image/video with bkframes
-  if (settings.backgroundType === "image" || settings.backgroundType === "video") {
+  if (settings.backgroundType === 'image' || settings.backgroundType === 'video') {
     args.push(
       '-filter_complex',
       '[0:v] scale=round(iw*max(720/iw\\,480/ih)):round(ih*max(720/iw\\,480/ih)), crop=720:480 [crop]; [crop][1:v] overlay [layered]',
-      '-map', '[layered]'
-    )
+      '-map',
+      '[layered]'
+    );
     if (executeAudioPath != null) {
       args.push('-map', '2:a');
     }

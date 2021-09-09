@@ -1,6 +1,17 @@
 import * as BP from '@blueprintjs/core';
 import styled, { StyledComponent } from 'styled-components';
-import { space, position, flexbox, typography, layout, SpaceProps, PositionProps, FlexboxProps, TypographyProps, LayoutProps } from 'styled-system';
+import {
+  space,
+  position,
+  flexbox,
+  typography,
+  layout,
+  SpaceProps,
+  PositionProps,
+  FlexboxProps,
+  TypographyProps,
+  LayoutProps,
+} from 'styled-system';
 
 type STLProps = SpaceProps & TypographyProps & LayoutProps;
 

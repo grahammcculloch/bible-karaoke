@@ -24,13 +24,13 @@ export async function convert(
   const videoPathsToCombine: string[] = [];
   let percent = 0;
   let chapterIndex = 0;
-  const totalChapters = getTotalChapters(project)
+  const totalChapters = getTotalChapters(project);
   const progressSegment = 100 / totalChapters;
 
   const onRenderedProgress = ({ currentFrame, totalFrames }: RecordFrameEventData): void => {
     const progressStart = progressSegment * chapterIndex;
     const segmentRatio = currentFrame / totalFrames;
-    percent = (segmentRatio * progressSegment) + progressStart;
+    percent = segmentRatio * progressSegment + progressStart;
     const remainingTime: string = calculateRemainTime(percent, startDate);
     percent = Math.floor(percent > 100 ? 100 : percent);
     onProgress({ status: 'Rendering video frames...', percent, remainingTime });
@@ -120,9 +120,9 @@ function calculateRemainTime(percent: number, startDate: Date): string {
   let result = '';
   const currentDate: Date = new Date();
 
-  const totalTime = currentDate.valueOf() - startDate.valueOf();  // milliseconds
+  const totalTime = currentDate.valueOf() - startDate.valueOf(); // milliseconds
 
-  const estimateTime = (totalTime / percent) * (100 - percent);  // milliseconds
+  const estimateTime = (totalTime / percent) * (100 - percent); // milliseconds
 
   // Convert milliseconds to days, hours, minutes, seconds
   const days: number = parseFloat((estimateTime / 86400000).toFixed(0));
@@ -175,5 +175,5 @@ function getTotalChapters(project: BKProject): number {
   for (const book of project.books) {
     total += book.chapters.length;
   }
-  return total
+  return total;
 }

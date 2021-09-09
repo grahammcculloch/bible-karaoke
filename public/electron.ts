@@ -47,7 +47,7 @@ export async function createWindow(): Promise<void> {
 
 export function handleGetFonts(): void {
   ipcMain.on('did-start-getfonts', async (event: IpcMainEvent): Promise<void> => {
-    winston.log('info','Getting system fonts');
+    winston.log('info', 'Getting system fonts');
     try {
       const fonts = await fontList.getFonts();
       event.sender.send(
@@ -64,7 +64,7 @@ export function handleGetFonts(): void {
 export function handleGetSampleVerses(): void {
   ipcMain.on('did-start-getverses', (event: IpcMainEvent, args: Verses): void => {
     const { sourceDirectory } = args;
-    winston.log('info','Getting sample verses', sourceDirectory);
+    winston.log('info', 'Getting sample verses', sourceDirectory);
     const verses = getSampleVerses(sourceDirectory);
     winston.log('info', 'Got sample verses', verses);
     event.sender.send('did-finish-getverses', verses);
@@ -112,7 +112,7 @@ export function handleSubmission(): void {
       const progress: ProgressState = { status: `${status} ${percent}%`, percent, remainingTime };
       event.sender.send('on-progress', progress);
     };
-    winston.log('info','Starting conversion', args);
+    winston.log('info', 'Starting conversion', args);
     let response;
     try {
       // ToDo: move this to the frontend and pass a subset of the selected chapters across the IPC.
@@ -129,7 +129,7 @@ export function handleSubmission(): void {
           ? { outputDirectory: response }
           : { error: { name: 'Error', message: response.message, stack: response.stack } };
     }
-    winston.log('info','Conversion process finished', result);
+    winston.log('info', 'Conversion process finished', result);
     if (result.outputDirectory && fs.existsSync(result.outputDirectory)) {
       shell.openPath(result.outputDirectory);
     }
