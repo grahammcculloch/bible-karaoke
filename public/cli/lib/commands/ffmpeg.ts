@@ -15,8 +15,7 @@ export async function combineFrames(settings: FfmpegSettings): Promise<void> {
     if (settings.backgroundType === 'image') {
       args.push('-framerate', settings.framerateIn.toString());
     }
-    const audioDurationInSeconds = (settings.audioDuration / 1000).toString();
-    args.push('-stream_loop', '-1', '-t', audioDurationInSeconds, '-i', settings.backgroundUrl);
+    args.push('-stream_loop', '-1', '-t', settings.audioDuration.toString(), '-i', settings.backgroundUrl);
   }
 
   args.push('-framerate', settings.framerateIn.toString(), '-i', path.join(settings.imagesPath, 'frame_%06d.png'));

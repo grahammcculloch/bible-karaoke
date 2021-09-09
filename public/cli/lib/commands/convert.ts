@@ -71,6 +71,7 @@ export async function convert(
       } else if ('files' in chapter.audio) {
         chapter.audio.files.forEach((f) => (audioDuration += f.length));
       }
+      audioDuration = audioDuration / 1000;
       onProgress({ status: 'Combining video frames...', percent });
       await combineFrames({
         audioFiles,

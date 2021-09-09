@@ -1,6 +1,6 @@
 export interface FfmpegSettings {
   readonly audioFiles: string[];
-  readonly audioDuration: number;
+  readonly audioDuration: number; // seconds
   readonly imagesPath: string;
   readonly framerateIn: number;
   readonly framerateOut?: number;
