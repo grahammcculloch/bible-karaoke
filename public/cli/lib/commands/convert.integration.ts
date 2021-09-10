@@ -96,3 +96,26 @@ test('should not include files that are similar but unrelated copies (no overwri
     { unsafeCleanup: true }
   );
 });
+
+test('should not use an alphanumeric sort (no overwrite)', async (t) => {
+  tmp.setGracefulCleanup();
+  await tmp.withDir(
+    async ({ path: directory }) => {
+      const outputFilePath = path.join(directory, 'project_book_1.tmp');
+      // create files
+      fs.closeSync(fs.openSync(outputFilePath, 'w'));
+      // neither of the next 2 files should be included
+      fs.closeSync(fs.openSync(path.join(directory, 'project_book_1 (9).tmp'), 'w'));
+      fs.closeSync(fs.openSync(path.join(directory, 'project_book_1 (10).tmp'), 'w'));
+      const overwriteOutputFiles = false;
+      t.notRegex(outputFilePath, / \(11\)/, 'setup');
+
+      const filePath = checkOverwrite(outputFilePath, overwriteOutputFiles);
+
+      t.not(filePath, outputFilePath);
+      // filename should contain ' (11)'
+      t.regex(filePath, / \(11\)/);
+    },
+    { unsafeCleanup: true }
+  );
+});

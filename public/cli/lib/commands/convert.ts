@@ -110,13 +110,16 @@ export function checkOverwrite(outputFilePath: string, overwriteOutputFiles: boo
       // get a count of the ones that have a similar start name
       const nameParts = path.parse(filePath);
       const copyFilenamePattern = new RegExp(`^${nameParts.name} \\((\\d+)\\)${nameParts.ext}$`, 'm');
-      const copyFilenames = (listAllFiles ?? [])
+      //parse copy counts from filenames
+      const copyNumbers = (listAllFiles ?? [])
         .filter((f) => f !== nameParts.base && f.match(copyFilenamePattern))
-        .sort();
-      const highestFilename = copyFilenames.reverse()[0] ?? '';
-      //parse copy count from filename
-      const highestFilenameCopyCount = parseInt((highestFilename.match(copyFilenamePattern) ?? [])[1] ?? 0);
-      const copyCount = highestFilenameCopyCount + 1;
+        .map((f) => parseInt((f.match(copyFilenamePattern) ?? [])[1]));
+
+      let copyCount = 1;
+      if (copyNumbers.length > 0) {
+        copyCount = Math.max(...copyNumbers) + 1;
+      }
+
       // since they want to keep the file then modify the filename - new filename = name (copyCount).ext
       filePath = path.join(nameParts.dir, `${nameParts.name} (${copyCount})${nameParts.ext}`);
     }
