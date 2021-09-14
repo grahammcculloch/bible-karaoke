@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { flatten } from 'lodash';
-import { Project, Book, Chapter, getDirectories } from './util';
+import { Project, Book, Chapter, getDirectories, sortInCanonicalOrder } from './util';
 import ProjectSource from '../models/projectSource.model';
 
 const PROJECT_TYPE = 'hearThis';
@@ -30,7 +30,7 @@ class HearThis implements ProjectSource {
     const project = new Project(PROJECT_TYPE);
     project.name = name;
     project.fullPath = path.join(directory, name);
-    const bookNames = getDirectories(project.fullPath);
+    const bookNames = sortInCanonicalOrder(getDirectories(project.fullPath));
     project.books = bookNames
       .map((bookName: string) => this.makeBook(name, bookName, directory))
       .filter((book: Book) => book.chapters.length);
