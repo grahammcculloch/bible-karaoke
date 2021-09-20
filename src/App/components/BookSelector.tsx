@@ -6,17 +6,6 @@ import { Intent } from "@blueprintjs/core";
 import { Tag, H3, Card, Button } from "../blueprint";
 import { useStores } from "../store";
 
-const BookButton = styled(Button).attrs({
-  position: "relative",
-  m: 1,
-})``;
-
-const BookTag = styled(Tag).attrs({
-  position: "absolute",
-  right: "-10px",
-  top: "-10px",
-})``;
-
 export default function BookSelector(props: any): JSX.Element | null {
   const { appState } = useStores();
   return useObserver(() => {
