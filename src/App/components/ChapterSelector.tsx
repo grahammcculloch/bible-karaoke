@@ -31,7 +31,7 @@ export default function ChapterSelector(props: any): JSX.Element {
                   intent={chapter.isSelected ? Intent.PRIMARY : undefined}
                   onClick={(): void => { chapter.toggleIsSelected(); }}
                 >
-                  {chapter.name}
+                  {chapter.name === '0' ? 'Intro' : chapter.name}
                 </Button>
               ))}
             </Flex>

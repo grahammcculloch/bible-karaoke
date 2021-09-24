@@ -54,7 +54,7 @@ class HearThis implements ProjectSource {
 
   makeChapter(projectName: string, bookName: string, name: string, directory: string): Chapter {
     const chapter = new Chapter();
-    chapter.name = name === '0' ? 'Intro' : parseInt(name).toString();
+    chapter.name = parseInt(name).toString();
     const chapterFiles = fs.readdirSync(path.join(directory, projectName, bookName, name));
     chapter.audioFiles = chapterFiles
       .filter((file: string) => file !== DEFAULT_XML_NAME)

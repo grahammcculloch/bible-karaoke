@@ -122,7 +122,9 @@ class Book {
   }
 
   selectionToString(): string {
-    return `${this.name}_${this.selectedChapters.map((chapter: Chapter) => chapter.name).join('-')}`;
+    return `${this.name}_${this.selectedChapters
+      .map((chapter: Chapter) => (chapter.name === '0' ? 'Intro' : chapter.name))
+      .join('-')}`;
   }
 }
 
