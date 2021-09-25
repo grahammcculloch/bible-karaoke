@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, IconName, MaybeElement } from '@blueprintjs/core';
-import './FileSelector.scss';
-import { remote, OpenDialogOptions, SaveDialogOptions } from 'electron';
-
-const { dialog } = remote;
+import { Button, IconName, MaybeElement } from "@blueprintjs/core";
+import { ipcRenderer } from "electron";
+import PropTypes from "prop-types";
+import React from "react";
+import "./FileSelector.scss";
+import { SaveDialogOptions, OpenDialogOptions } from "./file-dialog.model";
 
 const FileSelector = (prop: {
   save?: boolean;
@@ -16,24 +15,32 @@ const FileSelector = (prop: {
   onFileSelected: (file: string) => void;
 }): JSX.Element => {
   const selectFile = async (): Promise<void> => {
-    let filePath = '';
-
     if (prop.save) {
-      filePath = (await dialog.showSaveDialog(prop.options as SaveDialogOptions)).filePath || '';
-    }
-    else {
-      const filePaths = (await dialog.showOpenDialog(prop.options as OpenDialogOptions)).filePaths;
-      filePath = filePaths && filePaths.length === 1 ? filePaths[0] : '';
-    }
-
-    if (filePath) {
-      prop.onFileSelected(filePath);
+      ipcRenderer.on("did-finish-file-save-dialog", (_, saveFilePath) => {
+        if (saveFilePath) {
+          prop.onFileSelected(saveFilePath);
+        }
+      });
+      ipcRenderer.send("did-start-file-save-dialog", prop.options as SaveDialogOptions);
+    } else {
+      ipcRenderer.on("did-finish-file-open-dialog", (_, openFilePaths) => {
+        const openFilePath = openFilePaths && openFilePaths.length === 1 ? openFilePaths[0] : "";
+        if (openFilePath) {
+          prop.onFileSelected(openFilePath);
+        }
+      });
+      ipcRenderer.send("did-start-file-open-dialog", prop.options as OpenDialogOptions);
     }
   };
   return (
     <div className="file-selector">
       <div className="file-selector__button">
-        <Button text={prop.buttonText || 'Select'} icon={prop.buttonIcon} onClick={selectFile} disabled={prop.disabled || false} />
+        <Button
+          text={prop.buttonText || "Select"}
+          icon={prop.buttonIcon}
+          onClick={selectFile}
+          disabled={prop.disabled || false}
+        />
       </div>
       <div className="file-selector__filename">{prop.file}</div>
     </div>
@@ -43,7 +50,7 @@ const FileSelector = (prop: {
 FileSelector.propTypes = {
   save: PropTypes.bool,
   buttonText: PropTypes.string,
-  buttonIcon: PropTypes.object,
+  buttonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   disabled: PropTypes.bool,
   file: PropTypes.string,
   options: PropTypes.object,

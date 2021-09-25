@@ -1,17 +1,23 @@
 import GoogleAnalytics, { resetClientId } from 'electron-ga-uuid';
 import { reaction } from 'mobx';
+import packageData from '../../package.json';
 import { AnalyticsInterface } from '../../public/models/analytic.model';
-import isDev from 'electron-is-dev';
+import isDev from '../utility/isDev';
 
 const DEV_TRACK_ID = 'UA-169320344-1';
 const TRACK_ID = 'UA-22170471-17';
 
 export default class Analytics implements AnalyticsInterface {
   constructor(settings: { enableAnalytics: boolean }) {
-    this.isEnabled = !isDev && settings.enableAnalytics;
+    this.isEnabled = !isDev() && settings.enableAnalytics;
     const updateProxy = (enableAnalytics: boolean): void => {
-      this.isEnabled = !isDev && enableAnalytics;
-      if (this.isEnabled) this.ga = new GoogleAnalytics(isDev ? DEV_TRACK_ID : TRACK_ID);
+      this.isEnabled = !isDev() && enableAnalytics;
+      if (this.isEnabled) {
+        this.ga = new GoogleAnalytics(isDev() ? DEV_TRACK_ID : TRACK_ID, {
+          appName: packageData.name,
+          appVersion: packageData.version,
+        });
+      }
     };
     updateProxy(settings.enableAnalytics);
     reaction(

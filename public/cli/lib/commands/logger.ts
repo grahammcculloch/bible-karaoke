@@ -4,7 +4,7 @@ import os from 'os';
 import { join } from 'path';
 import util from 'util';
 import winston from 'winston';
-import checkDev from '../utility/checkDev';
+import isDev from '../../../../src/utility/isDev';
 
 // Sets up the logger. Should be called when opening the app.
 export async function prepareLogger(numLogsToKeep = 10, pathToLogDir = ''): Promise<void> {
@@ -57,8 +57,7 @@ export async function prepareLogger(numLogsToKeep = 10, pathToLogDir = ''): Prom
   });
 
   // If we're not in production then log to the `console`.
-  const isDev = await checkDev();
-  if (isDev) {
+  if (isDev()) {
     winston.add(
       new winston.transports.Console({
         format: winston.format.combine(

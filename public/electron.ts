@@ -1,32 +1,42 @@
-import { app, ipcMain, shell, Menu, BrowserWindow, Event, IpcMainEvent } from 'electron';
-import { map, flatten } from 'lodash';
+import {
+  app,
+  ipcMain,
+  shell,
+  Menu,
+  BrowserWindow,
+  Event,
+  IpcMainEvent,
+  SaveDialogOptions,
+  dialog,
+  OpenDialogOptions,
+} from 'electron';
 import fontList from 'font-list';
 import fs from 'fs';
+import { map, flatten } from 'lodash';
 import path from 'path';
+import winston from 'winston';
 import { convert } from './cli/lib/commands/convert';
+import { prepareLogger } from './cli/lib/commands/logger';
 import { bkImport } from './cli/lib/import/hearThis/hearThisImport';
-import checkDev from './cli/lib/utility/checkDev';
+import isDev from '../src/utility/isDev';
 import { AnimationSettings } from './models/animationSettings.model';
 import { ConvertProject } from './models/convertFormat.model';
 import { ProgressState } from './models/progressState.model';
 import { Verses } from './models/verses.model';
 import SourceIndex from './sources/index';
 import { Project, getSampleVerses } from './sources/util';
-import { prepareLogger } from './cli/lib/commands/logger';
-import winston from 'winston';
 
 let mainWindow: BrowserWindow | undefined;
 
-export async function createWindow(): Promise<void> {
-  const isDev = await checkDev();
+export function createWindow(): void {
   prepareLogger();
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 970,
-    webPreferences: { nodeIntegration: true, webSecurity: false, enableRemoteModule: true },
+    webPreferences: { nodeIntegration: true, webSecurity: true, enableRemoteModule: false },
   });
-  mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
-  if (isDev) {
+  mainWindow.loadURL(isDev() ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+  if (isDev()) {
     mainWindow.webContents.openDevTools();
   } else {
     Menu.setApplicationMenu(null);
@@ -37,10 +47,27 @@ export async function createWindow(): Promise<void> {
   mainWindow.on('closed', (): void => {
     mainWindow = undefined;
   });
-  mainWindow.webContents.on('will-navigate', (event: Event, url: string): void => {
+  mainWindow.webContents.on('new-window', (event: Event, url: string): void => {
     if (url.startsWith('http:') || url.startsWith('https:')) {
       event.preventDefault();
       shell.openExternal(url);
+    }
+  });
+}
+
+function handleFileDialogs(): void {
+  ipcMain.on('did-start-file-save-dialog', async (event: IpcMainEvent, options: SaveDialogOptions): Promise<void> => {
+    if (mainWindow != null) {
+      winston.log('info', 'File save dialog');
+      const filePath = (await dialog.showSaveDialog(mainWindow, options)).filePath || '';
+      event.sender.send('did-finish-file-save-dialog', filePath);
+    }
+  });
+  ipcMain.on('did-start-file-open-dialog', async (event: IpcMainEvent, options: OpenDialogOptions): Promise<void> => {
+    if (mainWindow != null) {
+      winston.log('info', 'File open dialog');
+      const filePaths = (await dialog.showOpenDialog(mainWindow, options)).filePaths;
+      event.sender.send('did-finish-file-open-dialog', filePaths);
     }
   });
 }
@@ -143,6 +170,7 @@ app.on('ready', (): void => {
   handleGetProjects();
   handleGetSampleVerses();
   handleGetFonts();
+  handleFileDialogs();
 });
 
 app.on('window-all-closed', (): void => {
