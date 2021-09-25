@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR } from '../constants';
 import Store from '.';
 import { ProgressState } from '../../../public/models/progressState.model';
+import { getChapterDisplayName } from '../util';
 
 const SAMPLE_VERSES = [
   'In the beginning, God created the heavens and the earth.',
@@ -123,7 +124,7 @@ class Book {
 
   selectionToString(): string {
     return `${this.name}_${this.selectedChapters
-      .map((chapter: Chapter) => (chapter.name === '0' ? 'Intro' : chapter.name))
+      .map((chapter: Chapter) => getChapterDisplayName(chapter.name))
       .join('-')}`;
   }
 }
