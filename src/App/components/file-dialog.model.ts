@@ -1,4 +1,4 @@
-// Copied from `electron.d.ts` since we can't import from 'electron' on the frontend.
+// Copied from `electron.d.ts` v9.4.4 since we can't import from 'electron' on the frontend.
 
 interface FileFilter {
   // Docs: http://electronjs.org/docs/api/structures/file-filter
