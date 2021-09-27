@@ -1,18 +1,18 @@
-import { ipcRenderer } from 'electron';
-import React from 'react';
-import { useObserver } from 'mobx-react';
-import styled, { StyledComponent } from 'styled-components';
-import { Classes } from '@blueprintjs/core';
-import { BoxType, Flex } from 'reflexbox';
-import { Colors } from './blueprint';
-import AppHeader from './components/AppHeader';
-import BookSelector from './components/BookSelector';
-import ChapterSelector from './components/ChapterSelector';
-import Preview from './components/Preview';
-import Actions from './components/Actions';
-import { useStores } from './store';
-import { AnalyticsContext, useAnalytics } from './components/Analytics';
-import './index.scss';
+import { ipcRenderer } from "electron";
+import React from "react";
+import { useObserver } from "mobx-react";
+import styled, { StyledComponent } from "styled-components";
+import { Classes } from "@blueprintjs/core";
+import { BoxType, Flex } from "reflexbox";
+import { Colors } from "./blueprint";
+import AppHeader from "./components/AppHeader";
+import BookSelector from "./components/BookSelector";
+import ChapterSelector from "./components/ChapterSelector";
+import Preview from "./components/Preview";
+import Actions from "./components/Actions";
+import { useStores } from "./store";
+import { AnalyticsContext, useAnalytics } from "./components/Analytics";
+import "./index.scss";
 
 const AppWrapper: StyledComponent<BoxType, any, {}> = styled(Flex)`
   position: relative;
@@ -23,15 +23,21 @@ export default function App(): JSX.Element {
   const analyticsContext: AnalyticsContext = useAnalytics();
 
   React.useEffect((): void => {
-    ipcRenderer.send('did-start-getprojectstructure', storeRecord.settings.rootDirectories);
+    ipcRenderer.send("did-start-getprojectstructure", storeRecord.settings.rootDirectories);
   }, [storeRecord.settings.rootDirectories]);
 
   React.useEffect((): void => {
-    analyticsContext.analytics.trackScreenview('Home');
-  }, []);
+    analyticsContext.analytics.trackScreenview("Home");
+  }, [analyticsContext]);
 
   return useObserver(() => (
-    <AppWrapper minWidth="1024px" backgroundColor={Colors.background3} height="100%" className={Classes.DARK} flexDirection="column">
+    <AppWrapper
+      minWidth="1024px"
+      backgroundColor={Colors.background3}
+      height="100%"
+      className={Classes.DARK}
+      flexDirection="column"
+    >
       <AppHeader />
       <Flex flex={1} flexDirection="column" overflowY="auto">
         <Flex flex={1}>

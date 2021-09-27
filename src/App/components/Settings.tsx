@@ -1,18 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import _ from 'lodash';
-import styled from 'styled-components';
-import { Flex } from 'reflexbox';
-import { Icon, Tooltip, Classes, Position} from '@blueprintjs/core';
-import { useObserver } from 'mobx-react';
-import { repository } from '../../../package.json';
-import { H5, Colors, Text, Card, Button, Checkbox } from '../blueprint';
-import { useStores } from '../store';
-import { useAnalytics } from './Analytics';
-import { getDefaultHearThisDirectory, getDefaultScriptureAppBuilderDirectory } from '../store/Settings';
-import FileSelector from './FileSelector';
-import { DEFAULT_OUTPUT_DIRECTORY } from '../constants';
+import React from "react";
+import PropTypes from "prop-types";
+import classnames from "classnames";
+import _ from "lodash";
+import styled from "styled-components";
+import { Flex } from "reflexbox";
+import { Icon, Tooltip, Classes, Position } from "@blueprintjs/core";
+import { useObserver } from "mobx-react";
+import { repository } from "../../../package.json";
+import { H5, Colors, Text, Card, Button, Checkbox } from "../blueprint";
+import { useStores } from "../store";
+import { useAnalytics } from "./Analytics";
+import { getDefaultHearThisDirectory, getDefaultScriptureAppBuilderDirectory } from "../store/Settings";
+import FileSelector from "./FileSelector";
+import { DEFAULT_OUTPUT_DIRECTORY } from "../constants";
 
 const DirectoryHeading = styled(Flex)`
   .file-selector > * {
@@ -59,7 +59,7 @@ const DirectoriesCard = (prop: DirectoriesCardInterface): JSX.Element => {
             buttonIcon="folder-new"
             options={{
               title: `Select ${prop.name} folder`,
-              properties: ['openDirectory'],
+              properties: ["openDirectory"],
             }}
             onFileSelected={addDirectory}
           />
@@ -95,11 +95,11 @@ DirectoriesCard.propTypes = {
 export default function Settings(): JSX.Element {
   const { settings } = useStores();
   const { analytics } = useAnalytics();
-  const repoUrl = repository.url.replace(/\.git$/, '');
+  const repoUrl = repository.url.replace(/\.git$/, "");
   const resetOutputDir = (): void => settings.setOutputDirectory(DEFAULT_OUTPUT_DIRECTORY);
   React.useEffect(() => {
-    analytics.trackScreenview('Settings');
-  }, []);
+    analytics.trackScreenview("Settings");
+  }, [analytics]);
   return useObserver(() => (
     <Flex
       backgroundColor={Colors.background2}
@@ -129,13 +129,13 @@ export default function Settings(): JSX.Element {
             buttonText="Save videos to..."
             file={settings.outputDirectory}
             options={{
-              title: 'Select Output Folder',
-              properties: ['openDirectory'],
+              title: "Select Output Folder",
+              properties: ["openDirectory"],
             }}
             onFileSelected={settings.setOutputDirectory}
           />
           <Tooltip content="Reset to default directory" position={Position.BOTTOM}>
-              <Button minimal icon="reset" onClick={resetOutputDir} />
+            <Button minimal icon="reset" onClick={resetOutputDir} />
           </Tooltip>
         </Flex>
         <Checkbox
@@ -169,7 +169,7 @@ export default function Settings(): JSX.Element {
         />
       </Card>
       <Text mt={3} textAlign="center" className={descriptionTextClass}>
-        This software is released under the{' '}
+        This software is released under the{" "}
         <a target="_blank" rel="noopener noreferrer" href={`${repoUrl}/blob/master/LICENSE.md`}>
           MIT License
         </a>
