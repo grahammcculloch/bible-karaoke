@@ -59,12 +59,7 @@ export async function convert(
       if (!isCombined) {
         outputName = checkOverwrite(outputName, animationSettings.output.overwriteOutputFiles);
       }
-      let audioFiles: string[] = [];
-      if ('filename' in chapter.audio) {
-        audioFiles = [chapter.audio.filename];
-      } else {
-        audioFiles = chapter.audio.files.map((f) => f.filename);
-      }
+      const audioFiles = chapter.audio.files.map((f) => f.filename);
       let audioDuration = 0;
       if (chapter.audio.length) {
         audioDuration = chapter.audio.length;

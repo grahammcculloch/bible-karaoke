@@ -12,17 +12,15 @@ interface BKBook {
 
 export interface BKChapter {
   readonly name: string;
-  audio: BKAudio | BKAudioMultipleFiles;
+  audio: BKAudio;
   readonly segments: BKSegment[];
 }
 
-interface BKAudio {
-  filename: string;
-  length: number;
-}
-
-interface BKAudioMultipleFiles {
-  files: BKAudio[];
+export interface BKAudio {
+  files: {
+    filename: string;
+    length: number;
+  }[];
   length?: number;
 }
 

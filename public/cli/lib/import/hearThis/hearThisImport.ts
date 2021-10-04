@@ -27,6 +27,7 @@ async function convertChapter(chapter: ConvertChapter, book: ConvertBook, projec
     segments: [],
   };
   const sourceChapterDir = path.join(project.fullPath, book.name, chapter.name);
+  const sourceDirectoryFiles = fs.readdirSync(sourceChapterDir, 'utf8');
   const infoXmlPath = path.join(sourceChapterDir, 'info.xml');
 
   const infoXmlFileContents = fs.readFileSync(infoXmlPath, { encoding: 'utf-8' });
@@ -44,14 +45,16 @@ async function convertChapter(chapter: ConvertChapter, book: ConvertBook, projec
     }
 
     const segmentId = parseInt(scriptLine.LineNumber._text, 10);
-    const audioPath: string = path.join(sourceChapterDir, `${segmentId - 1}.wav`);
-    const duration = await getAudioDurationInMilliseconds(audioPath);
-    // if only one audio file then simplify audio property
-    if (chapterInfo.ChapterInfo.Recordings.ScriptLine.length === 1) {
-      chapterDetails.audio = { filename: audioPath, length: duration };
-    } else if ('files' in chapterDetails.audio) {
-      chapterDetails.audio.files.push({ filename: audioPath, length: duration });
+    const audioFileName = `${segmentId - 1}.wav`;
+    const audioPath: string = path.join(sourceChapterDir, audioFileName);
+    // ignore scriptLines with no corresponding audio file
+    if (!sourceDirectoryFiles.includes(audioFileName)) {
+      continue;
     }
+    const duration = await getAudioDurationInMilliseconds(audioPath);
+
+    chapterDetails.audio.files.push({ filename: audioPath, length: duration });
+
     chapterDetails.segments.push({
       segmentId,
       text: scriptLine.Text._text,
