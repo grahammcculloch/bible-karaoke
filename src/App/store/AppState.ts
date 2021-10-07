@@ -4,7 +4,7 @@ import { persist } from 'mobx-persist';
 import _ from 'lodash';
 import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR } from '../constants';
 import Store from '.';
-import { ProgressState } from '../../../public/models/progressState.model';
+import { ProgressState } from '../../../main/models/progressState.model';
 import { getChapterDisplayName } from '../util';
 
 const SAMPLE_VERSES = [

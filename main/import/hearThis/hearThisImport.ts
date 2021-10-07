@@ -4,8 +4,8 @@ import path from 'path';
 import winston from 'winston';
 import { xml2json } from 'xml-js';
 import { paths } from '../../path-constants';
-import { BKProject, BKChapter } from '../../../../models/projectFormat.model';
-import { ConvertProject, ConvertBook, ConvertChapter } from '../../../../models/convertFormat.model';
+import { BKProject, BKChapter } from '../../models/projectFormat.model';
+import { ConvertProject, ConvertBook, ConvertChapter } from '../../models/convertFormat.model';
 
 //Defines a ScriptLine as expected after parsing the hearthis xml
 export interface ScriptLine {

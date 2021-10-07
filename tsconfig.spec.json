@@ -13,6 +13,6 @@
     "resolveJsonModule": true,
     "sourceMap": true
   },
-  "include": ["public/*.ts", "public/**/*.ts", "typings"],
+  "include": ["main/*.ts", "main/**/*.ts", "typings"],
   "exclude": ["node_modules"]
 }

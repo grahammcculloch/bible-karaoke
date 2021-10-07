@@ -1,12 +1,12 @@
-import React from 'react';
-import classnames from 'classnames';
-import { useObserver } from 'mobx-react';
-import styled from 'styled-components';
-import { Flex, Box } from 'reflexbox';
-import { useStores } from '../store';
-import { H2, Colors } from '../blueprint';
-import ProjectSelector from './ProjectSelector';
-import SettingsButton from './SettingsButton';
+import React from "react";
+import classnames from "classnames";
+import { useObserver } from "mobx-react";
+import styled from "styled-components";
+import { Flex, Box } from "reflexbox";
+import { useStores } from "../store";
+import { H2, Colors } from "../blueprint";
+import ProjectSelector from "./ProjectSelector";
+import SettingsButton from "./SettingsButton";
 
 const HeaderBackground = styled(Box)`
   background-color: ${Colors.background1};
@@ -88,8 +88,8 @@ export default function AppHeader(): JSX.Element {
   const { appState } = useStores();
   return useObserver(() => (
     <HeaderBackground>
-      <HeaderWrapper className={classnames('header', { 'header--minimized': !!appState.projects.activeProjectName })}>
-        <img className="header__item header__item--logo" alt="logo" src="/logo512.png" />
+      <HeaderWrapper className={classnames("header", { "header--minimized": !!appState.projects.activeProjectName })}>
+        <img className="header__item header__item--logo" alt="logo" src="./logo512.png" />
         <H2 className="header__item header__item--title">Bible Karaoke</H2>
         <Box className="header__item header__item--select">
           <ProjectSelector />

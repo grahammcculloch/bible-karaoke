@@ -1,7 +1,7 @@
 import GoogleAnalytics, { resetClientId } from 'electron-ga-uuid';
 import { reaction } from 'mobx';
 import packageData from '../../package.json';
-import { AnalyticsInterface } from '../../public/models/analytic.model';
+import { AnalyticsInterface } from '../../main/models/analytic.model';
 import isDev from '../utility/isDev';
 
 const DEV_TRACK_ID = 'UA-169320344-1';

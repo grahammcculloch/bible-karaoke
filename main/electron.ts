@@ -15,9 +15,9 @@ import fs from 'fs';
 import { map, flatten } from 'lodash';
 import path from 'path';
 import winston from 'winston';
-import { convert } from './cli/lib/commands/convert';
-import { prepareLogger } from './cli/lib/commands/logger';
-import { bkImport } from './cli/lib/import/hearThis/hearThisImport';
+import { convert } from './commands/convert';
+import { prepareLogger } from './commands/logger';
+import { bkImport } from './import/hearThis/hearThisImport';
 import isDev from '../src/utility/isDev';
 import { AnimationSettings } from './models/animationSettings.model';
 import { ConvertProject } from './models/convertFormat.model';
@@ -35,7 +35,7 @@ export function createWindow(): void {
     height: 970,
     webPreferences: { nodeIntegration: true, webSecurity: true, enableRemoteModule: false },
   });
-  mainWindow.loadURL(isDev() ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+  mainWindow.loadURL(isDev() ? 'http://localhost:3000' : `file://${path.join(__dirname, '../index.html')}`);
   if (isDev()) {
     mainWindow.webContents.openDevTools();
   } else {
@@ -112,7 +112,7 @@ export function handleGetProjects(): void {
   ipcMain.on('did-start-getprojectstructure', (event: IpcMainEvent, rootDirectories: RootDirectories): void => {
     const projects = flatten(
       map(rootDirectories, (directories: string[], projectType: string): Project[] => {
-        // .getProjectStructure is in /public/sources/hear-this.ts or scripture-app-builder.ts
+        // .getProjectStructure is in /main/sources/hear-this.ts or scripture-app-builder.ts
         const project = SourceIndex.getProject(projectType);
         return project != null ? project.getProjectStructure(directories) : [];
       })

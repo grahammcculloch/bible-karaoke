@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import xml2json from 'xml-js';
-import { ScriptLine } from '../cli/lib/import/hearThis/hearThisImport';
+import { ScriptLine } from '../import/hearThis/hearThisImport';
 import { fileFilters } from '../../src/App/constants';
 import { DEFAULT_HEARTHIS_XML_FILE } from './hear-this';
 

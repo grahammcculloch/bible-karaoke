@@ -4,8 +4,8 @@ import fs from 'fs';
 import { template } from 'lodash';
 import path from 'path';
 import { record } from './recordFrames';
-import { AnimationSettings } from '../../../models/animationSettings.model';
-import { Timings } from '../../../models/timings.model';
+import { AnimationSettings } from '../models/animationSettings.model';
+import { Timings } from '../models/timings.model';
 
 export async function render(
   animationSettings: AnimationSettings,

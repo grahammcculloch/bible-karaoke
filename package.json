@@ -12,14 +12,14 @@
   },
   "version": "1.0.0",
   "private": true,
-  "main": "start/public/electron.js",
+  "main": "build/main/electron.js",
   "scripts": {
     "compile": "tsc --project tsconfig.electron.json",
-    "copy-files": "copyfiles \"public/cli/lib/rendering/render.html\" start",
+    "copy-files": "copyfiles \"main/rendering/render.html\" build",
     "rescripts-pre": "npm run compile && npm run ff && npm run copy-files",
     "electron-dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && cross-env ELECTRON_ENV=development electron . --inspect 9229\"",
     "start": "npm run rescripts-pre && rescripts start",
-    "build": "npm run rescripts-pre && rescripts build",
+    "build": "rescripts build && npm run rescripts-pre",
     "pretest": "tsc --project tsconfig.spec.json",
     "test": "ava **/*.spec.js",
     "preintegration": "tsc --project tsconfig.spec.json && npm run ff",
@@ -29,7 +29,7 @@
     "preelectron-pack-mac": "npm run build",
     "preelectron-pack-win": "npm run build",
     "preelectron-pack-linux": "npm run build",
-    "lint": "eslint --ext ts,tsx --cache src public",
+    "lint": "eslint --ext ts,tsx --cache src main",
     "prettier": "prettier --write \"**/*.{ts,js,json,css,scss,less,html,md,yml}\"",
     "prettier:test": "prettier --list-different \"**/*.{ts,js,json,css,scss,less,html,md,yml}\"",
     "electron-pack-mac": "electron-builder -m",
@@ -58,7 +58,7 @@
     "react-dom": "^16.14.0",
     "readdir-sorted": "^3.0.0",
     "reflexbox": "^4.0.6",
-    "styled-components": "^5.3.0",
+    "styled-components": "^5.3.1",
     "styled-system": "^5.1.5",
     "tmp-promise": "^3.0.2",
     "winston": "^3.3.3",
@@ -71,7 +71,7 @@
     "@rescripts/rescript-use-eslint-config": "^0.0.11",
     "@tsconfig/node16": "^1.0.1",
     "@types/lodash": "^4.14.170",
-    "@types/node": "^15.12.2",
+    "@types/node": "^12.20.28",
     "@types/puppeteer-core": "^5.4.0",
     "@types/react": "^17.0.11",
     "@types/react-color": "^3.0.4",
@@ -131,21 +131,20 @@
       "ts"
     ],
     "files": [
-      "public/**/*.{spec,integration}.js"
+      "main/**/*.{spec,integration}.js"
     ]
   },
   "build": {
     "appId": "org.digiserve.bible-karaoke",
     "productName": "Bible Karaoke",
-    "copyright": "Copyright © 2020 ${author}",
+    "copyright": "Copyright © 2021 ${author}",
     "mac": {
       "target": "dmg",
       "category": "public.app-category.utilities"
     },
     "files": [
       "binaries/*",
-      "build/**/*",
-      "node_modules/**/*"
+      "build/**/*"
     ],
     "extraFiles": [
       "./binaries"

@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Alert, Intent, Classes } from '@blueprintjs/core';
-import Analytics from '../analytics';
-import { Text } from '../blueprint';
-import { AnalyticsInterface } from '../../../public/models/analytic.model';
+import React from "react";
+import PropTypes from "prop-types";
+import { Alert, Intent, Classes } from "@blueprintjs/core";
+import Analytics from "../analytics";
+import { Text } from "../blueprint";
+import { AnalyticsInterface } from "../../../main/models/analytic.model";
 
 export interface AnalyticsContext {
   analytics: AnalyticsInterface;
@@ -16,16 +16,19 @@ interface AnalyticsProviderSettings {
   setEnableAnalytics(confirmed: boolean): void;
 }
 
-export function AnalyticsProvider(prop: {settings: AnalyticsProviderSettings; children: JSX.Element[] | JSX.Element}): JSX.Element {
+export function AnalyticsProvider(prop: {
+  settings: AnalyticsProviderSettings;
+  children: JSX.Element[] | JSX.Element;
+}): JSX.Element {
   const [analyticsNoticeDisplayed, setAnalyticsNoticeDisplayed] = React.useState(localStorage.analyticsNoticeDisplayed);
-  const [analytics,] = React.useState<AnalyticsInterface>(new Analytics(prop.settings));
+  const [analytics] = React.useState<AnalyticsInterface>(new Analytics(prop.settings));
 
   const onClose = React.useCallback(
     (confirmed) => {
       setAnalyticsNoticeDisplayed(true);
-      localStorage.setItem('analyticsNoticeDisplayed', 'true');
+      localStorage.setItem("analyticsNoticeDisplayed", "true");
       prop.settings.setEnableAnalytics(confirmed);
-      confirmed && analytics.trackEvent('Analytics', 'Opted In');
+      confirmed && analytics.trackEvent("Analytics", "Opted In");
     },
     [prop.settings, analytics]
   );

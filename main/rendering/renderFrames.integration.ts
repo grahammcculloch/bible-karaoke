@@ -4,7 +4,7 @@ import { join } from 'path';
 import tmp from 'tmp-promise';
 import { render } from './renderFrames';
 import { chapterFormatToTimings } from './timings';
-import { AnimationSettings } from '../../../models/animationSettings.model';
+import { AnimationSettings } from '../models/animationSettings.model';
 import { testPaths } from '../test/test-path-constants';
 
 test('render frames with htmlContent', async (t) => {

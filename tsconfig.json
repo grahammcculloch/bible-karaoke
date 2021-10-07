@@ -3,11 +3,10 @@
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
     "isolatedModules": true,
-    "outDir": "start",
+    "outDir": "build",
     "noEmit": true
   },
-  "include": ["public/*.ts", "public/**/*.ts", "typings"],
+  "include": ["main/*.ts", "main/**/*.ts", "typings"],
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.integration.ts"]
 }

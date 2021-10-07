@@ -1,6 +1,6 @@
 import test from 'ava';
 import { getProjectStructure } from './readStructure';
-import { ConvertProject } from '../../../../models/convertFormat.model';
+import { ConvertProject } from '../../models/convertFormat.model';
 import { testPaths } from '../../test/test-path-constants';
 
 test('reads-hearthis-project-structure', (t) => {

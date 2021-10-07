@@ -3,8 +3,9 @@
   "compilerOptions": {
     "lib": ["dom", "es2019", "es2020.promise", "es2020.bigint", "es2020.string"],
     "module": "CommonJS",
-    "outDir": "start"
+    "target": "es5",
+    "outDir": "build"
   },
-  "include": ["public/*.ts", "public/**/*.ts", "src/*.tsx", "src/**/*.tsx", "typings"],
+  "include": ["main/*.ts", "main/**/*.ts", "src/*.tsx", "src/**/*.tsx", "typings"],
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.integration.ts"]
 }

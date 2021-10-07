@@ -4,7 +4,7 @@ import os from 'os';
 import { join } from 'path';
 import util from 'util';
 import winston from 'winston';
-import isDev from '../../../../src/utility/isDev';
+import isDev from '../../src/utility/isDev';
 
 // Sets up the logger. Should be called when opening the app.
 export async function prepareLogger(numLogsToKeep = 10, pathToLogDir = ''): Promise<void> {
