@@ -4,7 +4,6 @@ import path from 'path';
 import { persist } from 'mobx-persist';
 import { PROJECT_TYPE, DEFAULT_OUTPUT_DIRECTORY } from '../constants';
 import Store from '.';
-import { ipcRenderer } from 'electron';
 
 export const getDefaultHearThisDirectory = (): string => {
   switch (process.platform) {
@@ -64,13 +63,11 @@ class Settings {
   @action.bound
   setHearThisRootDirectories(directories: string[]): void {
     this.hearThisRootDirectories = directories;
-    ipcRenderer.send('did-start-getprojectstructure', this.rootDirectories);
   }
 
   @action.bound
   setScriptureAppBuilderRootDirectories(directories: string[]): void {
     this.scriptureAppBuilderRootDirectories = directories;
-    ipcRenderer.send('did-start-getprojectstructure', this.rootDirectories);
   }
 
   @action.bound

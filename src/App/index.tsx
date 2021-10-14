@@ -1,6 +1,7 @@
 import { ipcRenderer } from "electron";
 import React from "react";
 import { useObserver } from "mobx-react";
+import { autorun } from "mobx";
 import styled, { StyledComponent } from "styled-components";
 import { Classes } from "@blueprintjs/core";
 import { BoxType, Flex } from "reflexbox";
@@ -22,9 +23,9 @@ export default function App(): JSX.Element {
   const storeRecord: Record<string, any> = useStores();
   const analyticsContext: AnalyticsContext = useAnalytics();
 
-  React.useEffect((): void => {
+  autorun((): void => {
     ipcRenderer.send("did-start-getprojectstructure", storeRecord.settings.rootDirectories);
-  }, [storeRecord.settings.rootDirectories]);
+  });
 
   React.useEffect((): void => {
     analyticsContext.analytics.trackScreenview("Home");
