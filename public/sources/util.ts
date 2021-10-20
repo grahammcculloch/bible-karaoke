@@ -2,9 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import xml2json from 'xml-js';
 import { ScriptLine } from '../cli/lib/import/hearThis/hearThisImport';
-import { BKAudio } from '../models/projectFormat.model';
 import { fileFilters } from '../../src/App/constants';
-import { DEFAULT_HEARTHIS_XML_FILE } from '../../src/App/constants';
+import { DEFAULT_HEARTHIS_XML_FILE } from './hear-this';
 
 export function isDirectory(source: string): boolean {
   return fs.lstatSync(source).isDirectory();
@@ -193,14 +192,6 @@ function filePathToAudioIndexes(sourceDirectory: string): string[] {
     indexes.push(path.parse(file).name);
   }
   return indexes;
-}
-
-export function getAudioIndexes(audio: BKAudio): number[] {
-  const audioIndexes = [];
-  for (const file of audio.files) {
-    audioIndexes.push(parseInt(path.parse(file.filename).name));
-  }
-  return audioIndexes;
 }
 
 export function isValidAudioFile(file: string, defaultXmlName: string, audioFilters: string[]): boolean {

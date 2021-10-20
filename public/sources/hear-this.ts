@@ -5,9 +5,10 @@ import { Project, Book, Chapter, getDirectories, sortInCanonicalOrder } from './
 import ProjectSource from '../models/projectSource.model';
 import { fileFilters } from '../../src/App/constants';
 import { isValidAudioFile } from './util';
-import { DEFAULT_HEARTHIS_XML_FILE } from '../../src/App/constants';
 
 const PROJECT_TYPE = 'hearThis';
+
+export const DEFAULT_HEARTHIS_XML_FILE = 'info.xml';
 
 class HearThis implements ProjectSource {
   get PROJECT_TYPE(): string {

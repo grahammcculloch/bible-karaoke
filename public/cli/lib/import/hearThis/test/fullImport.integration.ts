@@ -134,7 +134,12 @@ const expected = {
         {
           name: '3',
           audio: {
-            filename: join(testPaths.exampleHearThisProjectPath, 'Book1', '3', '0.wav'),
+            files: [
+              {
+                filename: join(testPaths.exampleHearThisProjectPath, 'Book1', '3', '0.wav'),
+                length: 1400,
+              },
+            ],
             length: 1400,
           },
           segments: [

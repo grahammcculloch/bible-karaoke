@@ -28,7 +28,12 @@ export const scenario2 = {
           {
             name: '3',
             audio: {
-              filename: path.join(testPaths.exampleHearThisProjectPath, 'Book1', '3', '0.wav'),
+              files: [
+                {
+                  filename: path.join(testPaths.exampleHearThisProjectPath, 'Book1', '3', '0.wav'),
+                  length: 1400,
+                },
+              ],
               length: 1400,
             },
             segments: [

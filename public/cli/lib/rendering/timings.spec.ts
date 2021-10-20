@@ -7,8 +7,16 @@ test('timings.chapterFormatToTimings test', (t) => {
   const chapter: BKChapter = {
     name: '1',
     audio: {
-      filename: 'audio.mp3',
-      length: 92700,
+      files: [
+        {
+          filename: '0.mp3',
+          length: 34600,
+        },
+        {
+          filename: '1.mp3',
+          length: 56400,
+        },
+      ],
     },
     segments: [
       {
@@ -25,6 +33,15 @@ test('timings.chapterFormatToTimings test', (t) => {
         verse: '2',
         startTime: 7040,
         length: 9300,
+        isHeading: false,
+      },
+      // this segment has no audio and should be skipped
+      {
+        segmentId: 3,
+        text: 'And God said, “Let there be light,” and there was light.',
+        verse: '3',
+        startTime: 17200,
+        length: 5400,
         isHeading: false,
       },
     ],

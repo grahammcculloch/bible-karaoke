@@ -1,6 +1,6 @@
 import { Timings, LineTiming } from '../../../models/timings.model';
-import { BKChapter } from '../../../models/projectFormat.model';
-import { getAudioIndexes } from '../../../sources/util';
+import { BKChapter, BKAudio } from '../../../models/projectFormat.model';
+import path from 'path';
 
 export function chapterFormatToTimings(chapter: BKChapter): Timings {
   const audioIndexes = getAudioIndexes(chapter.audio);
@@ -48,4 +48,12 @@ function formatWords(words: string[], lineTiming: LineTiming): void {
     lineTiming.words.push({ word, start, end });
     start = end;
   }
+}
+
+function getAudioIndexes(audio: BKAudio): number[] {
+  const audioIndexes = [];
+  for (const file of audio.files) {
+    audioIndexes.push(parseInt(path.parse(file.filename).name));
+  }
+  return audioIndexes;
 }

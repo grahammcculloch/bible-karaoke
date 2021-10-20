@@ -3,8 +3,6 @@ import path from 'path';
 
 export const DEFAULT_BG_COLOR = '#000';
 
-export const DEFAULT_HEARTHIS_XML_FILE = 'info.xml';
-
 export const BACKGROUND_TYPE = {
   image: 'image',
   video: 'video',
