@@ -184,8 +184,8 @@ export function getSampleVerses(sourceDirectory: string): string[] {
 
 function filePathToAudioIndexes(sourceDirectory: string): string[] {
   const indexes = [];
-  let audioFileList = fs.readdirSync(sourceDirectory, 'utf8');
-  audioFileList = audioFileList.filter((audioFile) =>
+  const directoryFileList = fs.readdirSync(sourceDirectory, 'utf8');
+  const audioFileList = directoryFileList.filter((audioFile) =>
     isValidAudioFile(audioFile, DEFAULT_HEARTHIS_XML_FILE, fileFilters.audio[0].extensions)
   );
   for (const file of audioFileList) {
@@ -194,9 +194,9 @@ function filePathToAudioIndexes(sourceDirectory: string): string[] {
   return indexes;
 }
 
-export function isValidAudioFile(file: string, defaultXmlName: string, audioFilters: string[]): boolean {
+export function isValidAudioFile(file: string, defaultXmlName: string, audioExtensions: string[]): boolean {
   if (file !== defaultXmlName) {
-    return audioFilters.some((ext: string) => file.endsWith(`.${ext}`));
+    return audioExtensions.some((ext: string) => file.endsWith(`.${ext}`));
   } else {
     return false;
   }
