@@ -76,7 +76,7 @@
         const highlightColor = '<%= animationSettings.text.highlightRGB %>';
         const speechBubbleColor = '<%= animationSettings.speechBubble.rgba %>';
         const speechBubbleOpacity = <%= animationSettings.speechBubble.opacity %>;
-        const phraseLocation = '<%= animationSettings.textLocation %>';
+        const phraseLocation = '<%= animationSettings.textLocation.location %>';
 
         const subtitles = document.querySelector("#subtitles2");
         let rawSubTitle = "";
@@ -133,7 +133,7 @@
           subtitles.innerHTML = lyrics;
 
           // get the page ready to show text at bottom of the screen
-          if (phraseLocation == "subtitle") {
+          if (phraseLocation === "subtitle") {
             const phraseHeight = document.getElementById("p0").clientHeight;
             subtitles.style.paddingTop = 480 - phraseHeight - 35 + "px";
             document.querySelectorAll(".phrase").forEach((p) => {
@@ -219,7 +219,7 @@
             const line = document.querySelector("#" + phrase.id);
             const curPos = linePos;
             let nextPos = line.clientHeight;
-            if (phraseLocation == "subtitle") {
+            if (phraseLocation === "subtitle") {
               const nextLine = document.querySelector("#" + phrase.next);
               nextPos = nextLine ? nextLine.clientHeight : 0;
             }
@@ -291,7 +291,7 @@
             // push them all into the main animations array
             animations.push(phraseBackgroundOff);
 
-            if (phraseLocation == "subtitle") {
+            if (phraseLocation === "subtitle") {
               const phraseFadeIn = line.animate(
                 [
                   {
