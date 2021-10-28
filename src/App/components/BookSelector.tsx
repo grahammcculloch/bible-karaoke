@@ -4,9 +4,9 @@ import { useObserver } from "mobx-react";
 import React from "react";
 import { Flex } from "reflexbox";
 import { Tag, H3, Card, Button } from "../blueprint";
-import { useStores } from "../store";
+import { Book, useStores } from "../store";
 
-export default function BookSelector(props: any): JSX.Element | null {
+export default function BookSelector(props: { flex: number }): JSX.Element | null {
   const { appState } = useStores();
   return useObserver(() => {
     const project = appState.projects.activeProject;
@@ -17,7 +17,7 @@ export default function BookSelector(props: any): JSX.Element | null {
       <Card {...props}>
         <H3>{project.name}</H3>
         <Flex flexWrap="wrap" m={-1}>
-          {project.bookList.map((book: any): JSX.Element => {
+          {project.bookList.map((book: Book): JSX.Element => {
             let selectionCount = null;
             if (book.isSelected) {
               selectionCount = _.indexOf(project.bookSelection, book.name) + 1;

@@ -68,6 +68,7 @@ export async function prepareLogger(numLogsToKeep = 10, pathToLogDir = ''): Prom
               info: 'cyan',
             },
           }),
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           winston.format.printf(({ level, message, service, ...meta }) => {
             // remove Symbol information
             const metaWithoutSymbols = Object.keys(meta)

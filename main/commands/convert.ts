@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp-promise';
-import { AnimationSettings } from '../models/animationSettings.model';
+import { AnimationSettings } from '../../src/models/animationSettings.model';
 import { ProgressState } from '../models/progressState.model';
 import { BKProject } from '../models/projectFormat.model';
 import { Timings } from '../models/timings.model';

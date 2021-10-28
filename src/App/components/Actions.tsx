@@ -58,10 +58,14 @@ const TextWrapper = styled(Flex).attrs({
   flexDirection: "column",
 })``;
 
-const ProgressText = (prop: { progress: Progress }): JSX.Element => {
+const ProgressText = (prop: { progress?: Progress }): JSX.Element => {
+  if (prop.progress == null) {
+    return <Text></Text>;
+  }
   if (prop.progress.error) {
     return <Text>{prop.progress.error.toString()}</Text>;
   }
+
   const progressText: string[] = prop.progress.status.replace("% (", "%\n(").split("\n");
   return (
     <Text my={1}>
@@ -83,7 +87,7 @@ const Action = (prop: {
 }): JSX.Element => {
   const { appState } = useStores();
   return useObserver(() => {
-    const progress: Progress = appState.progress.combined === prop.combined ? appState.progress : null;
+    const progress: Progress | undefined = appState.progress.combined === prop.combined ? appState.progress : undefined;
     const inProgress = _.get(progress, "inProgress");
     return (
       <ActionButton

@@ -4,11 +4,13 @@ import React from 'react';
 import AppState from './AppState';
 import Settings from './Settings';
 
-const hydrate = create();
+export { Book, Chapter, Project } from './AppState';
 
-export function useStores(): Record<string, any> {
-  return React.useContext(MobXProviderContext);
+export function useStores(): Store {
+  return React.useContext(MobXProviderContext) as Store;
 }
+
+const hydrate = create();
 
 class Store {
   appState: AppState;

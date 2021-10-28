@@ -2,7 +2,7 @@ import _ from "lodash";
 import { useObserver } from "mobx-react";
 import React from "react";
 import { HTMLSelect } from "../blueprint";
-import { useStores } from "../store";
+import { Project, useStores } from "../store";
 import { useAnalytics } from "./Analytics";
 
 export default function ProjectSelector(): JSX.Element {
@@ -29,7 +29,7 @@ export default function ProjectSelector(): JSX.Element {
   return useObserver(() => {
     const projectOptions = [
       { value: "", label: "Select a project..." },
-      ..._.map(appState.projects.list, (p: any) => ({ value: p.name, label: p.name })),
+      ..._.map(appState.projects.list, (p: Project) => ({ value: p.name, label: p.name })),
     ];
     return (
       <HTMLSelect

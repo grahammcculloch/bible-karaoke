@@ -15,7 +15,7 @@ const EditRadio = styled(Radio).attrs({
   mb: 0,
 })``;
 
-export default function BackgroundEditor(props: any): JSX.Element {
+export default function BackgroundEditor(props: unknown): JSX.Element {
   const { appState } = useStores();
   return useObserver(() => {
     const { background } = appState;

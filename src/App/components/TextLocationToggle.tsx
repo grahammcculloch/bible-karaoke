@@ -17,7 +17,7 @@ const Wrapper = styled(Box)`
   }
 `;
 
-export default function TextLocationToggle(props: any): JSX.Element {
+export default function TextLocationToggle(props: { top: string; right: string }): JSX.Element {
   const { appState } = useStores();
   const toggleTextLocation = React.useCallback(() => {
     appState.setTextLocation({

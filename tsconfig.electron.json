@@ -6,6 +6,6 @@
     "target": "es5",
     "outDir": "build"
   },
-  "include": ["main/*.ts", "main/**/*.ts", "src/*.tsx", "src/**/*.tsx", "typings"],
+  "include": ["main/**/*", "src/**/*", "typings"],
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.integration.ts"]
 }

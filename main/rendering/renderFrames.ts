@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import DataURI from 'datauri';
 import { template } from 'lodash';
-import { AnimationSettings } from '../models/animationSettings.model';
+import { AnimationSettings } from '../../src/models/animationSettings.model';
 import { Timings } from '../models/timings.model';
 import { record } from './recordFrames';
 

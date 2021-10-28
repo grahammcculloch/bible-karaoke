@@ -4,10 +4,10 @@ import { useObserver } from "mobx-react";
 import React from "react";
 import { Flex } from "reflexbox";
 import { H3, Checkbox, Button, Card } from "../blueprint";
-import { useStores } from "../store";
+import { Chapter, useStores } from "../store";
 import { getChapterDisplayName } from "../util";
 
-export default function ChapterSelector(props: any): JSX.Element {
+export default function ChapterSelector(props: { flex: number }): JSX.Element {
   const { appState } = useStores();
   return useObserver(() => {
     const book = _.get(appState.projects, ["activeProject", "activeBook"]);
@@ -28,7 +28,7 @@ export default function ChapterSelector(props: any): JSX.Element {
               />
             </Flex>
             <Flex flexWrap="wrap" m={-1}>
-              {book.chapterList.map((chapter: any) => (
+              {book.chapterList.map((chapter: Chapter) => (
                 <Button
                   m={1}
                   key={chapter.name}

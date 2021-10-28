@@ -53,7 +53,7 @@ class Settings {
   enableAnalytics = false;
 
   @computed({ keepAlive: true })
-  get rootDirectories(): { [x: string]: string[] } {
+  get rootDirectories(): { [projectType: string]: string[] } {
     return {
       [PROJECT_TYPE.hearThis]: this.hearThisRootDirectories.slice(),
       [PROJECT_TYPE.scriptureAppBuilder]: this.scriptureAppBuilderRootDirectories.slice(),

@@ -13,7 +13,7 @@ const StyleColorPicker = styled(ColorPicker).attrs({
   mr: 3,
 })``;
 
-export default function SpeechBubbleEditor(props: any): JSX.Element {
+export default function SpeechBubbleEditor(props: { top: string; right: string }): JSX.Element {
   const { appState } = useStores();
 
   const setSpeechBubbleColor = (color: ColorResult): void => {

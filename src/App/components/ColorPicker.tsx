@@ -2,6 +2,7 @@ import { Popover } from "@blueprintjs/core";
 import PropTypes from "prop-types";
 import React from "react";
 import { Color, ColorChangeHandler, ColorResult, SketchPicker } from "react-color";
+import { PresetColor } from "react-color/lib/components/sketch/Sketch";
 import { Box } from "reflexbox";
 import styled from "styled-components";
 
@@ -38,18 +39,22 @@ const Swatch = styled(Box).attrs({
   borderRadius: 4,
 })`
   border: solid grey 1px;
-  ${(props: { disabled: boolean }): string => {
+  ${(props: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    bg?: any;
+    disabled?: boolean;
+  }): string => {
     return props.disabled ? "cursor: not-allowed;" : "";
   }}
 `;
 
 interface ColorPickerSettings {
   value?: Color;
-  presetColors?: { color: string; title: string }[] | string[];
+  presetColors?: PresetColor[];
   disableAlpha?: boolean;
   disabled?: boolean;
   onChange?: ColorChangeHandler;
-  props?: any;
+  props?: unknown;
 }
 
 export default class ColorPicker extends React.Component<ColorPickerSettings> {
@@ -63,17 +68,23 @@ export default class ColorPicker extends React.Component<ColorPickerSettings> {
     this.setState({ color: color.rgb });
   }
 
-  get propTypes(): any {
+  get propTypes(): {
+    value?: PropTypes.Requireable<string | object>;
+    presetColors?: PropTypes.Requireable<(string | object | null | undefined)[]>;
+    disableAlpha?: PropTypes.Requireable<boolean>;
+    disabled?: PropTypes.Requireable<boolean>;
+    onChange?: PropTypes.Requireable<ColorChangeHandler>;
+  } {
     return {
-      value: PropTypes.string,
-      presetColors: PropTypes.arrayOf(PropTypes.string),
+      value: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+      presetColors: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object, PropTypes.string])),
       disableAlpha: PropTypes.bool,
       disabled: PropTypes.bool,
       onChange: PropTypes.func,
     };
   }
 
-  get defaultProps(): any {
+  get defaultProps(): { color?: string; presetColors: string[]; disableAlpha: boolean } {
     return {
       color: undefined,
       presetColors: SWATCH_COLORS,

@@ -19,8 +19,10 @@ export interface TextSettings {
 export interface BackgroundSettings {
   readonly color: string;
   readonly file?: string;
-  readonly type?: 'image' | 'video' | 'color';
+  readonly type?: BackgroundType;
 }
+
+export type BackgroundType = 'image' | 'video' | 'color';
 
 export interface SpeechBubbleSettings {
   readonly color: string;
@@ -35,5 +37,7 @@ export interface OutputSettings {
 }
 
 export interface TextLocationSettings {
-  readonly location: 'center' | 'subtitle';
+  readonly location: TextLocationLocation;
 }
+
+export type TextLocationLocation = 'center' | 'subtitle';

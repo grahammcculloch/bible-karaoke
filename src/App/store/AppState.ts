@@ -2,22 +2,38 @@ import { ipcRenderer } from 'electron';
 import _ from 'lodash';
 import { observable, computed, action, reaction, toJS } from 'mobx';
 import { persist } from 'mobx-persist';
+import { ConvertProject } from '../../../main/models/convertFormat.model';
 import { ProgressState } from '../../../main/models/progressState.model';
+import {
+  BackgroundSettings,
+  BackgroundType,
+  SpeechBubbleSettings,
+  TextLocationSettings,
+  TextSettings,
+} from '../../models/animationSettings.model';
+import { SubmissionArgs, SubmissionReturn } from '../../models/submission.model';
 import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR } from '../constants';
 import { getChapterDisplayName } from '../util';
 import Store from '.';
 
 const SAMPLE_VERSES = [
   'In the beginning, God created the heavens and the earth.',
-  'The earth was without form and void, and darkness was over the face of the deep. And the Spirit of God was hovering over the face of the waters.',
+  'The earth was without form and void, and darkness was over the face of the deep. ' +
+    'And the Spirit of God was hovering over the face of the waters.',
   'And God said, "Let there be light," and there was light.',
   'And God saw that the light was good. And God separated the light from the darkness.',
-  'God called the light Day, and the darkness he called Night. And there was evening and there was morning, the first day.',
+  'God called the light Day, and the darkness he called Night. ' +
+    'And there was evening and there was morning, the first day.',
 ];
 
-const list = <T = any>(dict: { [name: string]: T }, sortKey = 'name'): T[] => _.sortBy(_.values(dict), sortKey);
+const list = <T = Project>(dict: { [name: string]: T }, sortKey = 'name'): T[] => _.sortBy(_.values(dict), sortKey);
 
-const dict = <T = any>(list: T[], classType?: { new (item: any): T }, key = 'name'): { [name: string]: T } => {
+const dict = <T = Project | Book | Chapter>(
+  list: T[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  classType?: { new (item: any): T },
+  key = 'name'
+): { [name: string]: T } => {
   return list.reduce((items, item) => {
     items[item[key]] = classType ? new classType(item) : item;
     return items;
@@ -26,7 +42,7 @@ const dict = <T = any>(list: T[], classType?: { new (item: any): T }, key = 'nam
 
 const isVideo = _.memoize((ext: string): boolean => ['mp4', 'webm', 'mov', 'avi'].includes(ext.toLowerCase()));
 
-class Background {
+class Background implements BackgroundSettings {
   @persist
   @observable
   color = DEFAULT_BG_COLOR;
@@ -36,7 +52,7 @@ class Background {
   file = '';
 
   @computed
-  get type(): string {
+  get type(): BackgroundType {
     if (!this.file) {
       return BACKGROUND_TYPE.color;
     }
@@ -63,11 +79,13 @@ class Background {
   }
 }
 
-class Chapter {
+type ChapterConstructor = { name: string; fullPath: string };
+
+export class Chapter {
   name: string;
   fullPath: string;
 
-  constructor({ name, fullPath }: { name: string; fullPath: string }) {
+  constructor({ name, fullPath }: ChapterConstructor) {
     this.name = name;
     this.fullPath = fullPath;
   }
@@ -86,12 +104,14 @@ class Chapter {
   }
 }
 
-class Book {
+type BookConstructor = { name: string; chapters: ChapterConstructor[] };
+
+export class Book {
   name: string;
 
-  constructor({ name, chapters }: { name: string; chapters: Record<string, any>[] }) {
+  constructor({ name, chapters }: BookConstructor) {
     this.name = name;
-    this.chapterList = chapters.map((chapter: any) => new Chapter(chapter));
+    this.chapterList = chapters.map((chapter: ChapterConstructor) => new Chapter(chapter));
     this.chapters = dict<Chapter>(this.chapterList);
   }
 
@@ -129,14 +149,16 @@ class Book {
   }
 }
 
-class Project {
+type ProjectConstructor = { name: string; fullPath: string; books: BookConstructor[] };
+
+export class Project {
   name: string;
   fullPath: string;
 
-  constructor({ name, fullPath, books }: { name: string; fullPath: string; books: Record<string, any>[] }) {
+  constructor({ name, fullPath, books }: ProjectConstructor) {
     this.name = name;
     this.fullPath = fullPath;
-    this.bookList = books.map((book: any) => new Book(book));
+    this.bookList = books.map((book: BookConstructor) => new Book(book));
     this.books = dict<Book>(this.bookList);
     this.bookList.forEach((book: Book) => {
       reaction(
@@ -195,7 +217,7 @@ class Project {
     }
   }
 
-  selectionToJS(): Record<string, any> {
+  selectionToJS(): ConvertProject {
     return {
       name: this.name,
       fullPath: this.fullPath,
@@ -268,11 +290,11 @@ export class Progress {
     ipcRenderer.on('on-progress', (_event: Event, progress: ProgressState) => {
       this.setProgress(progress);
     });
-    ipcRenderer.on('did-finish-conversion', (_event: Event, args: any) => {
-      if (args.outputDirectory) {
+    ipcRenderer.on('did-finish-conversion', (_event: Event, result: SubmissionReturn) => {
+      if (result.outputDirectory) {
         this.finish();
-      } else {
-        this.setError(args.error.message);
+      } else if (result.error?.message) {
+        this.setError(result.error.message);
       }
     });
   }
@@ -296,7 +318,7 @@ export class Progress {
   combined = false;
 
   @action.bound
-  start(args: any): void {
+  start(args: SubmissionArgs): void {
     console.log('Requesting processing', args);
     ipcRenderer.send('did-start-conversion', args);
     this.combined = args.combined;
@@ -334,7 +356,7 @@ export class Progress {
   }
 
   @action.bound
-  setError(error: any): void {
+  setError(error: string): void {
     this.error = error;
   }
 }
@@ -394,7 +416,7 @@ class AppState {
 
   @persist('object')
   @observable
-  textLocation = {
+  textLocation: TextLocationSettings = {
     location: TEXT_LOCATION.center,
   };
 
@@ -404,7 +426,7 @@ class AppState {
 
   @persist('object')
   @observable
-  text = {
+  text: TextSettings = {
     fontFamily: 'Arial',
     fontSize: 20,
     color: '#555',
@@ -416,7 +438,7 @@ class AppState {
 
   @persist('object')
   @observable
-  speechBubble = {
+  speechBubble: SpeechBubbleSettings = {
     color: '#FFF',
     rgba: 'rgba(255,255,255,1)',
     opacity: 1,
@@ -447,17 +469,17 @@ class AppState {
   }
 
   @action.bound
-  setTextLocation(textLocationProps: any): void {
+  setTextLocation(textLocationProps: TextLocationSettings): void {
     this.textLocation = { ...this.textLocation, ...textLocationProps };
   }
 
   @action.bound
-  setTextProps(textProps: any): void {
+  setTextProps(textProps: Partial<TextSettings>): void {
     this.text = { ...this.text, ...textProps };
   }
 
   @action.bound
-  setSpeechBubbleProps(speechBubbleProps: any): void {
+  setSpeechBubbleProps(speechBubbleProps: Partial<SpeechBubbleSettings>): void {
     this.speechBubble = { ...this.speechBubble, ...speechBubbleProps };
   }
 
@@ -473,7 +495,7 @@ class AppState {
       '0',
       'fullPath',
     ]);
-    const args = {
+    const args: SubmissionArgs = {
       project,
       combined,
       sourceDirectory,

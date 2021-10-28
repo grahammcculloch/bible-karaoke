@@ -2,7 +2,7 @@ import fs from 'fs';
 import { join } from 'path';
 import test from 'ava';
 import tmp from 'tmp-promise';
-import { AnimationSettings } from '../models/animationSettings.model';
+import { AnimationSettings } from '../../src/models/animationSettings.model';
 import { testPaths } from '../test/test-path-constants';
 import { render } from './renderFrames';
 import { chapterFormatToTimings } from './timings';

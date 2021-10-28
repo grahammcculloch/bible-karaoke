@@ -15,12 +15,11 @@ import {
 import fontList from 'font-list';
 import { map, flatten } from 'lodash';
 import winston from 'winston';
+import { SubmissionArgs, SubmissionReturn } from '../src/models/submission.model';
 import isDev from '../src/utility/isDev';
 import { convert } from './commands/convert';
 import { prepareLogger } from './commands/logger';
 import { bkImport } from './import/hearThis/hearThisImport';
-import { AnimationSettings } from './models/animationSettings.model';
-import { ConvertProject } from './models/convertFormat.model';
 import { ProgressState } from './models/progressState.model';
 import { Verses } from './models/verses.model';
 import SourceIndex from './sources/index';
@@ -103,10 +102,10 @@ export function handleGetSampleVerses(): void {
   });
 }
 
-// NOTE: RootDirectories type is the [rootDirectories] property of App/store/Settings.js
+// NOTE: RootDirectories type is the [rootDirectories] property of App/store/Settings.ts
 // {
-//   [constants.js - PROJECT_TYPE.hearThis]: string[]
-//   [constants.js - PROJECT_TYPE.scriptureAppBuilder]: string[]
+//   [constants.ts - PROJECT_TYPE.hearThis]: string[]
+//   [constants.ts - PROJECT_TYPE.scriptureAppBuilder]: string[]
 // }
 interface RootDirectories {
   hearThis: string[];
@@ -124,18 +123,6 @@ export function handleGetProjects(): void {
     );
     event.sender.send('did-finish-getprojectstructure', projects);
   });
-}
-
-interface SubmissionArgs {
-  combined: boolean;
-  sourceDirectory?: string;
-  project: ConvertProject;
-  animationSettings: AnimationSettings;
-}
-
-interface SubmissionReturn {
-  outputDirectory?: string;
-  error?: Error;
 }
 
 export function handleSubmission(): void {

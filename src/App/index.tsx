@@ -15,16 +15,16 @@ import Preview from "./components/Preview";
 import { useStores } from "./store";
 import "./index.scss";
 
-const AppWrapper: StyledComponent<BoxType, any, {}> = styled(Flex)`
+const AppWrapper: StyledComponent<BoxType, object, {}> = styled(Flex)`
   position: relative;
 `;
 
 export default function App(): JSX.Element {
-  const storeRecord: Record<string, any> = useStores();
+  const { settings } = useStores();
   const analyticsContext: AnalyticsContext = useAnalytics();
 
   autorun((): void => {
-    ipcRenderer.send("did-start-getprojectstructure", storeRecord.settings.rootDirectories);
+    ipcRenderer.send("did-start-getprojectstructure", settings.rootDirectories);
   });
 
   React.useEffect((): void => {

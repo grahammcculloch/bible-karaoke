@@ -1,21 +1,22 @@
 import os from 'os';
 import path from 'path';
+import { BackgroundType, TextLocationLocation } from '../models/animationSettings.model';
 
 export const DEFAULT_BG_COLOR = '#000';
 
-export const BACKGROUND_TYPE = {
+export const BACKGROUND_TYPE: { image: BackgroundType; video: BackgroundType; color: BackgroundType } = {
   image: 'image',
   video: 'video',
   color: 'color',
 };
 
-// HACK: These values must match the PROJECT_TYPE values in public/sources/*.js
+// HACK: These values must match the PROJECT_TYPE values in main/sources/*.ts
 export const PROJECT_TYPE = {
   hearThis: 'hearThis',
   scriptureAppBuilder: 'scriptureAppBuilder',
 };
 
-export const TEXT_LOCATION = {
+export const TEXT_LOCATION: { subtitle: TextLocationLocation; center: TextLocationLocation } = {
   subtitle: 'subtitle',
   center: 'center',
 };

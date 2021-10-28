@@ -7,7 +7,7 @@ import { useObserver } from "mobx-react";
 import React from "react";
 import { Flex, Box } from "reflexbox";
 import styled from "styled-components";
-import { BackgroundSettings } from "../../../main/models/animationSettings.model";
+import { BackgroundSettings } from "../../models/animationSettings.model";
 import { TEXT_LOCATION } from "../constants";
 import { useStores } from "../store";
 import AnimatedVisibility from "./AnimatedVisibility";
@@ -181,7 +181,7 @@ const Preview = (): JSX.Element => {
           <BackgroundEditor />
           {background.type === "video" && <PreviewVideo src={file} id="myVideo" />}
           <Verses className={versesClassName}>
-            {verses.map((verse: any, index: number) => (
+            {verses.map((verse: string, index: number) => (
               <Verse
                 key={index}
                 className={getVerseClassName(index)}

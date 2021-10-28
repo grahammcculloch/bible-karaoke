@@ -1,5 +1,5 @@
 import test from 'ava';
-import { AnimationSettings } from '../models/animationSettings.model';
+import { AnimationSettings } from '../../src/models/animationSettings.model';
 import { Timings } from '../models/timings.model';
 import { getHtml } from './renderFrames';
 

@@ -32,5 +32,7 @@ binaries/ffprobe
 
 *.js.map
 
-# incrementally move to typescript.  Here are ignored JS files that are compiled
+# JS files that are compiled
 /main/**/*.js
+!/src/serviceWorker.js
+/src/**/*.js
