@@ -33,6 +33,8 @@ export function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 970,
+    transparent: true,
+    backgroundColor: '#30404d',
     webPreferences: { nodeIntegration: true, webSecurity: true, enableRemoteModule: false },
   });
   mainWindow.loadURL(isDev() ? 'http://localhost:3000' : `file://${path.join(__dirname, '../index.html')}`);
