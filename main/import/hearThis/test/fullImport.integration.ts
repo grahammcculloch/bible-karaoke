@@ -1,8 +1,8 @@
-import test from 'ava';
-import { getProjectStructure } from '../readStructure';
-import { bkImport } from '../hearThisImport';
-import { testPaths } from '../../../test/test-path-constants';
 import { join } from 'path';
+import test from 'ava';
+import { testPaths } from '../../../test/test-path-constants';
+import { bkImport } from '../hearThisImport';
+import { getProjectStructure } from '../readStructure';
 
 test('read-and-import-ht-project', async (t) => {
   const structure = getProjectStructure([testPaths.fixtures]);

@@ -1,6 +1,6 @@
-import { observable, computed, action } from 'mobx';
 import os from 'os';
 import path from 'path';
+import { observable, computed, action } from 'mobx';
 import { persist } from 'mobx-persist';
 import { PROJECT_TYPE, DEFAULT_OUTPUT_DIRECTORY } from '../constants';
 import Store from '.';

@@ -1,10 +1,10 @@
-import React from "react";
 import classnames from "classnames";
 import { useObserver } from "mobx-react";
-import styled from "styled-components";
+import React from "react";
 import { Flex, Box } from "reflexbox";
-import { useStores } from "../store";
+import styled from "styled-components";
 import { H2, Colors } from "../blueprint";
+import { useStores } from "../store";
 import ProjectSelector from "./ProjectSelector";
 import SettingsButton from "./SettingsButton";
 

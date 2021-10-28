@@ -1,7 +1,7 @@
 import test from 'ava';
-import { chapterFormatToTimings } from './timings';
 import { BKChapter } from '../models/projectFormat.model';
 import { Timings } from '../models/timings.model';
+import { chapterFormatToTimings } from './timings';
 
 test('timings.chapterFormatToTimings test', (t) => {
   const chapter: BKChapter = {

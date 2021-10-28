@@ -1,5 +1,5 @@
-import test from 'ava';
 import fs from 'fs';
+import test from 'ava';
 import tmp from 'tmp-promise';
 import { record } from './recordFrames';
 

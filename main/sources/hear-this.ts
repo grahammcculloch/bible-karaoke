@@ -1,10 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { flatten } from 'lodash';
-import { Project, Book, Chapter, getDirectories, sortInCanonicalOrder } from './util';
-import ProjectSource from '../models/projectSource.model';
 import { fileFilters } from '../../src/App/constants';
-import { isValidAudioFile } from './util';
+import ProjectSource from '../models/projectSource.model';
+import { Project, Book, Chapter, getDirectories, sortInCanonicalOrder, isValidAudioFile } from './util';
 
 const PROJECT_TYPE = 'hearThis';
 

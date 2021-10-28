@@ -1,18 +1,18 @@
-import React from "react";
 import fs from "fs";
-import classnames from "classnames";
-import styled from "styled-components";
 import CSS from "csstype";
+import classnames from "classnames";
 import _ from "lodash";
-import { Flex, Box } from "reflexbox";
 import { toJS } from "mobx";
 import { useObserver } from "mobx-react";
-import { useStores } from "../store";
+import React from "react";
+import { Flex, Box } from "reflexbox";
+import styled from "styled-components";
+import { BackgroundSettings } from "../../../main/models/animationSettings.model";
 import { TEXT_LOCATION } from "../constants";
+import { useStores } from "../store";
+import AnimatedVisibility from "./AnimatedVisibility";
 import { BackgroundEditor, FontEditor, SpeechBubbleEditor } from "./Editors";
 import TextLocationToggle from "./TextLocationToggle";
-import AnimatedVisibility from "./AnimatedVisibility";
-import { BackgroundSettings } from "../../../main/models/animationSettings.model";
 
 const PREVIEW_WIDTH = "720px";
 const PREVIEW_HEIGHT = "480px";

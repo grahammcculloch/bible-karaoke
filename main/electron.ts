@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import {
   app,
   ipcMain,
@@ -11,14 +13,12 @@ import {
   OpenDialogOptions,
 } from 'electron';
 import fontList from 'font-list';
-import fs from 'fs';
 import { map, flatten } from 'lodash';
-import path from 'path';
 import winston from 'winston';
+import isDev from '../src/utility/isDev';
 import { convert } from './commands/convert';
 import { prepareLogger } from './commands/logger';
 import { bkImport } from './import/hearThis/hearThisImport';
-import isDev from '../src/utility/isDev';
 import { AnimationSettings } from './models/animationSettings.model';
 import { ConvertProject } from './models/convertFormat.model';
 import { ProgressState } from './models/progressState.model';

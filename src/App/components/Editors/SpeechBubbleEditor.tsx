@@ -1,13 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useObserver } from 'mobx-react';
-import { Slider } from '@blueprintjs/core';
-import { Box } from 'reflexbox';
-import EditPopover, { EditRow } from './EditPopover';
-import { useStores } from '../../store';
-import ColorPicker from '../ColorPicker';
-import { Text } from '../../blueprint';
-import { ColorResult } from 'react-color';
+import { Slider } from "@blueprintjs/core";
+import { useObserver } from "mobx-react";
+import React from "react";
+import { ColorResult } from "react-color";
+import { Box } from "reflexbox";
+import styled from "styled-components";
+import { Text } from "../../blueprint";
+import { useStores } from "../../store";
+import ColorPicker from "../ColorPicker";
+import EditPopover, { EditRow } from "./EditPopover";
 
 const StyleColorPicker = styled(ColorPicker).attrs({
   mr: 3,

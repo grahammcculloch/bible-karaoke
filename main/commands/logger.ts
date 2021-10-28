@@ -1,8 +1,8 @@
-import { format as dateFormat } from 'date-fns';
-import fs from 'fs-extra';
 import os from 'os';
 import { join } from 'path';
 import util from 'util';
+import { format as dateFormat } from 'date-fns';
+import fs from 'fs-extra';
 import winston from 'winston';
 import isDev from '../../src/utility/isDev';
 

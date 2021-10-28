@@ -1,6 +1,6 @@
 import path from 'path';
-import { Timings, LineTiming } from '../models/timings.model';
 import { BKChapter, BKAudio } from '../models/projectFormat.model';
+import { Timings, LineTiming } from '../models/timings.model';
 
 export function chapterFormatToTimings(chapter: BKChapter): Timings {
   const audioIndexes = getAudioIndexes(chapter.audio);

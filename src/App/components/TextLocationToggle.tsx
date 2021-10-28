@@ -1,12 +1,12 @@
-import React from 'react';
-import { useObserver } from 'mobx-react';
-import styled from 'styled-components';
-import { position } from 'styled-system';
-import { Tooltip } from '@blueprintjs/core';
-import { Box } from 'reflexbox';
-import { Button } from '../blueprint';
-import { useStores } from '../store';
-import { TEXT_LOCATION } from '../constants';
+import { Tooltip } from "@blueprintjs/core";
+import { useObserver } from "mobx-react";
+import React from "react";
+import { Box } from "reflexbox";
+import styled from "styled-components";
+import { position } from "styled-system";
+import { Button } from "../blueprint";
+import { TEXT_LOCATION } from "../constants";
+import { useStores } from "../store";
 
 const Wrapper = styled(Box)`
   ${position}
@@ -29,8 +29,8 @@ export default function TextLocationToggle(props: any): JSX.Element {
     const isSubtitle = appState.textLocation.location === TEXT_LOCATION.subtitle;
     return (
       <Wrapper {...props}>
-        <Tooltip content={isSubtitle ? 'Switch to centered mode' : 'Switch to subtitle mode'}>
-          <Button minimal icon={isSubtitle ? 'arrow-up' : 'arrow-down'} onClick={toggleTextLocation} />
+        <Tooltip content={isSubtitle ? "Switch to centered mode" : "Switch to subtitle mode"}>
+          <Button minimal icon={isSubtitle ? "arrow-up" : "arrow-down"} onClick={toggleTextLocation} />
         </Tooltip>
       </Wrapper>
     );

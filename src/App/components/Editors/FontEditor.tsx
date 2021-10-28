@@ -1,12 +1,12 @@
-import { ipcRenderer } from 'electron';
-import React from 'react';
-import { useObserver } from 'mobx-react';
-import { ColorResult } from 'react-color';
-import EditPopover, { EditRow } from './EditPopover';
-import { useStores } from '../../store';
-import ColorPicker from '../ColorPicker';
-import { HTMLSelect, Text, Button, ButtonGroup } from '../../blueprint';
-import { IOptionProps } from '@blueprintjs/core/lib/esm/common/props';
+import { IOptionProps } from "@blueprintjs/core/lib/esm/common/props";
+import { ipcRenderer } from "electron";
+import { useObserver } from "mobx-react";
+import React from "react";
+import { ColorResult } from "react-color";
+import { HTMLSelect, Text, Button, ButtonGroup } from "../../blueprint";
+import { useStores } from "../../store";
+import ColorPicker from "../ColorPicker";
+import EditPopover, { EditRow } from "./EditPopover";
 
 const FONT_SIZES = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((n) => ({
   value: n,
@@ -22,21 +22,21 @@ export default function FontEditor(props: any): JSX.Element {
   const [fonts, setFonts] = React.useState<IOptionProps[]>();
 
   React.useEffect(() => {
-    ipcRenderer.on('did-finish-getfonts', (_event, newFonts) => {
+    ipcRenderer.on("did-finish-getfonts", (_event, newFonts) => {
       if (Array.isArray(newFonts)) {
         setFonts(
           newFonts.map((fontName: string): IOptionProps => {
             return {
               value: fontName,
-              label: fontName
+              label: fontName,
             };
           })
         );
       } else {
-        console.warn('No fonts for selection', newFonts);
+        console.warn("No fonts for selection", newFonts);
       }
     });
-    ipcRenderer.send('did-start-getfonts');
+    ipcRenderer.send("did-start-getfonts");
   }, []);
 
   const setFontFamily = (evt: React.ChangeEvent<HTMLSelectValueElement>): void => {

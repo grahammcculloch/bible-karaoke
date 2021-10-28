@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'mobx-react';
-import { createGlobalStyle, DefaultTheme, GlobalStyleComponent } from 'styled-components';
-import App from './App';
-import Store from './App/store';
-import { AnalyticsProvider } from './App/components/Analytics';
+import { Provider } from "mobx-react";
+import React from "react";
+import ReactDOM from "react-dom";
+import { createGlobalStyle, DefaultTheme, GlobalStyleComponent } from "styled-components";
+import App from "./App";
+import { AnalyticsProvider } from "./App/components/Analytics";
+import Store from "./App/store";
 
 const store: Store = new Store();
 
@@ -24,6 +24,6 @@ store.init().then((): void => {
         <App />
       </AnalyticsProvider>
     </Provider>,
-    document.getElementById('root')
+    document.getElementById("root")
   );
 });

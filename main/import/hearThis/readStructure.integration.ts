@@ -1,7 +1,7 @@
 import test from 'ava';
-import { getProjectStructure } from './readStructure';
 import { ConvertProject } from '../../models/convertFormat.model';
 import { testPaths } from '../../test/test-path-constants';
+import { getProjectStructure } from './readStructure';
 
 test('reads-hearthis-project-structure', (t) => {
   const actual = getProjectStructure([testPaths.fixtures]);

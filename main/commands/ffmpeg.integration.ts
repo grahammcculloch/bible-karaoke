@@ -1,9 +1,9 @@
-import test from 'ava';
 import fs from 'fs';
 import path from 'path';
+import test from 'ava';
 import tmp from 'tmp-promise';
-import { combineFrames, mergeWavFiles } from './ffmpeg';
 import { testPaths } from '../test/test-path-constants';
+import { combineFrames, mergeWavFiles } from './ffmpeg';
 
 test('mergeWavFiles smoke test: multiple files: success', async (t) => {
   const wavFiles = [

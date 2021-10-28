@@ -1,14 +1,14 @@
-import React from "react";
-import _ from "lodash";
-import styled from "styled-components";
-import { useObserver } from "mobx-react";
 import { Intent, IconName, MaybeElement } from "@blueprintjs/core";
+import _ from "lodash";
+import { useObserver } from "mobx-react";
+import React from "react";
 import { Flex, Box } from "reflexbox";
-import { Progress } from "../store/AppState";
-import { useStores } from "../store";
+import styled from "styled-components";
 import { Button, Text, Icon } from "../blueprint";
-import AnimatedVisibility from "./AnimatedVisibility";
+import { useStores } from "../store";
+import { Progress } from "../store/AppState";
 import { useAnalytics } from "./Analytics";
+import AnimatedVisibility from "./AnimatedVisibility";
 
 const ProgressIndicator = styled(Box)`
   position: absolute;

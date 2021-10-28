@@ -1,10 +1,10 @@
-import React from 'react';
-import { useObserver } from 'mobx-react';
-import _ from 'lodash';
-import { Flex } from 'reflexbox';
-import { Intent } from '@blueprintjs/core';
-import { Tag, H3, Card, Button } from '../blueprint';
-import { useStores } from '../store';
+import { Intent } from "@blueprintjs/core";
+import _ from "lodash";
+import { useObserver } from "mobx-react";
+import React from "react";
+import { Flex } from "reflexbox";
+import { Tag, H3, Card, Button } from "../blueprint";
+import { useStores } from "../store";
 
 export default function BookSelector(props: any): JSX.Element | null {
   const { appState } = useStores();
@@ -28,12 +28,14 @@ export default function BookSelector(props: any): JSX.Element | null {
                 m={1}
                 key={book.name}
                 intent={book.isSelected ? Intent.PRIMARY : undefined}
-                onClick={(): void => { project.setActiveBook(book.name); }}
+                onClick={(): void => {
+                  project.setActiveBook(book.name);
+                }}
                 active={project.activeBookName === book.name}
               >
                 {book.name}
                 {book.isSelected && project.bookSelection.length > 1 && (
-                  <Tag position="absolute" zIndex={2} right="-10px" top="-10px"round intent={Intent.SUCCESS}>
+                  <Tag position="absolute" zIndex={2} right="-10px" top="-10px" round intent={Intent.SUCCESS}>
                     {selectionCount}
                   </Tag>
                 )}

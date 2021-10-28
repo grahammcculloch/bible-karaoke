@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import styled from 'styled-components';
-import { Box } from 'reflexbox';
+import classnames from "classnames";
+import PropTypes from "prop-types";
+import React from "react";
+import { Box } from "reflexbox";
+import styled from "styled-components";
 
 const Wrapper = styled(Box)`
   opacity: 0;
@@ -29,9 +29,6 @@ export default function AnimatedVisibility(prop: AnimatedVisibilityProps): JSX.E
 }
 
 AnimatedVisibility.propTypes = {
-  visible: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool
-  ]),
+  visible: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   children: PropTypes.node,
 };

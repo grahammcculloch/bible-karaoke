@@ -1,6 +1,6 @@
-import React from 'react';
 import { create } from 'mobx-persist';
 import { MobXProviderContext } from 'mobx-react';
+import React from 'react';
 import AppState from './AppState';
 import Settings from './Settings';
 

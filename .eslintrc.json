@@ -17,7 +17,7 @@
     },
     "ecmaVersion": 2018
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint", "eslint-plugin-import"],
   "settings": {
     "react": {
       "version": "detect"
@@ -28,6 +28,15 @@
       "error",
       {
         "files": ["**/*.{spec,integration}.{ts,js}"]
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "alphabetize": {
+          "order": "asc"
+        },
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"]
       }
     ],
     "@typescript-eslint/no-use-before-define": "off"

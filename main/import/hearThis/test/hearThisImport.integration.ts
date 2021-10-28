@@ -1,9 +1,9 @@
 import test, { ExecutionContext } from 'ava';
 import { map } from 'lodash';
-import { scenarios } from './scenarios';
-import { bkImport } from '../hearThisImport';
-import { BKProject } from '../../../models/projectFormat.model';
 import { ConvertProject } from '../../../models/convertFormat.model';
+import { BKProject } from '../../../models/projectFormat.model';
+import { bkImport } from '../hearThisImport';
+import { scenarios } from './scenarios';
 
 interface Scenario {
   input: { project: ConvertProject };

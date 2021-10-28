@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { flatten } from 'lodash';
-import { getDirectories } from '../import-util';
 import { ConvertProject, ConvertBook } from '../../models/convertFormat.model';
+import { getDirectories } from '../import-util';
 
 export const PROJECT_TYPE = 'hearThis';
 const DEFAULT_XML_NAME = 'info.xml';

@@ -1,8 +1,8 @@
-import React from "react";
-import { useObserver } from "mobx-react";
-import _ from "lodash";
-import { Flex } from "reflexbox";
 import { Intent, Alignment } from "@blueprintjs/core";
+import _ from "lodash";
+import { useObserver } from "mobx-react";
+import React from "react";
+import { Flex } from "reflexbox";
 import { H3, Checkbox, Button, Card } from "../blueprint";
 import { useStores } from "../store";
 import { getChapterDisplayName } from "../util";

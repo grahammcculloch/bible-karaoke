@@ -1,6 +1,6 @@
-import test from 'ava';
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
+import test from 'ava';
 import tmp from 'tmp-promise';
 import winston from 'winston';
 import { combineVideos } from './combineVideos';

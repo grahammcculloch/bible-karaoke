@@ -1,7 +1,7 @@
-import puppeteer from 'puppeteer-core';
-import { path as chromiumPath } from 'chromium';
-import path from 'path';
 import { EventEmitter } from 'events';
+import path from 'path';
+import { path as chromiumPath } from 'chromium';
+import puppeteer from 'puppeteer-core';
 
 // function defined in render.html
 declare function renderNextFrame(

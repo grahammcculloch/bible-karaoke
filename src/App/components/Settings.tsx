@@ -1,18 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { Icon, Tooltip, Classes, Position } from "@blueprintjs/core";
 import classnames from "classnames";
 import _ from "lodash";
-import styled from "styled-components";
-import { Flex } from "reflexbox";
-import { Icon, Tooltip, Classes, Position } from "@blueprintjs/core";
 import { useObserver } from "mobx-react";
+import PropTypes from "prop-types";
+import React from "react";
+import { Flex } from "reflexbox";
+import styled from "styled-components";
 import { repository } from "../../../package.json";
 import { H5, Colors, Text, Card, Button, Checkbox } from "../blueprint";
-import { useStores } from "../store";
-import { useAnalytics } from "./Analytics";
-import { getDefaultHearThisDirectory, getDefaultScriptureAppBuilderDirectory } from "../store/Settings";
-import FileSelector from "./FileSelector";
 import { DEFAULT_OUTPUT_DIRECTORY } from "../constants";
+import { useStores } from "../store";
+import { getDefaultHearThisDirectory, getDefaultScriptureAppBuilderDirectory } from "../store/Settings";
+import { useAnalytics } from "./Analytics";
+import FileSelector from "./FileSelector";
 
 const DirectoryHeading = styled(Flex)`
   .file-selector > * {

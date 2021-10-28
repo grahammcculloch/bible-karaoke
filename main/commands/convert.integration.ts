@@ -1,6 +1,6 @@
-import test from 'ava';
 import fs from 'fs';
 import path from 'path';
+import test from 'ava';
 import tmp from 'tmp-promise';
 import { checkOverwrite } from './convert';
 

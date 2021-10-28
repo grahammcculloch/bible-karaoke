@@ -1,10 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
-import { position, PositionProps } from 'styled-system';
-import { useObserver } from 'mobx-react';
-import { Box, Flex } from 'reflexbox';
-import { Tooltip, Popover, PopoverInteractionKind, PopoverPosition, IconName, MaybeElement } from '@blueprintjs/core';
-import { Button, H5 } from '../../blueprint';
+import { Tooltip, Popover, PopoverInteractionKind, PopoverPosition, IconName, MaybeElement } from "@blueprintjs/core";
+import { useObserver } from "mobx-react";
+import React from "react";
+import { Box, Flex } from "reflexbox";
+import styled from "styled-components";
+import { position, PositionProps } from "styled-system";
+import { Button, H5 } from "../../blueprint";
 
 const Wrapper = styled(Box)<PositionProps>`
   ${position}
@@ -12,8 +12,8 @@ const Wrapper = styled(Box)<PositionProps>`
 `;
 
 export const EditRow = styled(Flex).attrs({
-  flexDirection: 'row',
-  alignItems: 'center',
+  flexDirection: "row",
+  alignItems: "center",
 })``;
 
 interface PopoverProps {
@@ -23,7 +23,7 @@ interface PopoverProps {
   props?: any[];
 }
 
-export default function EditPopover( { icon = "annotation", title, children, ...props }: PopoverProps): JSX.Element {
+export default function EditPopover({ icon = "annotation", title, children, ...props }: PopoverProps): JSX.Element {
   return useObserver(() => {
     return (
       <Wrapper top="8px" right="8px" {...props}>

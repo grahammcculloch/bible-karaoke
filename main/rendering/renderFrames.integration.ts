@@ -1,11 +1,11 @@
-import test from 'ava';
 import fs from 'fs';
 import { join } from 'path';
+import test from 'ava';
 import tmp from 'tmp-promise';
-import { render } from './renderFrames';
-import { chapterFormatToTimings } from './timings';
 import { AnimationSettings } from '../models/animationSettings.model';
 import { testPaths } from '../test/test-path-constants';
+import { render } from './renderFrames';
+import { chapterFormatToTimings } from './timings';
 
 test('render frames with htmlContent', async (t) => {
   tmp.setGracefulCleanup();

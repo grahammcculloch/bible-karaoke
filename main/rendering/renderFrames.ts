@@ -1,11 +1,11 @@
-import DataURI from 'datauri';
 import { EventEmitter } from 'events';
 import fs from 'fs';
-import { template } from 'lodash';
 import path from 'path';
-import { record } from './recordFrames';
+import DataURI from 'datauri';
+import { template } from 'lodash';
 import { AnimationSettings } from '../models/animationSettings.model';
 import { Timings } from '../models/timings.model';
+import { record } from './recordFrames';
 
 export async function render(
   animationSettings: AnimationSettings,

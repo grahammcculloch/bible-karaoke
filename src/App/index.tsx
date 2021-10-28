@@ -1,18 +1,18 @@
-import { ipcRenderer } from "electron";
-import React from "react";
-import { useObserver } from "mobx-react";
-import { autorun } from "mobx";
-import styled, { StyledComponent } from "styled-components";
 import { Classes } from "@blueprintjs/core";
+import { ipcRenderer } from "electron";
+import { autorun } from "mobx";
+import { useObserver } from "mobx-react";
+import React from "react";
 import { BoxType, Flex } from "reflexbox";
+import styled, { StyledComponent } from "styled-components";
 import { Colors } from "./blueprint";
+import Actions from "./components/Actions";
+import { AnalyticsContext, useAnalytics } from "./components/Analytics";
 import AppHeader from "./components/AppHeader";
 import BookSelector from "./components/BookSelector";
 import ChapterSelector from "./components/ChapterSelector";
 import Preview from "./components/Preview";
-import Actions from "./components/Actions";
 import { useStores } from "./store";
-import { AnalyticsContext, useAnalytics } from "./components/Analytics";
 import "./index.scss";
 
 const AppWrapper: StyledComponent<BoxType, any, {}> = styled(Flex)`

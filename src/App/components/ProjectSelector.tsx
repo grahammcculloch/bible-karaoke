@@ -1,9 +1,9 @@
-import React from 'react';
-import _ from 'lodash';
-import { useObserver } from 'mobx-react';
-import { HTMLSelect } from '../blueprint';
-import { useStores } from '../store';
-import { useAnalytics } from './Analytics';
+import _ from "lodash";
+import { useObserver } from "mobx-react";
+import React from "react";
+import { HTMLSelect } from "../blueprint";
+import { useStores } from "../store";
+import { useAnalytics } from "./Analytics";
 
 export default function ProjectSelector(): JSX.Element {
   const { appState } = useStores();
@@ -19,16 +19,16 @@ export default function ProjectSelector(): JSX.Element {
       // If a chapter has already been selected in the project set the first one as active.
       // This will show the chapters when returning to a project.
       const project = appState.projects.activeProject;
-      if (project.bookSelection.length > 0){
-        project.setActiveBook(project.bookSelection[0])
+      if (project.bookSelection.length > 0) {
+        project.setActiveBook(project.bookSelection[0]);
       }
-      analytics.trackEvent('User Interaction', 'Project Loaded');
+      analytics.trackEvent("User Interaction", "Project Loaded");
     },
     [appState, analytics]
   );
   return useObserver(() => {
     const projectOptions = [
-      { value: '', label: 'Select a project...' },
+      { value: "", label: "Select a project..." },
       ..._.map(appState.projects.list, (p: any) => ({ value: p.name, label: p.name })),
     ];
     return (

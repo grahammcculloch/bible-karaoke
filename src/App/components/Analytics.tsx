@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { Alert, Intent, Classes } from "@blueprintjs/core";
+import PropTypes from "prop-types";
+import React from "react";
+import { AnalyticsInterface } from "../../../main/models/analytic.model";
 import Analytics from "../analytics";
 import { Text } from "../blueprint";
-import { AnalyticsInterface } from "../../../main/models/analytic.model";
 
 export interface AnalyticsContext {
   analytics: AnalyticsInterface;

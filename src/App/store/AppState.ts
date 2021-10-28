@@ -1,11 +1,11 @@
 import { ipcRenderer } from 'electron';
+import _ from 'lodash';
 import { observable, computed, action, reaction, toJS } from 'mobx';
 import { persist } from 'mobx-persist';
-import _ from 'lodash';
-import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR } from '../constants';
-import Store from '.';
 import { ProgressState } from '../../../main/models/progressState.model';
+import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR } from '../constants';
 import { getChapterDisplayName } from '../util';
+import Store from '.';
 
 const SAMPLE_VERSES = [
   'In the beginning, God created the heavens and the earth.',

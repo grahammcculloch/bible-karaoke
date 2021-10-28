@@ -6,11 +6,11 @@ import { AnimationSettings } from '../models/animationSettings.model';
 import { ProgressState } from '../models/progressState.model';
 import { BKProject } from '../models/projectFormat.model';
 import { Timings } from '../models/timings.model';
-import { render } from '../rendering/renderFrames';
 import { RecordFrameEventData } from '../rendering/recordFrames';
+import { render } from '../rendering/renderFrames';
 import { chapterFormatToTimings } from '../rendering/timings';
-import { combineFrames } from './ffmpeg';
 import { combineVideos } from './combineVideos';
+import { combineFrames } from './ffmpeg';
 
 export async function convert(
   project: BKProject,

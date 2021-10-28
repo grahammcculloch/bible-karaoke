@@ -1,10 +1,10 @@
-import React from 'react';
-import { useObserver } from 'mobx-react';
-import { Drawer, Classes, Tooltip, Position } from '@blueprintjs/core';
-import { Flex } from 'reflexbox';
-import { Button, Text } from '../blueprint';
-import Settings from './Settings';
-import { version } from '../../../package.json';
+import { Drawer, Classes, Tooltip, Position } from "@blueprintjs/core";
+import { useObserver } from "mobx-react";
+import React from "react";
+import { Flex } from "reflexbox";
+import { version } from "../../../package.json";
+import { Button, Text } from "../blueprint";
+import Settings from "./Settings";
 
 export default function SettingsButton(): JSX.Element {
   const [settingsOpen, setSettingsOpen] = React.useState(false);

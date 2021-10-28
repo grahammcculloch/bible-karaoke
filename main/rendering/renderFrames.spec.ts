@@ -1,7 +1,7 @@
 import test from 'ava';
-import { getHtml } from './renderFrames';
 import { AnimationSettings } from '../models/animationSettings.model';
 import { Timings } from '../models/timings.model';
+import { getHtml } from './renderFrames';
 
 test('getHtml() loads html from template', async (t) => {
   const style = mockStyle();
