@@ -19,7 +19,9 @@ class HearThis implements ProjectSource {
     try {
       return flatten(
         rootDirectories.map((directory: string) => {
-          return getDirectories(directory).map((name: string) => this.makeProject(name, directory));
+          return getDirectories(directory)
+            .map((name: string) => this.makeProject(name, directory))
+            .filter((project: Project) => project.books.length);
         })
       );
     } catch (error) {
