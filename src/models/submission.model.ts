@@ -1,10 +1,10 @@
-import { ConvertProject } from '../../main/models/convertFormat.model';
+import { BKProject } from '../../main/models/projectFormat.model';
 import { AnimationSettings } from './animationSettings.model';
 
 export interface SubmissionArgs {
   combined: boolean;
   sourceDirectory?: string;
-  project: ConvertProject;
+  project: BKProject;
   animationSettings: AnimationSettings;
 }
 

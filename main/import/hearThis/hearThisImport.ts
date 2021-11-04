@@ -71,7 +71,7 @@ async function convertChapter(chapter: ConvertChapter, book: ConvertBook, projec
 }
 
 export async function bkImport(project: ConvertProject): Promise<BKProject> {
-  const bkProject: BKProject = { name: project.name, dirName: project.fullPath, books: [] };
+  const bkProject: BKProject = { name: project.name, fullPath: project.fullPath, books: [] };
   for await (const book of project.books) {
     const chapters = [];
     for await (const chapter of book.chapters) {

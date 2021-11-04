@@ -2,8 +2,8 @@ import { ipcRenderer } from 'electron';
 import _ from 'lodash';
 import { observable, computed, action, reaction, toJS } from 'mobx';
 import { persist } from 'mobx-persist';
-import { ConvertProject } from '../../../main/models/convertFormat.model';
 import { ProgressState } from '../../../main/models/progressState.model';
+import { BKProject } from '../../../main/models/projectFormat.model';
 import {
   BackgroundSettings,
   BackgroundType,
@@ -217,7 +217,7 @@ export class Project {
     }
   }
 
-  selectionToJS(): ConvertProject {
+  selectionToJS(): BKProject {
     return {
       name: this.name,
       fullPath: this.fullPath,
@@ -225,7 +225,7 @@ export class Project {
         name: book.name,
         chapters: book.selectedChapters.map((chapter) => ({
           name: chapter.name,
-          fullPath: chapter.fullPath,
+          audio: chapter.audio,
         })),
       })),
     };

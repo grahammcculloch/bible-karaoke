@@ -21,9 +21,10 @@ import { convert } from './commands/convert';
 import { prepareLogger } from './commands/logger';
 import { bkImport } from './import/hearThis/hearThisImport';
 import { ProgressState } from './models/progressState.model';
+import { BKProject } from './models/projectFormat.model';
 import { Verses } from './models/verses.model';
 import SourceIndex from './sources/index';
-import { Project, getSampleVerses } from './sources/util';
+import { getSampleVerses } from './sources/util';
 
 let mainWindow: BrowserWindow | undefined;
 
@@ -115,7 +116,7 @@ interface RootDirectories {
 export function handleGetProjects(): void {
   ipcMain.on('did-start-getprojectstructure', (event: IpcMainEvent, rootDirectories: RootDirectories): void => {
     const projects = flatten(
-      map(rootDirectories, (directories: string[], projectType: string): Project[] => {
+      map(rootDirectories, (directories: string[], projectType: string): BKProject[] => {
         // .getProjectStructure is in /main/sources/hear-this.ts or scripture-app-builder.ts
         const project = SourceIndex.getProject(projectType);
         return project != null ? project.getProjectStructure(directories) : [];
@@ -135,8 +136,8 @@ export function handleSubmission(): void {
     let response: string | Error;
     try {
       // ToDo: move this to the frontend and pass a subset of the selected chapters across the IPC.
-      const bkProject = await bkImport(args.project);
-      response = await convert(bkProject, args.combined, args.animationSettings, onProgress);
+      //const bkProject = await bkImport(args.project);
+      response = await convert(args.project, args.combined, args.animationSettings, onProgress);
     } catch (err) {
       response = err as Error;
     }
