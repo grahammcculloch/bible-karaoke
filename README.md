@@ -97,6 +97,10 @@ Releasing
    - a copy of the change log.
    - the installer artifact from GitHub **Actions** tab as Assets (attached binary) will be added in step 7.
 7. Push the tag then the commit to GitHub.
+8. Once the build Action has finished, it will add build artifact files to the draft release. Remove the `.blockmap` and `.yml` files and leave the `.exe`.
+9. Publish the release.
+10. In Team City, on the Bible Karaoke project, manually run the **Sign Installer** build.
+11. Replace the GitHub release `.exe` with the signed one from Team City downloaded from the Artifacts folder (keep the original GitHub filename).
 
 ### Style Guides
 
