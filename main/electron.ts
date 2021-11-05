@@ -33,7 +33,7 @@ export function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 970,
-    transparent: true,
+    show: false,
     backgroundColor: '#30404d',
     webPreferences: { nodeIntegration: true, webSecurity: true, enableRemoteModule: false },
   });
@@ -54,6 +54,9 @@ export function createWindow(): void {
       event.preventDefault();
       shell.openExternal(url);
     }
+  });
+  mainWindow.once('ready-to-show', () => {
+    mainWindow?.show();
   });
 }
 
@@ -142,13 +145,13 @@ export function handleSubmission(): void {
       event.sender.send('on-progress', progress);
     };
     winston.log('info', 'Starting conversion', args);
-    let response;
+    let response: string | Error;
     try {
       // ToDo: move this to the frontend and pass a subset of the selected chapters across the IPC.
       const bkProject = await bkImport(args.project);
       response = await convert(bkProject, args.combined, args.animationSettings, onProgress);
     } catch (err) {
-      response = err;
+      response = err as Error;
     }
 
     let result: SubmissionReturn = { error: new Error('[unknown response]') };
