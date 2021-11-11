@@ -1,5 +1,5 @@
 import fs from "fs";
-import CSS from "csstype";
+import type CSS from "csstype";
 import classnames from "classnames";
 import _ from "lodash";
 import { toJS } from "mobx";

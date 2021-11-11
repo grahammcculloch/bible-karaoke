@@ -1,2 +1,0 @@
-webvtt-py  # see github.com/glut23/webvtt-py e.g. pip install webvtt-py
-ffmpeg # assumes ffmpeg is installed on the command line
