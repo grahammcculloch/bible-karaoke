@@ -69,7 +69,7 @@ We provide a debugging configuration for VS Code (defined in `.vscode/launch.jso
 
 TODO
 
-### Build and package the app manually for testing
+### Build and package the app manually for testing:
 
 ```sh
 # Windows:
@@ -80,27 +80,23 @@ npm run electron-pack-mac
 npm run electron-pack-linux
 ```
 
-Build the app automatically for distribution:
+### Releasing
 
-- Push to a branch of the form `release/*`, e.g. `release/v0.3.5`, or `release/v0.3.5-rc1`.
-- Look in the GitHub **Actions** tab for the build artifacts.
-
-Releasing
-
-1. Update the _version_ in your project's `package.json` file (e.g. _0.3.4_).
-2. Run `npm i` to update `package-lock.json`.
-3. Update `CHANGELOG.md` with changes in this release.
-4. Commit these changes to your release branch as defined in the section above.
-5. Tag your commit. Make sure your tag name's format is `v*.*.*`.
-6. Create a new draft GitHub **Release**, ensure the following are included:
+1. Create a branch of the form `release/*`, e.g. `release/v0.3.5`, or `release/v0.3.5-rc1`.
+2. Update the _version_ in your project's `package.json` file (e.g. _0.3.5_).
+3. Run `npm i` to update `package-lock.json`.
+4. Update `CHANGELOG.md` with changes in this release.
+5. Commit these changes to your release branch.
+6. Tag your commit. Make sure your tag name's format is `v*.*.*`.
+7. Create a new draft GitHub **Release**, ensure the following are included:
    - a _Tag version_, e.g. `v0.3.4`.
    - a copy of the change log.
-   - the installer artifact from GitHub **Actions** tab as Assets (attached binary) will be added in step 7.
-7. Push the tag then the commit to GitHub.
-8. Once the build Action has finished, it will add build artifact files to the draft release. Remove the `.blockmap` and `.yml` files and leave the `.exe`.
-9. Publish the release.
-10. In Team City, on the Bible Karaoke project, manually run the **Sign Installer** build.
-11. Replace the GitHub release `.exe` with the signed one from Team City downloaded from the Artifacts folder (keep the original GitHub filename).
+   - add the ffmpeg license instructions copied from a previous release.
+8. Push the tag then the commit to GitHub.
+9. Once the build Action has finished, it will add build artifact files to the draft release. Remove the `.blockmap` and `.yml` files and leave the `.exe`.
+10. Publish the release.
+11. In Team City, on the Bible Karaoke project, manually run the **Sign Installer** build.
+12. Replace the GitHub release `.exe` with the signed one from Team City downloaded from the Artifacts folder (keep the original GitHub filename).
 
 ### Style Guides
 
