@@ -3,7 +3,7 @@ import { useObserver } from "mobx-react";
 import React from "react";
 import { Box } from "reflexbox";
 import styled from "styled-components";
-import { position } from "styled-system";
+import { position, PositionProps } from "styled-system";
 import { Button } from "../blueprint";
 import { TEXT_LOCATION } from "../constants";
 import { useStores } from "../store";
@@ -17,7 +17,7 @@ const Wrapper = styled(Box)`
   }
 `;
 
-export default function TextLocationToggle(props: { top: string; right: string }): JSX.Element {
+export default function TextLocationToggle(props: PositionProps): JSX.Element {
   const { appState } = useStores();
   const toggleTextLocation = React.useCallback(() => {
     appState.setTextLocation({

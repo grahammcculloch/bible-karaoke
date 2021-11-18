@@ -7,7 +7,7 @@ import { DEFAULT_BG_COLOR } from "../../constants";
 import { useStores } from "../../store";
 import ColorPicker from "../ColorPicker";
 import FileSelector from "../FileSelector";
-import EditPopover, { EditRow } from "./EditPopover";
+import EditPopover, { EditRow, EditPopoverProps } from "./EditPopover";
 
 const EditRadio = styled(Radio).attrs({
   width: 100,
@@ -15,7 +15,7 @@ const EditRadio = styled(Radio).attrs({
   mb: 0,
 })``;
 
-export default function BackgroundEditor(props: unknown): JSX.Element {
+export default function BackgroundEditor(props: EditPopoverProps): JSX.Element {
   const { appState } = useStores();
   return useObserver(() => {
     const { background } = appState;

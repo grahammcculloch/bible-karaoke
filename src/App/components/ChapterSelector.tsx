@@ -3,11 +3,11 @@ import _ from "lodash";
 import { useObserver } from "mobx-react";
 import React from "react";
 import { Flex } from "reflexbox";
-import { H3, Checkbox, Button, Card } from "../blueprint";
+import { Button, Card, CardProps, Checkbox, H3 } from "../blueprint";
 import { Chapter, useStores } from "../store";
 import { getChapterDisplayName } from "../util";
 
-export default function ChapterSelector(props: { flex: number }): JSX.Element {
+export default function ChapterSelector(props: CardProps): JSX.Element {
   const { appState } = useStores();
   return useObserver(() => {
     const book = _.get(appState.projects, ["activeProject", "activeBook"]);

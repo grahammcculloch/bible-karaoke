@@ -51,7 +51,8 @@ export const ButtonGroup: StyledComponent<typeof BP.ButtonGroup, object, {} & SL
 export const Icon: StyledComponent<typeof BP.Icon, object, {} & SLPProps> = styled(BP.Icon)`
   ${space} ${layout} ${position}
 `;
-export const Card: StyledComponent<typeof BP.Card, object, {} & SLFProps> = styled(BP.Card)`
+export type CardProps = SLFProps;
+export const Card: StyledComponent<typeof BP.Card, object, {} & CardProps> = styled(BP.Card)`
   ${space} ${layout} ${flexbox}
 `;
 export const Checkbox: StyledComponent<typeof BP.Checkbox, object, {} & SLFProps> = styled(BP.Checkbox)`

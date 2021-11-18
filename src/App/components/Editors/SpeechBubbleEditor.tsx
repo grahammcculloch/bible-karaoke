@@ -7,13 +7,13 @@ import styled from "styled-components";
 import { Text } from "../../blueprint";
 import { useStores } from "../../store";
 import ColorPicker from "../ColorPicker";
-import EditPopover, { EditRow } from "./EditPopover";
+import EditPopover, { EditRow, EditPopoverProps } from "./EditPopover";
 
 const StyleColorPicker = styled(ColorPicker).attrs({
   mr: 3,
 })``;
 
-export default function SpeechBubbleEditor(props: { top: string; right: string }): JSX.Element {
+export default function SpeechBubbleEditor(props: EditPopoverProps): JSX.Element {
   const { appState } = useStores();
 
   const setSpeechBubbleColor = (color: ColorResult): void => {

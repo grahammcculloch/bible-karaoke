@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Color, ColorChangeHandler, ColorResult, SketchPicker } from "react-color";
 import { PresetColor } from "react-color/lib/components/sketch/Sketch";
-import { Box } from "reflexbox";
+import { Box, BoxProps } from "reflexbox";
 import styled from "styled-components";
 
 const SWATCH_COLORS = [
@@ -33,40 +33,32 @@ const SWATCH_COLORS = [
   "#000000",
 ];
 
+interface SwatchProps extends BoxProps {
+  disabled?: boolean;
+}
+
 const Swatch = styled(Box).attrs({
   width: 30,
   height: 30,
   borderRadius: 4,
 })`
   border: solid grey 1px;
-  ${(props: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    bg?: any;
-    disabled?: boolean;
-  }): string => {
+  ${(props: SwatchProps): string => {
     return props.disabled ? "cursor: not-allowed;" : "";
   }}
 `;
 
-interface ColorPickerSettings {
+interface ColorPickerProps extends SwatchProps {
   value?: Color;
   presetColors?: PresetColor[];
   disableAlpha?: boolean;
-  disabled?: boolean;
   onChange?: ColorChangeHandler;
-  props?: unknown;
 }
 
-export default class ColorPicker extends React.Component<ColorPickerSettings> {
-  constructor(props: ColorPickerSettings) {
-    super(props);
-
-    this.defaultOnChange = this.defaultOnChange.bind(this);
-  }
-
-  defaultOnChange(color: ColorResult): void {
+export default class ColorPicker extends React.Component<ColorPickerProps> {
+  defaultOnChange = (color: ColorResult): void => {
     this.setState({ color: color.rgb });
-  }
+  };
 
   get propTypes(): {
     value?: PropTypes.Requireable<string | object>;
@@ -96,8 +88,7 @@ export default class ColorPicker extends React.Component<ColorPickerSettings> {
     return (
       <Popover disabled={this.props.disabled}>
         <Swatch
-          {...this.props.props}
-          bg={this.props.disabled ? undefined : this.props.value}
+          backgroundColor={this.props.disabled ? undefined : (this.props.value as string)}
           disabled={this.props.disabled}
         />
         <SketchPicker

@@ -6,14 +6,14 @@ import { ColorResult } from "react-color";
 import { HTMLSelect, Text, Button, ButtonGroup } from "../../blueprint";
 import { useStores } from "../../store";
 import ColorPicker from "../ColorPicker";
-import EditPopover, { EditRow } from "./EditPopover";
+import EditPopover, { EditRow, EditPopoverProps } from "./EditPopover";
 
 const FONT_SIZES = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((n) => ({
   value: n,
   label: `${n}pt`,
 }));
 
-export default function FontEditor(props: { mr: number; top: string; right: string }): JSX.Element {
+export default function FontEditor(props: EditPopoverProps): JSX.Element {
   const { appState } = useStores();
   const [fonts, setFonts] = React.useState<IOptionProps[]>();
 

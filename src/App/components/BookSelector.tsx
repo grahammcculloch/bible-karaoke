@@ -3,10 +3,10 @@ import _ from "lodash";
 import { useObserver } from "mobx-react";
 import React from "react";
 import { Flex } from "reflexbox";
-import { Tag, H3, Card, Button } from "../blueprint";
+import { Button, Card, CardProps, H3, Tag } from "../blueprint";
 import { Book, useStores } from "../store";
 
-export default function BookSelector(props: { flex: number }): JSX.Element | null {
+export default function BookSelector(props: CardProps): JSX.Element | null {
   const { appState } = useStores();
   return useObserver(() => {
     const project = appState.projects.activeProject;

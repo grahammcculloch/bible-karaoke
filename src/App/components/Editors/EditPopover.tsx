@@ -3,7 +3,7 @@ import { useObserver } from "mobx-react";
 import React from "react";
 import { Box, Flex } from "reflexbox";
 import styled from "styled-components";
-import { position, PositionProps } from "styled-system";
+import { position, PositionProps, SpaceProps } from "styled-system";
 import { Button, H5 } from "../../blueprint";
 
 const Wrapper = styled(Box)<PositionProps>`
@@ -16,14 +16,13 @@ export const EditRow = styled(Flex).attrs({
   alignItems: "center",
 })``;
 
-interface PopoverProps {
+export interface EditPopoverProps extends PositionProps, SpaceProps {
   icon?: IconName | MaybeElement;
   title?: string | JSX.Element;
   children?: JSX.Element | JSX.Element[];
-  props?: unknown[];
 }
 
-export default function EditPopover({ icon = "annotation", title, children, ...props }: PopoverProps): JSX.Element {
+export default function EditPopover({ icon = "annotation", title, children, ...props }: EditPopoverProps): JSX.Element {
   return useObserver(() => {
     return (
       <Wrapper top="8px" right="8px" {...props}>
