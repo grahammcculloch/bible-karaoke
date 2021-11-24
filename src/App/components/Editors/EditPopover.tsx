@@ -1,9 +1,9 @@
 import { Tooltip, Popover, PopoverInteractionKind, PopoverPosition, IconName, MaybeElement } from "@blueprintjs/core";
 import { useObserver } from "mobx-react";
 import React from "react";
-import { Box, Flex } from "reflexbox";
+import { Box, Flex, BoxProps } from "reflexbox";
 import styled from "styled-components";
-import { position, PositionProps, SpaceProps } from "styled-system";
+import { position, PositionProps } from "styled-system";
 import { Button, H5 } from "../../blueprint";
 
 const Wrapper = styled(Box)<PositionProps>`
@@ -16,7 +16,7 @@ export const EditRow = styled(Flex).attrs({
   alignItems: "center",
 })``;
 
-export interface EditPopoverProps extends PositionProps, SpaceProps {
+export interface EditPopoverProps extends PositionProps, BoxProps {
   icon?: IconName | MaybeElement;
   title?: string | JSX.Element;
   children?: JSX.Element | JSX.Element[];

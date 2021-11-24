@@ -1,7 +1,7 @@
 import { Tooltip } from "@blueprintjs/core";
 import { useObserver } from "mobx-react";
 import React from "react";
-import { Box } from "reflexbox";
+import { Box, BoxProps } from "reflexbox";
 import styled from "styled-components";
 import { position, PositionProps } from "styled-system";
 import { Button } from "../blueprint";
@@ -17,7 +17,7 @@ const Wrapper = styled(Box)`
   }
 `;
 
-export default function TextLocationToggle(props: PositionProps): JSX.Element {
+export default function TextLocationToggle(props: PositionProps | BoxProps): JSX.Element {
   const { appState } = useStores();
   const toggleTextLocation = React.useCallback(() => {
     appState.setTextLocation({
