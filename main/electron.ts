@@ -19,7 +19,6 @@ import { SubmissionArgs, SubmissionReturn } from '../src/models/submission.model
 import isDev from '../src/utility/isDev';
 import { convert } from './commands/convert';
 import { prepareLogger } from './commands/logger';
-import { bkImport } from './import/hearThis/hearThisImport';
 import { ProgressState } from './models/progressState.model';
 import { BKProject } from './models/projectFormat.model';
 import { Verses } from './models/verses.model';
@@ -114,15 +113,15 @@ interface RootDirectories {
 }
 
 export function handleGetProjects(): void {
-  ipcMain.on('did-start-getprojectstructure', (event: IpcMainEvent, rootDirectories: RootDirectories): void => {
+  ipcMain.on('did-start-getbkproject', (event: IpcMainEvent, rootDirectories: RootDirectories): void => {
     const projects = flatten(
       map(rootDirectories, (directories: string[], projectType: string): BKProject[] => {
-        // .getProjectStructure is in /main/sources/hear-this.ts or scripture-app-builder.ts
+        // .getBKProject is in /main/sources/hear-this.ts or scripture-app-builder.ts
         const project = SourceIndex.getProject(projectType);
-        return project != null ? project.getProjectStructure(directories) : [];
+        return project != null ? project.getBKProject(directories) : [];
       })
     );
-    event.sender.send('did-finish-getprojectstructure', projects);
+    event.sender.send('did-finish-getbkproject', projects);
   });
 }
 

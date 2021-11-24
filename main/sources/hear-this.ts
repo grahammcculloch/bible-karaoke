@@ -27,7 +27,7 @@ class HearThis implements ProjectSource {
     return PROJECT_TYPE;
   }
 
-  getProjectStructure(rootDirectories: string[]): BKProject[] {
+  getBKProject(rootDirectories: string[]): BKProject[] {
     try {
       return flatten(
         rootDirectories.map((directory: string) => {
@@ -45,10 +45,10 @@ class HearThis implements ProjectSource {
   makeProject(projectName: string, directory: string): BKProject {
     const project: BKProject = {
       name: projectName,
-      fullPath: path.join(directory, projectName),
+      folderPath: path.join(directory, projectName),
       books: [],
     };
-    const bookNames = sortInCanonicalOrder(getDirectories(project.fullPath));
+    const bookNames = sortInCanonicalOrder(getDirectories(project.folderPath));
     const projectBooks = bookNames
       .map((bookName: string) => this.makeBook(projectName, bookName, directory))
       .filter((book: BKBook) => book.chapters.length);
@@ -87,13 +87,13 @@ class HearThis implements ProjectSource {
       },
       segments: [],
     };
-    //chapter.name = parseInt(chapterName).toString();
     const sourceChapterDir = path.join(directory, projectName, bookName, chapterName);
     const chapterFiles = fs.readdirSync(sourceChapterDir, 'utf8');
+    const audioFiles = chapterFiles.filter((file: string) => file.endsWith('.wav'));
     const infoXmlPath = path.join(sourceChapterDir, DEFAULT_HEARTHIS_XML_FILE);
 
-    // skip chapters that have no xml file
-    if (!chapterFiles.includes(DEFAULT_HEARTHIS_XML_FILE)) {
+    // skip chapters that have no xml file or no audio files
+    if (!chapterFiles.includes(DEFAULT_HEARTHIS_XML_FILE) || audioFiles.length === 0) {
       return chapter;
     }
 
@@ -105,6 +105,10 @@ class HearThis implements ProjectSource {
 
     let chapterAudioLength = 0;
     for (const scriptLine of chapterInfo.ChapterInfo.Recordings.ScriptLine as ScriptLine[]) {
+      // Ignore undefined or empty scriptLines
+      if (!scriptLine) {
+        continue;
+      }
       // Fix #20 : ignore Chapter Headings
       if (scriptLine.HeadingType?._text === 'c' && scriptLine.Verse._text === '0') {
         continue;

@@ -7,7 +7,7 @@ class ScriptureAppBuilder implements ProjectSource {
   get PROJECT_TYPE(): string {
     return PROJECT_TYPE;
   }
-  getProjectStructure(directories: string[]): BKProject[] {
+  getBKProject(directories: string[]): BKProject[] {
     return [];
   }
 }

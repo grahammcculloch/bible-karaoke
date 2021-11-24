@@ -24,7 +24,7 @@ export default function App(): JSX.Element {
   const analyticsContext: AnalyticsContext = useAnalytics();
 
   autorun((): void => {
-    ipcRenderer.send("did-start-getprojectstructure", settings.rootDirectories);
+    ipcRenderer.send("did-start-getbkproject", settings.rootDirectories);
   });
 
   React.useEffect((): void => {

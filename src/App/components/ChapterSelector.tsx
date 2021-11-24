@@ -28,7 +28,7 @@ export default function ChapterSelector(props: CardProps): JSX.Element {
               />
             </Flex>
             <Flex flexWrap="wrap" m={-1}>
-              {book.chapterList.map((chapter: Chapter) => (
+              {book.chapters.map((chapter: Chapter) => (
                 <Button
                   m={1}
                   key={chapter.name}

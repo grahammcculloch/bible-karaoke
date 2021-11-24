@@ -17,7 +17,7 @@ export default function BookSelector(props: CardProps): JSX.Element | null {
       <Card {...props}>
         <H3>{project.name}</H3>
         <Flex flexWrap="wrap" m={-1}>
-          {project.bookList.map((book: Book): JSX.Element => {
+          {project.books.map((book: Book): JSX.Element => {
             let selectionCount = null;
             if (book.isSelected) {
               selectionCount = _.indexOf(project.bookSelection, book.name) + 1;
