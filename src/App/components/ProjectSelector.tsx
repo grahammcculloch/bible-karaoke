@@ -29,7 +29,7 @@ export default function ProjectSelector(): JSX.Element {
   return useObserver(() => {
     const projectOptions = [
       { value: "", label: "Select a project..." },
-      ..._.map(appState.projects.list, (p: Project) => ({ value: p.name, label: p.name })),
+      ..._.map(appState.projects.items, (p: Project) => ({ value: p.name, label: p.name })),
     ];
     return (
       <HTMLSelect

@@ -1,18 +1,20 @@
 import { join } from 'path';
 import test from 'ava';
-import { testPaths } from '../../../test/test-path-constants';
-import { bkImport } from '../hearThisImport';
-import { getProjectStructure } from '../readStructure';
+import { BKProject } from '../models/projectFormat.model';
+import { testPaths } from '../test/test-path-constants';
+import SourceIndex from './index';
 
-test('read-and-import-ht-project', async (t) => {
-  const structure = getProjectStructure([testPaths.fixtures]);
-  const actual = await bkImport(structure[0]);
+test('read-and-import-ht-project', (t) => {
+  const source = SourceIndex.getSource('hearThis');
+  const project = source != null ? source.getBKProjects([testPaths.fixtures]) : [];
+  const actual = source != null ? source.reloadProject(project[0]) : [];
   t.deepEqual(actual, expected);
 });
 
-const expected = {
+const expected: BKProject = {
   name: testPaths.exampleHearThisProjectName,
-  dirName: testPaths.exampleHearThisProjectPath,
+  folderPath: testPaths.exampleHearThisProjectPath,
+  sourceType: 'hearThis',
   books: [
     {
       name: 'Book1',

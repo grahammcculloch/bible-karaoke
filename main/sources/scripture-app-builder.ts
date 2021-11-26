@@ -1,14 +1,17 @@
 import { BKProject } from '../models/projectFormat.model';
 import ProjectSource from '../models/projectSource.model';
 
-const PROJECT_TYPE = 'scriptureAppBuilder';
+const SOURCE_TYPE = 'scriptureAppBuilder';
 
 class ScriptureAppBuilder implements ProjectSource {
-  get PROJECT_TYPE(): string {
-    return PROJECT_TYPE;
+  get SOURCE_TYPE(): string {
+    return SOURCE_TYPE;
   }
-  getBKProject(directories: string[]): BKProject[] {
+  getBKProjects(directories: string[]): BKProject[] {
     return [];
+  }
+  reloadProject(project: BKProject): BKProject {
+    return project;
   }
 }
 

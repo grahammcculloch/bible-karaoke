@@ -9,7 +9,7 @@ import ProjectSource from '../models/projectSource.model';
 import { paths } from '../path-constants';
 import { getDirectories, sortInCanonicalOrder } from './util';
 
-const PROJECT_TYPE = 'hearThis';
+const SOURCE_TYPE = 'hearThis';
 
 export const DEFAULT_HEARTHIS_XML_FILE = 'info.xml';
 
@@ -23,11 +23,11 @@ export interface ScriptLine {
 }
 
 class HearThis implements ProjectSource {
-  get PROJECT_TYPE(): string {
-    return PROJECT_TYPE;
+  get SOURCE_TYPE(): string {
+    return SOURCE_TYPE;
   }
 
-  getBKProject(rootDirectories: string[]): BKProject[] {
+  getBKProjects(rootDirectories: string[]): BKProject[] {
     try {
       return flatten(
         rootDirectories.map((directory: string) => {
@@ -42,10 +42,22 @@ class HearThis implements ProjectSource {
     }
   }
 
-  makeProject(projectName: string, directory: string): BKProject {
+  reloadProject(project: BKProject): BKProject {
+    const directory = path.parse(project.folderPath).dir;
+    const books = project.books.map((book: BKBook): BKBook => {
+      const chapters = book.chapters.map(
+        (chapter: BKChapter): BKChapter => this.makeChapter(project.name, book.name, chapter.name, directory, true)
+      );
+      return { name: book.name, chapters };
+    });
+    return { name: project.name, folderPath: project.folderPath, sourceType: project.sourceType, books };
+  }
+
+  private makeProject(projectName: string, directory: string): BKProject {
     const project: BKProject = {
       name: projectName,
       folderPath: path.join(directory, projectName),
+      sourceType: this.SOURCE_TYPE,
       books: [],
     };
     const bookNames = sortInCanonicalOrder(getDirectories(project.folderPath));
@@ -58,7 +70,7 @@ class HearThis implements ProjectSource {
     return project;
   }
 
-  makeBook(projectName: string, bookName: string, directory: string): BKBook {
+  private makeBook(projectName: string, bookName: string, directory: string): BKBook {
     const book: BKBook = {
       name: bookName,
       chapters: [],
@@ -71,14 +83,20 @@ class HearThis implements ProjectSource {
 
     const bookChapters = naturalSortChapterNames
       .map((chapterName: string) => this.makeChapter(projectName, bookName, chapterName, directory))
-      .filter((chapter: BKChapter) => chapter.audio.length);
+      .filter((chapter: BKChapter) => chapter.audio.files.length);
     for (const chapter of bookChapters) {
       book.chapters.push(chapter);
     }
     return book;
   }
 
-  makeChapter(projectName: string, bookName: string, chapterName: string, directory: string): BKChapter {
+  private makeChapter(
+    projectName: string,
+    bookName: string,
+    chapterName: string,
+    directory: string,
+    calculateAudioDuration = false
+  ): BKChapter {
     const chapter: BKChapter = {
       name: chapterName,
       audio: {
@@ -118,10 +136,14 @@ class HearThis implements ProjectSource {
       const audioFileName = `${segmentId - 1}.wav`;
       const audioPath: string = path.join(sourceChapterDir, audioFileName);
       // ignore scriptLines with no corresponding audio file
-      if (!chapterFiles.includes(audioFileName)) {
+      if (!audioFiles.includes(audioFileName)) {
         continue;
       }
-      const duration = getAudioDurationInMilliseconds(audioPath);
+
+      let duration = 0;
+      if (calculateAudioDuration) {
+        duration = getAudioDurationInMilliseconds(audioPath);
+      }
 
       chapter.audio.files.push({ filename: audioPath, length: duration });
 
@@ -133,8 +155,10 @@ class HearThis implements ProjectSource {
         length: duration,
         isHeading: scriptLine.Heading._text === 'true',
       });
-      chapterAudioLength += duration;
-      chapter.audio.length = chapterAudioLength;
+      if (calculateAudioDuration) {
+        chapterAudioLength += duration;
+        chapter.audio.length = chapterAudioLength;
+      }
     }
     return chapter;
   }

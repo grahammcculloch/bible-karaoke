@@ -3,11 +3,11 @@ import hearThis from './hear-this';
 import scriptureAppBuilder from './scripture-app-builder';
 
 export default class SourceIndex {
-  static getProject(projectType: string): ProjectSource | undefined {
+  static getSource(projectType: string): ProjectSource | undefined {
     switch (projectType) {
-      case hearThis.PROJECT_TYPE:
+      case hearThis.SOURCE_TYPE:
         return hearThis;
-      case scriptureAppBuilder.PROJECT_TYPE:
+      case scriptureAppBuilder.SOURCE_TYPE:
         return scriptureAppBuilder;
       default:
         return undefined;

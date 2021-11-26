@@ -2,6 +2,7 @@
 export interface BKProject {
   readonly name: string;
   readonly folderPath: string;
+  readonly sourceType: string;
   readonly books: BKBook[];
 }
 

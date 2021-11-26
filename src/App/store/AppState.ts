@@ -26,20 +26,6 @@ const SAMPLE_VERSES = [
     'And there was evening and there was morning, the first day.',
 ];
 
-const list = <T = Project>(dict: { [name: string]: T }, sortKey = 'name'): T[] => _.sortBy(_.values(dict), sortKey);
-
-const dict = <T = Project>(
-  list: T[],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  classType?: { new (item: any): T },
-  key = 'name'
-): { [name: string]: T } => {
-  return list.reduce((items, item) => {
-    items[item[key]] = classType ? new classType(item) : item;
-    return items;
-  }, {});
-};
-
 const isVideo = _.memoize((ext: string): boolean => ['mp4', 'webm', 'mov', 'avi'].includes(ext.toLowerCase()));
 
 class Background implements BackgroundSettings {
@@ -147,15 +133,17 @@ export class Book implements BKBook {
   }
 }
 
-type ProjectConstructor = { name: string; folderPath: string; books: BookConstructor[] };
+type ProjectConstructor = { name: string; folderPath: string; sourceType: string; books: BookConstructor[] };
 
 export class Project implements BKProject {
   name: string;
   folderPath: string;
+  readonly sourceType: string;
 
-  constructor({ name, folderPath, books }: ProjectConstructor) {
+  constructor({ name, folderPath, sourceType, books }: ProjectConstructor) {
     this.name = name;
     this.folderPath = folderPath;
+    this.sourceType = sourceType;
     this.books = books.map((book: BookConstructor) => new Book(book));
     this.books.forEach((book: Book) => {
       reaction(
@@ -215,6 +203,7 @@ export class Project implements BKProject {
     return {
       name: this.name,
       folderPath: this.folderPath,
+      sourceType: this.sourceType,
       books: this.selectedBooks.map((book) => ({
         name: book.name,
         chapters: book.selectedChapters.map((chapter) => ({
@@ -235,19 +224,14 @@ class ProjectList {
   }
 
   @observable
-  items: { [name: string]: Project } = {};
+  items: Project[] = [];
 
   @observable
   activeProjectName = '';
 
   @computed({ keepAlive: true })
-  get list(): Project[] {
-    return list(this.items);
-  }
-
-  @computed({ keepAlive: true })
   get activeProject(): Project {
-    return this.items[this.activeProjectName];
+    return _.find(this.items, { name: this.activeProjectName }) as Project;
   }
 
   @computed({ keepAlive: true })
@@ -264,11 +248,11 @@ class ProjectList {
   }
 
   @action.bound
-  setProjects(projectList: Project[]): void {
-    this.items = dict<Project>(projectList, Project);
+  setProjects(projectList: BKProject[]): void {
+    this.items = projectList.map((project) => new Project(project));
     if (projectList.length === 1) {
       this.activeProjectName = projectList[0].name;
-    } else if (!this.items[this.activeProjectName]) {
+    } else if (!_.find(this.items, { name: this.activeProjectName })) {
       this.activeProjectName = '';
     }
   }
@@ -276,7 +260,7 @@ class ProjectList {
   @action.bound
   setActiveProject(projectName = ''): void {
     this.activeProjectName = projectName;
-    this.list.forEach((project) => project.setActiveBook(''));
+    this.items.forEach((project) => project.setActiveBook(''));
   }
 }
 
