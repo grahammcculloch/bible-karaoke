@@ -351,13 +351,7 @@ class AppState {
       () => this.projects.firstSelectedChapter,
       (firstSelectedChapter) => {
         if (firstSelectedChapter && firstSelectedChapter.segments && firstSelectedChapter.segments[0].text) {
-          const sampleVerses = firstSelectedChapter.segments.map((segment: BKSegment, index: number) => {
-            if (index <= 4 && segment.text) {
-              return segment.text;
-            } else {
-              return '';
-            }
-          });
+          const sampleVerses = firstSelectedChapter.segments.slice(0, 4).map((segment: BKSegment) => segment.text);
           this.setVerses(sampleVerses);
         } else {
           this.setVerses(SAMPLE_VERSES);

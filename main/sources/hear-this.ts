@@ -13,7 +13,7 @@ const SOURCE_TYPE = 'hearThis';
 
 export const DEFAULT_HEARTHIS_XML_FILE = 'info.xml';
 
-export interface ScriptLine {
+interface ScriptLine {
   LineNumber: { _text: string };
   Text: { _text: string };
   RecordingTime: { _text: string };
