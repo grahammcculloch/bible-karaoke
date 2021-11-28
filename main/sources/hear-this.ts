@@ -4,10 +4,11 @@ import path from 'path';
 import { flatten } from 'lodash';
 import winston from 'winston';
 import { xml2json } from 'xml-js';
+import { fileFilters } from '../../src/App/constants';
 import { BKBook, BKChapter, BKProject } from '../models/projectFormat.model';
 import ProjectSource from '../models/projectSource.model';
 import { paths } from '../path-constants';
-import { getDirectories, sortInCanonicalOrder } from './util';
+import { getDirectories, isValidAudioFile, sortInCanonicalOrder } from './util';
 
 const SOURCE_TYPE = 'hearThis';
 
@@ -107,7 +108,7 @@ class HearThis implements ProjectSource {
     };
     const sourceChapterDir = path.join(directory, projectName, bookName, chapterName);
     const chapterFiles = fs.readdirSync(sourceChapterDir, 'utf8');
-    const audioFiles = chapterFiles.filter((file: string) => file.endsWith('.wav'));
+    const audioFiles = chapterFiles.filter((file: string) => isValidAudioFile(file, fileFilters.audio[0].extensions));
     const infoXmlPath = path.join(sourceChapterDir, DEFAULT_HEARTHIS_XML_FILE);
 
     // skip chapters that have no xml file or no audio files

@@ -103,3 +103,7 @@ export function sortInCanonicalOrder(bookNames: string[]): string[] {
   // append unrecognised books to the end
   return sortedBooks.concat(bookNames);
 }
+
+export function isValidAudioFile(file: string, audioExtensions: string[]): boolean {
+  return audioExtensions.some((ext: string) => file.toLowerCase().endsWith(`.${ext}`));
+}

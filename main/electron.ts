@@ -122,7 +122,6 @@ export function handleSubmission(): void {
     winston.log('info', 'Starting conversion', args);
     let response: string | Error;
     try {
-      // ToDo: move this to the frontend and pass a subset of the selected chapters across the IPC.
       const source = SourceIndex.getSource(args.project.sourceType);
       if (source == null) {
         throw new Error('Source undefined');
