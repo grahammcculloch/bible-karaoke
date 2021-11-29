@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import _ from 'lodash';
-import { observable, computed, action, reaction, toJS } from 'mobx';
+import { observable, computed, action, reaction, toJS, makeObservable } from 'mobx';
 import { persist } from 'mobx-persist';
 import { ProgressState } from '../../../main/models/progressState.model';
 import { BKProject, BKBook, BKChapter, BKAudio, BKSegment } from '../../../main/models/projectFormat.model';
@@ -29,6 +29,10 @@ const SAMPLE_VERSES = [
 const isVideo = _.memoize((ext: string): boolean => ['mp4', 'webm', 'mov', 'avi'].includes(ext.toLowerCase()));
 
 class Background implements BackgroundSettings {
+  constructor() {
+    makeObservable(this);
+  }
+
   @persist
   @observable
   color = DEFAULT_BG_COLOR;
@@ -73,6 +77,7 @@ export class Chapter implements BKChapter {
   segments: BKSegment[];
 
   constructor({ name, audio, segments }: ChapterConstructor) {
+    makeObservable(this);
     this.name = name;
     this.audio = audio;
     this.segments = segments;
@@ -98,6 +103,7 @@ export class Book implements BKBook {
   name: string;
 
   constructor({ name, chapters }: BookConstructor) {
+    makeObservable(this);
     this.name = name;
     this.chapters = chapters.map((chapter: ChapterConstructor) => new Chapter(chapter));
   }
@@ -141,6 +147,7 @@ export class Project implements BKProject {
   readonly sourceType: string;
 
   constructor({ name, folderPath, sourceType, books }: ProjectConstructor) {
+    makeObservable(this);
     this.name = name;
     this.folderPath = folderPath;
     this.sourceType = sourceType;
@@ -218,6 +225,7 @@ export class Project implements BKProject {
 
 class ProjectList {
   constructor() {
+    makeObservable(this);
     ipcRenderer.on('did-finish-getbkproject', (_event: Event, projects: Project[]) => {
       this.setProjects(projects);
     });
@@ -266,6 +274,7 @@ class ProjectList {
 
 export class Progress {
   constructor() {
+    makeObservable(this);
     ipcRenderer.on('on-progress', (_event: Event, progress: ProgressState) => {
       this.setProgress(progress);
     });
@@ -345,6 +354,7 @@ class AppState {
   timingFile: string;
 
   constructor(root: Store) {
+    makeObservable(this);
     this.root = root;
     this.timingFile = '';
     reaction(

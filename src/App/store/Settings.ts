@@ -1,6 +1,6 @@
 import os from 'os';
 import path from 'path';
-import { observable, computed, action } from 'mobx';
+import { observable, computed, action, makeObservable } from 'mobx';
 import { persist } from 'mobx-persist';
 import { PROJECT_TYPE, DEFAULT_OUTPUT_DIRECTORY } from '../constants';
 import Store from '.';
@@ -29,6 +29,7 @@ class Settings {
   root: Store;
 
   constructor(root: Store) {
+    makeObservable(this);
     this.root = root;
   }
 
