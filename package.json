@@ -85,7 +85,7 @@
     "concurrently": "^6.2.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "electron": "^9.4.4",
+    "electron": "^11.5.0",
     "electron-builder": "^22.11.7",
     "eslint-plugin-ava": "^10.5.0",
     "eslint-plugin-react": "^7.20.6",
