@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import { useObserver } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { Flex, Box } from "reflexbox";
 import styled from "styled-components";
@@ -84,9 +84,9 @@ const HeaderWrapper = styled(Flex)`
   }
 `;
 
-export default function AppHeader(): JSX.Element {
+const AppHeader = observer((): JSX.Element => {
   const { appState } = useStores();
-  return useObserver(() => (
+  return (
     <HeaderBackground>
       <HeaderWrapper className={classnames("header", { "header--minimized": !!appState.projects.activeProjectName })}>
         <img className="header__item header__item--logo" alt="logo" src="./logo512.png" />
@@ -99,5 +99,7 @@ export default function AppHeader(): JSX.Element {
         </Box>
       </HeaderWrapper>
     </HeaderBackground>
-  ));
-}
+  );
+});
+
+export default AppHeader;

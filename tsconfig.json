@@ -6,7 +6,6 @@
     "isolatedModules": true,
     "outDir": "build",
     "noEmit": true,
-    "experimentalDecorators": true,
     "useDefineForClassFields": true
   },
   "include": ["main/**/*", "typings"],

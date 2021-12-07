@@ -1,6 +1,6 @@
 import { IOptionProps } from "@blueprintjs/core/lib/esm/common/props";
 import { ipcRenderer } from "electron";
-import { useObserver } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { ColorResult } from "react-color";
 import { HTMLSelect, Text, Button, ButtonGroup } from "../../blueprint";
@@ -13,7 +13,7 @@ const FONT_SIZES = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((n) => ({
   label: `${n}pt`,
 }));
 
-export default function FontEditor(props: EditPopoverProps): JSX.Element {
+const FontEditor = observer((props: EditPopoverProps): JSX.Element => {
   const { appState } = useStores();
   const [fonts, setFonts] = React.useState<IOptionProps[]>();
 
@@ -62,24 +62,25 @@ export default function FontEditor(props: EditPopoverProps): JSX.Element {
     appState.setTextProps({ italic: !appState.text.italic });
   };
 
-  return useObserver(() => {
-    const { text } = appState;
-    return (
-      <EditPopover icon="font" title="Edit font" {...props}>
-        <EditRow>
-          <HTMLSelect mr={2} value={text.fontFamily} onChange={setFontFamily} options={fonts} />
-          <HTMLSelect mr={2} value={text.fontSize} onChange={setFontSize} options={FONT_SIZES} />
-          <ColorPicker value={text.color} onChange={setTextColor} />
-        </EditRow>
-        <EditRow mt={3}>
-          <ButtonGroup mr={3}>
-            <Button active={text.bold} text={<Text fontWeight="bold">B</Text>} onClick={toggleBold} />
-            <Button active={text.italic} text={<Text fontStyle="italic">i</Text>} onClick={toggleItalic} />
-          </ButtonGroup>
-          <Text mr={2}>Highlight:</Text>
-          <ColorPicker value={text.highlightColor} onChange={setHighlightColor} />
-        </EditRow>
-      </EditPopover>
-    );
-  });
-}
+  const { text } = appState;
+
+  return (
+    <EditPopover icon="font" title="Edit font" {...props}>
+      <EditRow>
+        <HTMLSelect mr={2} value={text.fontFamily} onChange={setFontFamily} options={fonts} />
+        <HTMLSelect mr={2} value={text.fontSize} onChange={setFontSize} options={FONT_SIZES} />
+        <ColorPicker value={text.color} onChange={setTextColor} />
+      </EditRow>
+      <EditRow mt={3}>
+        <ButtonGroup mr={3}>
+          <Button active={text.bold} text={<Text fontWeight="bold">B</Text>} onClick={toggleBold} />
+          <Button active={text.italic} text={<Text fontStyle="italic">i</Text>} onClick={toggleItalic} />
+        </ButtonGroup>
+        <Text mr={2}>Highlight:</Text>
+        <ColorPicker value={text.highlightColor} onChange={setHighlightColor} />
+      </EditRow>
+    </EditPopover>
+  );
+});
+
+export default FontEditor;

@@ -1,7 +1,7 @@
 import { Classes } from "@blueprintjs/core";
 import { ipcRenderer } from "electron";
 import { autorun } from "mobx";
-import { useObserver } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { BoxType, Flex } from "reflexbox";
 import styled, { StyledComponent } from "styled-components";
@@ -19,7 +19,7 @@ const AppWrapper: StyledComponent<BoxType, object, {}> = styled(Flex)`
   position: relative;
 `;
 
-export default function App(): JSX.Element {
+const App = observer((): JSX.Element => {
   const { settings } = useStores();
   const analyticsContext: AnalyticsContext = useAnalytics();
 
@@ -31,7 +31,7 @@ export default function App(): JSX.Element {
     analyticsContext.analytics.trackScreenview("Home");
   }, [analyticsContext]);
 
-  return useObserver(() => (
+  return (
     <AppWrapper
       minWidth="1024px"
       backgroundColor={Colors.background3}
@@ -59,5 +59,7 @@ export default function App(): JSX.Element {
         </Flex>
       </Flex>
     </AppWrapper>
-  ));
-}
+  );
+});
+
+export default App;

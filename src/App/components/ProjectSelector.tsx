@@ -1,11 +1,11 @@
 import _ from "lodash";
-import { useObserver } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { HTMLSelect } from "../blueprint";
 import { Project, useStores } from "../store";
 import { useAnalytics } from "./Analytics";
 
-export default function ProjectSelector(): JSX.Element {
+const ProjectSelector = observer((): JSX.Element => {
   const { appState } = useStores();
   const { analytics } = useAnalytics();
   const onChange = React.useCallback(
@@ -26,20 +26,21 @@ export default function ProjectSelector(): JSX.Element {
     },
     [appState, analytics]
   );
-  return useObserver(() => {
-    const projectOptions = [
-      { value: "", label: "Select a project..." },
-      ..._.map(appState.projects.items, (p: Project) => ({ value: p.name, label: p.name })),
-    ];
-    return (
-      <HTMLSelect
-        fill
-        large={!appState.projects.activeProjectName}
-        id="select-project"
-        options={projectOptions}
-        value={appState.projects.activeProjectName}
-        onChange={onChange}
-      />
-    );
-  });
-}
+  const projectOptions = [
+    { value: "", label: "Select a project..." },
+    ..._.map(appState.projects.items, (p: Project) => ({ value: p.name, label: p.name })),
+  ];
+
+  return (
+    <HTMLSelect
+      fill
+      large={!appState.projects.activeProjectName}
+      id="select-project"
+      options={projectOptions}
+      value={appState.projects.activeProjectName}
+      onChange={onChange}
+    />
+  );
+});
+
+export default ProjectSelector;

@@ -3,7 +3,7 @@ import type CSS from "csstype";
 import classnames from "classnames";
 import _ from "lodash";
 import { toJS } from "mobx";
-import { useObserver } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { Flex, Box } from "reflexbox";
 import styled from "styled-components";
@@ -134,79 +134,77 @@ const getViewBlob = (background: BackgroundSettings): string => {
   }
 };
 
-const Preview = (): JSX.Element => {
+const Preview = observer((): JSX.Element => {
   const { appState } = useStores();
-  return useObserver(() => {
-    const firstChapter = _.get(appState, ["projects", "firstSelectedChapter"]);
-    const { verses, background, speechBubble, text, textLocation } = appState;
-    const styleHeading: CSS.Properties = {
-      color: text.color || "#CCC",
-      fontFamily: text.fontFamily || "Arial",
-      fontSize: `${text.fontSize}pt` || "20px",
-      fontWeight: "bold",
-      fontStyle: text.italic ? "italic" : undefined,
-    };
+  const firstChapter = _.get(appState, ["projects", "firstSelectedChapter"]);
+  const { verses, background, speechBubble, text, textLocation } = appState;
+  const styleHeading: CSS.Properties = {
+    color: text.color || "#CCC",
+    fontFamily: text.fontFamily || "Arial",
+    fontSize: `${text.fontSize}pt` || "20px",
+    fontWeight: "bold",
+    fontStyle: text.italic ? "italic" : undefined,
+  };
 
-    const styleVerse: CSS.Properties = {
-      color: text.color || "#CCC",
-      fontFamily: text.fontFamily || "Arial",
-      fontSize: `${text.fontSize}pt` || "20px",
-      fontWeight: text.bold ? "bold" : undefined,
-      fontStyle: text.italic ? "italic" : undefined,
-    };
+  const styleVerse: CSS.Properties = {
+    color: text.color || "#CCC",
+    fontFamily: text.fontFamily || "Arial",
+    fontSize: `${text.fontSize}pt` || "20px",
+    fontWeight: text.bold ? "bold" : undefined,
+    fontStyle: text.italic ? "italic" : undefined,
+  };
 
-    const styles = {
-      background: {
-        backgroundColor: background.color || "transparent",
-        backgroundImage: getImageSrc(toJS(appState.background.file)),
-      },
-      speechBubble: {
-        opacity: speechBubble.opacity,
-        backgroundColor: speechBubble.color || "transparent",
-      },
-    };
+  const styles = {
+    background: {
+      backgroundColor: background.color || "transparent",
+      backgroundImage: getImageSrc(toJS(appState.background.file)),
+    },
+    speechBubble: {
+      opacity: speechBubble.opacity,
+      backgroundColor: speechBubble.color || "transparent",
+    },
+  };
 
-    const file: string = getViewBlob(background);
-    const versesClassName: string = classnames({
-      subtitle: textLocation.location === TEXT_LOCATION.subtitle,
-    });
-    const getVerseClassName = (index: number): string =>
-      classnames({
-        hide: textLocation.location === TEXT_LOCATION.subtitle && index !== HIGHLIGHT_VERSE_INDEX,
-      });
-
-    return (
-      <AnimatedVisibility visible={!!firstChapter}>
-        <Background className="preview" style={styles.background}>
-          <BackgroundEditor />
-          {background.type === "video" && <PreviewVideo src={file} id="myVideo" />}
-          <Verses className={versesClassName}>
-            {verses.map((verse: string, index: number) => (
-              <Verse
-                key={index}
-                className={getVerseClassName(index)}
-                style={verse.indexOf("<strong>") > -1 ? styleHeading : styleVerse}
-              >
-                {index === HIGHLIGHT_VERSE_INDEX && (
-                  <React.Fragment>
-                    <TextLocationToggle top="calc(50% - 15px)" right="-35px" />
-                    <FontEditor mr={2} top="-8px" right="24px" />
-                    <SpeechBubbleEditor top="-8px" right="4px" />
-                    <SpeechBubbleBackground style={styles.speechBubble} />
-                  </React.Fragment>
-                )}
-                <PreviewVerse
-                  verse={verse.replace("<strong>", "").replace("</strong>", "")}
-                  highlightVerse={index === HIGHLIGHT_VERSE_INDEX}
-                  highlightColor={text.highlightColor}
-                />
-              </Verse>
-            ))}
-          </Verses>
-        </Background>
-      </AnimatedVisibility>
-    );
+  const file: string = getViewBlob(background);
+  const versesClassName: string = classnames({
+    subtitle: textLocation.location === TEXT_LOCATION.subtitle,
   });
-};
+  const getVerseClassName = (index: number): string =>
+    classnames({
+      hide: textLocation.location === TEXT_LOCATION.subtitle && index !== HIGHLIGHT_VERSE_INDEX,
+    });
+
+  return (
+    <AnimatedVisibility visible={!!firstChapter}>
+      <Background className="preview" style={styles.background}>
+        <BackgroundEditor />
+        {background.type === "video" && <PreviewVideo src={file} id="myVideo" />}
+        <Verses className={versesClassName}>
+          {verses.map((verse: string, index: number) => (
+            <Verse
+              key={index}
+              className={getVerseClassName(index)}
+              style={verse.indexOf("<strong>") > -1 ? styleHeading : styleVerse}
+            >
+              {index === HIGHLIGHT_VERSE_INDEX && (
+                <React.Fragment>
+                  <TextLocationToggle top="calc(50% - 15px)" right="-35px" />
+                  <FontEditor mr={2} top="-8px" right="24px" />
+                  <SpeechBubbleEditor top="-8px" right="4px" />
+                  <SpeechBubbleBackground style={styles.speechBubble} />
+                </React.Fragment>
+              )}
+              <PreviewVerse
+                verse={verse.replace("<strong>", "").replace("</strong>", "")}
+                highlightVerse={index === HIGHLIGHT_VERSE_INDEX}
+                highlightColor={text.highlightColor}
+              />
+            </Verse>
+          ))}
+        </Verses>
+      </Background>
+    </AnimatedVisibility>
+  );
+});
 
 export default Preview;

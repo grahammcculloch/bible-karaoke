@@ -1,6 +1,6 @@
 import { Intent, IconName, MaybeElement } from "@blueprintjs/core";
 import _ from "lodash";
-import { useObserver } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { Flex, Box } from "reflexbox";
 import styled from "styled-components";
@@ -76,17 +76,17 @@ const ProgressText = (prop: { progress?: Progress }): JSX.Element => {
   );
 };
 
-const Action = (prop: {
-  icon: IconName | MaybeElement;
-  intent: Intent;
-  disabled: boolean;
-  onClick: (event: React.MouseEvent<HTMLElement>) => void;
-  combined: boolean;
-  mainText: string;
-  subText: string;
-}): JSX.Element => {
-  const { appState } = useStores();
-  return useObserver(() => {
+const Action = observer(
+  (prop: {
+    icon: IconName | MaybeElement;
+    intent: Intent;
+    disabled: boolean;
+    onClick: (event: React.MouseEvent<HTMLElement>) => void;
+    combined: boolean;
+    mainText: string;
+    subText: string;
+  }): JSX.Element => {
+    const { appState } = useStores();
     const progress: Progress | undefined = appState.progress.combined === prop.combined ? appState.progress : undefined;
     const inProgress = _.get(progress, "inProgress");
     return (
@@ -117,10 +117,10 @@ const Action = (prop: {
         </ButtonContent>
       </ActionButton>
     );
-  });
-};
+  }
+);
 
-export default function Actions(): JSX.Element {
+const Actions = observer((): JSX.Element => {
   const { appState } = useStores();
   const { analytics } = useAnalytics();
 
@@ -131,37 +131,36 @@ export default function Actions(): JSX.Element {
     },
     [appState, analytics]
   );
+  const { projects } = appState;
+  const totalChapterCount = _.get(projects, ["activeProject", "selectedChapterCount"], 0);
+  return (
+    <AnimatedVisibility visible={totalChapterCount > 0}>
+      <Flex alignItems="center" justifyContent="center" flexDirection="column">
+        <Action
+          combined={false}
+          icon="applications"
+          disabled={totalChapterCount === 1}
+          intent={Intent.PRIMARY}
+          onClick={(): void => {
+            onGenerateVideo(false, totalChapterCount);
+          }}
+          mainText={`Generate ${totalChapterCount} video${totalChapterCount > 1 ? "s" : ""}`}
+          subText="(One video per chapter)"
+        />
+        <Action
+          combined
+          icon="application"
+          disabled={false}
+          intent={Intent.PRIMARY}
+          onClick={(): void => {
+            onGenerateVideo(true);
+          }}
+          mainText="Generate a single video"
+          subText={`(${totalChapterCount} chapter${totalChapterCount > 1 ? "s" : ""})`}
+        />
+      </Flex>
+    </AnimatedVisibility>
+  );
+});
 
-  return useObserver(() => {
-    const { projects } = appState;
-    const totalChapterCount = _.get(projects, ["activeProject", "selectedChapterCount"], 0);
-    return (
-      <AnimatedVisibility visible={totalChapterCount > 0}>
-        <Flex alignItems="center" justifyContent="center" flexDirection="column">
-          <Action
-            combined={false}
-            icon="applications"
-            disabled={totalChapterCount === 1}
-            intent={Intent.PRIMARY}
-            onClick={(): void => {
-              onGenerateVideo(false, totalChapterCount);
-            }}
-            mainText={`Generate ${totalChapterCount} video${totalChapterCount > 1 ? "s" : ""}`}
-            subText="(One video per chapter)"
-          />
-          <Action
-            combined
-            icon="application"
-            disabled={false}
-            intent={Intent.PRIMARY}
-            onClick={(): void => {
-              onGenerateVideo(true);
-            }}
-            mainText="Generate a single video"
-            subText={`(${totalChapterCount} chapter${totalChapterCount > 1 ? "s" : ""})`}
-          />
-        </Flex>
-      </AnimatedVisibility>
-    );
-  });
-}
+export default Actions;

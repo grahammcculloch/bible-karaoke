@@ -1,7 +1,7 @@
 import { Icon, Tooltip, Classes, Position } from "@blueprintjs/core";
 import classnames from "classnames";
 import _ from "lodash";
-import { useObserver } from "mobx-react";
+import { observer } from "mobx-react";
 import PropTypes from "prop-types";
 import React from "react";
 import { Flex } from "reflexbox";
@@ -92,7 +92,7 @@ DirectoriesCard.propTypes = {
   defaultDirectory: PropTypes.string,
 };
 
-export default function Settings(): JSX.Element {
+const Settings = observer((): JSX.Element => {
   const { settings } = useStores();
   const { analytics } = useAnalytics();
   const repoUrl = repository.url.replace(/\.git$/, "");
@@ -100,7 +100,7 @@ export default function Settings(): JSX.Element {
   React.useEffect(() => {
     analytics.trackScreenview("Settings");
   }, [analytics]);
-  return useObserver(() => (
+  return (
     <Flex
       backgroundColor={Colors.background2}
       p={3}
@@ -175,5 +175,7 @@ export default function Settings(): JSX.Element {
         </a>
       </Text>
     </Flex>
-  ));
-}
+  );
+});
+
+export default Settings;

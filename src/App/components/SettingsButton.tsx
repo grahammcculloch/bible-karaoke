@@ -1,5 +1,4 @@
 import { Drawer, Classes, Tooltip, Position } from "@blueprintjs/core";
-import { useObserver } from "mobx-react";
 import React from "react";
 import { Flex } from "reflexbox";
 import { version } from "../../../package.json";
@@ -8,7 +7,7 @@ import Settings from "./Settings";
 
 export default function SettingsButton(): JSX.Element {
   const [settingsOpen, setSettingsOpen] = React.useState(false);
-  return useObserver(() => (
+  return (
     <React.Fragment>
       <Tooltip content="Settings" position={Position.TOP}>
         <Button minimal onClick={(): void => setSettingsOpen(true)} icon="cog" />
@@ -31,5 +30,5 @@ export default function SettingsButton(): JSX.Element {
         <Settings />
       </Drawer>
     </React.Fragment>
-  ));
+  );
 }

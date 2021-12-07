@@ -1,5 +1,5 @@
 import { Tooltip } from "@blueprintjs/core";
-import { useObserver } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { Box, BoxProps } from "reflexbox";
 import styled from "styled-components";
@@ -17,7 +17,7 @@ const Wrapper = styled(Box)`
   }
 `;
 
-export default function TextLocationToggle(props: PositionProps | BoxProps): JSX.Element {
+const TextLocationToggle = observer((props: PositionProps | BoxProps): JSX.Element => {
   const { appState } = useStores();
   const toggleTextLocation = React.useCallback(() => {
     appState.setTextLocation({
@@ -25,14 +25,14 @@ export default function TextLocationToggle(props: PositionProps | BoxProps): JSX
         appState.textLocation.location === TEXT_LOCATION.subtitle ? TEXT_LOCATION.center : TEXT_LOCATION.subtitle,
     });
   }, [appState]);
-  return useObserver(() => {
-    const isSubtitle = appState.textLocation.location === TEXT_LOCATION.subtitle;
-    return (
-      <Wrapper {...props}>
-        <Tooltip content={isSubtitle ? "Switch to centered mode" : "Switch to subtitle mode"}>
-          <Button minimal icon={isSubtitle ? "arrow-up" : "arrow-down"} onClick={toggleTextLocation} />
-        </Tooltip>
-      </Wrapper>
-    );
-  });
-}
+  const isSubtitle = appState.textLocation.location === TEXT_LOCATION.subtitle;
+  return (
+    <Wrapper {...props}>
+      <Tooltip content={isSubtitle ? "Switch to centered mode" : "Switch to subtitle mode"}>
+        <Button minimal icon={isSubtitle ? "arrow-up" : "arrow-down"} onClick={toggleTextLocation} />
+      </Tooltip>
+    </Wrapper>
+  );
+});
+
+export default TextLocationToggle;
