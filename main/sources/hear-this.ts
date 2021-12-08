@@ -31,11 +31,13 @@ class HearThis implements ProjectSource {
   getBKProjects(rootDirectories: string[]): BKProject[] {
     try {
       return flatten(
-        rootDirectories.map((directory: string) => {
-          return getDirectories(directory)
-            .map((name: string) => this.makeProject(name, directory))
-            .filter((project: BKProject) => project.books.length);
-        })
+        rootDirectories
+          .filter((directory: string) => fs.existsSync(directory))
+          .map((directory: string) => {
+            return getDirectories(directory)
+              .map((name: string) => this.makeProject(name, directory))
+              .filter((project: BKProject) => project.books.length);
+          })
       );
     } catch (error) {
       console.error(error);
