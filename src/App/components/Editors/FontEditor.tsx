@@ -1,5 +1,4 @@
 import { IOptionProps } from "@blueprintjs/core/lib/esm/common/props";
-import { ipcRenderer } from "electron";
 import { observer } from "mobx-react";
 import React from "react";
 import { ColorResult } from "react-color";
@@ -18,7 +17,7 @@ const FontEditor = observer((props: EditPopoverProps): JSX.Element => {
   const [fonts, setFonts] = React.useState<IOptionProps[]>();
 
   React.useEffect(() => {
-    ipcRenderer.on("did-finish-getfonts", (_event, newFonts) => {
+    window.api.on("did-finish-getfonts", (_event: Event, newFonts: any) => {
       if (Array.isArray(newFonts)) {
         setFonts(
           newFonts.map((fontName: string): IOptionProps => {
@@ -32,7 +31,7 @@ const FontEditor = observer((props: EditPopoverProps): JSX.Element => {
         console.warn("No fonts for selection", newFonts);
       }
     });
-    ipcRenderer.send("did-start-getfonts");
+    window.api.send("did-start-getfonts");
   }, []);
 
   const setFontFamily = (evt: React.ChangeEvent<HTMLSelectElement>): void => {

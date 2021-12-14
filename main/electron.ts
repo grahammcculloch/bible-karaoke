@@ -32,7 +32,13 @@ export function createWindow(): void {
     height: 970,
     show: false,
     backgroundColor: '#30404d',
-    webPreferences: { nodeIntegration: true, webSecurity: true, enableRemoteModule: false },
+    webPreferences: {
+      nodeIntegration: false,
+      webSecurity: true,
+      enableRemoteModule: true,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js'),
+    },
   });
   mainWindow.loadURL(isDev() ? 'http://localhost:3000' : `file://${path.join(__dirname, '../index.html')}`);
   if (isDev()) {

@@ -1,5 +1,4 @@
 import { Classes } from "@blueprintjs/core";
-import { ipcRenderer } from "electron";
 import { autorun } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
@@ -24,7 +23,7 @@ const App = observer((): JSX.Element => {
   const analyticsContext: AnalyticsContext = useAnalytics();
 
   autorun((): void => {
-    ipcRenderer.send("did-start-getbkproject", settings.rootDirectories);
+    window.api.send("did-start-getbkproject", settings.rootDirectories);
   });
 
   React.useEffect((): void => {

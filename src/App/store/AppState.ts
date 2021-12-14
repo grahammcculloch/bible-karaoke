@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+// import { ipcRenderer } from 'electron';
 import _ from 'lodash';
 import { observable, computed, action, reaction, toJS, makeObservable } from 'mobx';
 import { persist } from 'mobx-persist';
@@ -226,7 +226,7 @@ export class Project implements BKProject {
 class ProjectList {
   constructor() {
     makeObservable(this);
-    ipcRenderer.on('did-finish-getbkproject', (_event: Event, projects: Project[]) => {
+    window.api.on('did-finish-getbkproject', (_event: Event, projects: Project[]) => {
       this.setProjects(projects);
     });
   }
@@ -275,10 +275,10 @@ class ProjectList {
 export class Progress {
   constructor() {
     makeObservable(this);
-    ipcRenderer.on('on-progress', (_event: Event, progress: ProgressState) => {
+    window.api.on('on-progress', (_event: Event, progress: ProgressState) => {
       this.setProgress(progress);
     });
-    ipcRenderer.on('did-finish-conversion', (_event: Event, result: SubmissionReturn) => {
+    window.api.on('did-finish-conversion', (_event: Event, result: SubmissionReturn) => {
       if (result.outputDirectory) {
         this.finish();
       } else if (result.error?.message) {
@@ -308,7 +308,7 @@ export class Progress {
   @action.bound
   start(args: SubmissionArgs): void {
     console.log('Requesting processing', args);
-    ipcRenderer.send('did-start-conversion', args);
+    window.api.send('did-start-conversion', args);
     this.combined = args.combined;
     this.error = '';
     this.status = 'Getting things started...';
