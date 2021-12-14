@@ -38,7 +38,6 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@babel/plugin-proposal-decorators": "^7.16.4",
     "@blueprintjs/core": "^3.51.3",
     "@blueprintjs/select": "^3.18.10",
     "chromium": "^2.1.2",
@@ -46,8 +45,8 @@
     "datauri": "^2.0.0",
     "date-fns": "^2.27.0",
     "electron-ga-uuid": "^1.0.2",
-    "fs-extra": "^10.0.0",
     "font-list": "^1.4.2",
+    "fs-extra": "^10.0.0",
     "lodash": "^4.17.21",
     "mobx": "^6.3.8",
     "mobx-persist": "^0.4.1",
@@ -67,8 +66,6 @@
   "devDependencies": {
     "@ava/typescript": "^1.1.1",
     "@rescripts/cli": "^0.0.16",
-    "@rescripts/rescript-use-babel-config": "0.0.12",
-    "@rescripts/rescript-use-eslint-config": "^0.0.11",
     "@tsconfig/node16": "^1.0.2",
     "@types/lodash": "^4.14.170",
     "@types/node": "^12.20.37",
@@ -81,7 +78,6 @@
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "ava": "^3.15.0",
-    "babel-eslint": "^10.1.0",
     "concurrently": "^6.4.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
