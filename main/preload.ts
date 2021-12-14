@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { ProgressState } from '../main/models/progressState.model';
+import { BKProject } from '../main/models/projectFormat.model';
 import { OpenDialogOptions, SaveDialogOptions } from '../src/App/components/file-dialog.model';
 import { RootDirectories } from '../src/models/store.model';
 import { SubmissionArgs, SubmissionReturn } from '../src/models/submission.model';
@@ -18,7 +19,7 @@ export const api = {
   },
 
   onBKProject: (callback: Function): void => {
-    ipcRenderer.on('did-finish-getbkproject', (_event: Event, projects: any) => {
+    ipcRenderer.on('did-finish-getbkproject', (_event: Event, projects: BKProject) => {
       callback(projects);
     });
   },
@@ -53,7 +54,7 @@ export const api = {
     });
   },
 
-  startConversion: (settings: SubmissionArgs) => {
+  startConversion: (settings: SubmissionArgs): void => {
     ipcRenderer.send('did-start-conversion', settings);
   },
 
