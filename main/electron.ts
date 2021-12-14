@@ -35,7 +35,7 @@ export function createWindow(): void {
     webPreferences: {
       nodeIntegration: false,
       webSecurity: true,
-      enableRemoteModule: true,
+      enableRemoteModule: false,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     },

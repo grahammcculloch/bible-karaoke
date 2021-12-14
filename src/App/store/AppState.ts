@@ -1,4 +1,3 @@
-// import { ipcRenderer } from 'electron';
 import _ from 'lodash';
 import { observable, computed, action, reaction, toJS, makeObservable } from 'mobx';
 import { persist } from 'mobx-persist';
@@ -226,7 +225,7 @@ export class Project implements BKProject {
 class ProjectList {
   constructor() {
     makeObservable(this);
-    window.api.onBKProject((projects: Project[]) => {
+    window.api.onBKProject((projects: BKProject[]) => {
       this.setProjects(projects);
     });
   }

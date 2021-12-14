@@ -18,8 +18,8 @@ export const api = {
     ipcRenderer.send('did-start-getbkproject', rootDirectories);
   },
 
-  onBKProject: (callback: Function): void => {
-    ipcRenderer.on('did-finish-getbkproject', (_event: Event, projects: BKProject) => {
+  onBKProject: (callback: (project: BKProject[]) => void): void => {
+    ipcRenderer.on('did-finish-getbkproject', (_event: Event, projects: BKProject[]) => {
       callback(projects);
     });
   },
@@ -28,7 +28,7 @@ export const api = {
     ipcRenderer.send('did-start-file-save-dialog', options);
   },
 
-  onFileSave: (callback: Function): void => {
+  onFileSave: (callback: (saveFilePath: string) => void): void => {
     ipcRenderer.on('did-finish-file-save-dialog', (_event: Event, saveFilePath: string) => {
       callback(saveFilePath);
     });
@@ -38,7 +38,7 @@ export const api = {
     ipcRenderer.send('did-start-file-open-dialog', options);
   },
 
-  onFileOpen: (callback: Function): void => {
+  onFileOpen: (callback: (openFilePath: string) => void): void => {
     ipcRenderer.on('did-finish-file-open-dialog', (_event: Event, openFilePaths: string) => {
       callback(openFilePaths);
     });
@@ -48,7 +48,7 @@ export const api = {
     ipcRenderer.send('did-start-getfonts');
   },
 
-  onGetFonts: (callback: Function): void => {
+  onGetFonts: (callback: (newFonts: string[] | Error) => void): void => {
     ipcRenderer.on('did-finish-getfonts', (_event: Event, newFonts: string[] | Error) => {
       callback(newFonts);
     });
@@ -58,13 +58,13 @@ export const api = {
     ipcRenderer.send('did-start-conversion', settings);
   },
 
-  onProgress: (callback: Function): void => {
+  onProgress: (callback: (progress: ProgressState) => void): void => {
     ipcRenderer.on('on-progress', (_event: Event, progress: ProgressState) => {
       callback(progress);
     });
   },
 
-  onConversionFinish: (callback: Function): void => {
+  onConversionFinish: (callback: (result: SubmissionReturn) => void): void => {
     ipcRenderer.on('did-finish-conversion', (_event: Event, result: SubmissionReturn) => {
       callback(result);
     });
