@@ -34,7 +34,7 @@ const BookSelector = observer((props: CardProps): JSX.Element | null => {
             >
               {book.name}
               {book.isSelected && project.bookSelection.length > 1 && (
-                <Tag position="absolute" zIndex={2} right="-10px" top="-10px" round intent={Intent.SUCCESS}>
+                <Tag position="absolute" style={{zIndex:2}} right="-10px" top="-10px" round intent={Intent.SUCCESS}>
                   {selectionCount}
                 </Tag>
               )}
