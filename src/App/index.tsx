@@ -23,7 +23,7 @@ const App = observer((): JSX.Element => {
   const analyticsContext: AnalyticsContext = useAnalytics();
 
   autorun((): void => {
-    window.api.send("did-start-getbkproject", settings.rootDirectories);
+    window.api.getBKProject(settings.rootDirectories);
   });
 
   React.useEffect((): void => {

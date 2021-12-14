@@ -17,7 +17,7 @@ const FontEditor = observer((props: EditPopoverProps): JSX.Element => {
   const [fonts, setFonts] = React.useState<IOptionProps[]>();
 
   React.useEffect(() => {
-    window.api.on("did-finish-getfonts", (_event: Event, newFonts: any) => {
+    window.api.onGetFonts((newFonts: string[] | Error) => {
       if (Array.isArray(newFonts)) {
         setFonts(
           newFonts.map((fontName: string): IOptionProps => {
@@ -31,7 +31,7 @@ const FontEditor = observer((props: EditPopoverProps): JSX.Element => {
         console.warn("No fonts for selection", newFonts);
       }
     });
-    window.api.send("did-start-getfonts");
+    window.api.getFonts();
   }, []);
 
   const setFontFamily = (evt: React.ChangeEvent<HTMLSelectElement>): void => {

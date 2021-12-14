@@ -15,20 +15,20 @@ const FileSelector = (prop: {
 }): JSX.Element => {
   const selectFile = async (): Promise<void> => {
     if (prop.save) {
-      window.api.on("did-finish-file-save-dialog", (_: any, saveFilePath: string) => {
+      window.api.onFileSave((saveFilePath: string) => {
         if (saveFilePath) {
           prop.onFileSelected(saveFilePath);
         }
       });
-      window.api.send("did-start-file-save-dialog", prop.options as SaveDialogOptions);
+      window.api.saveFile(prop.options as SaveDialogOptions);
     } else {
-      window.api.on("did-finish-file-open-dialog", (_: any, openFilePaths: string) => {
+      window.api.onFileOpen(( openFilePaths: string) => {
         const openFilePath = openFilePaths && openFilePaths.length === 1 ? openFilePaths[0] : "";
         if (openFilePath) {
           prop.onFileSelected(openFilePath);
         }
       });
-      window.api.send("did-start-file-open-dialog", prop.options as OpenDialogOptions);
+      window.api.openFile(prop.options as OpenDialogOptions);
     }
   };
   return (

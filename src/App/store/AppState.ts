@@ -226,7 +226,7 @@ export class Project implements BKProject {
 class ProjectList {
   constructor() {
     makeObservable(this);
-    window.api.on('did-finish-getbkproject', (_event: Event, projects: Project[]) => {
+    window.api.onBKProject((projects: Project[]) => {
       this.setProjects(projects);
     });
   }
@@ -275,10 +275,10 @@ class ProjectList {
 export class Progress {
   constructor() {
     makeObservable(this);
-    window.api.on('on-progress', (_event: Event, progress: ProgressState) => {
+    window.api.onProgress((progress: ProgressState) => {
       this.setProgress(progress);
     });
-    window.api.on('did-finish-conversion', (_event: Event, result: SubmissionReturn) => {
+    window.api.onConversionFinish((result: SubmissionReturn) => {
       if (result.outputDirectory) {
         this.finish();
       } else if (result.error?.message) {
@@ -308,7 +308,7 @@ export class Progress {
   @action.bound
   start(args: SubmissionArgs): void {
     console.log('Requesting processing', args);
-    window.api.send('did-start-conversion', args);
+    window.api.startConversion(args);
     this.combined = args.combined;
     this.error = '';
     this.status = 'Getting things started...';
