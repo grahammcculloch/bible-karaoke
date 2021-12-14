@@ -1,13 +1,13 @@
 import fs from 'fs';
 import path from 'path';
-const pixelmatch = require('pixelmatch');
-const PNG = require('pngjs').PNG;
 import test from 'ava';
+import pixelmatch from 'pixelmatch';
 import tmp from 'tmp-promise';
 import { AnimationSettings } from '../../src/models/animationSettings.model';
-import { getHtml } from './renderFrames';
-import { record } from './recordFrames';
 import { Timings } from '../models/timings.model';
+import { record } from './recordFrames';
+import { getHtml } from './renderFrames';
+const PNG = require('pngjs').PNG;
 
 
 test('recordFrames: render 5 mock frames', async (t) => {
@@ -40,25 +40,25 @@ test('recordFrames: verify frames are not all the same', async (t) => {
   const directoryOfFrameFiles = fs.readdirSync(outputLocation);
   t.is(directoryOfFrameFiles.length, numberOfFrames);
 
-  var diffPixels = [];
+  const diffPixels = [];
   // loop through generated images and stop at every 15th (1 second)
-  for(var i=1; i < directoryOfFrameFiles.length; i = i + 15) {
+  for(let i=1; i < directoryOfFrameFiles.length; i = i + 15) {
     // generate compare image names
-    var imagePad1 = (i).toString().padStart(6, '0');
-    var imagePad2 = (i+1).toString().padStart(6, '0');
+    const imagePad1 = (i).toString().padStart(6, '0');
+    const imagePad2 = (i+1).toString().padStart(6, '0');
     // read compare images
-    var img1 = PNG.sync.read(fs.readFileSync(path.join(outputLocation,'frame_'+imagePad1+'.png')));
-    var img2 = PNG.sync.read(fs.readFileSync(path.join(outputLocation,'frame_'+imagePad2+'.png')));
+    const img1 = PNG.sync.read(fs.readFileSync(path.join(outputLocation,'frame_'+imagePad1+'.png')));
+    const img2 = PNG.sync.read(fs.readFileSync(path.join(outputLocation,'frame_'+imagePad2+'.png')));
     // get the image dimensions and create a placeholder PNG
-    var {width, height} = img1;
-    var diff = new PNG({width, height});
+    const {width, height} = img1;
+    const diff = new PNG({width, height});
     // for each set of images use pixelmatch to find the number of different pixels
     diffPixels.push(pixelmatch(img1.data, img2.data, diff.data, width, height, {threshold: 0}));
     // TIP: if you would like to see a PNG that shows the differences of the images uncomment this line
     // fs.writeFileSync('diff_'+i+'.png', PNG.sync.write(diff));
   }
   // store the number of times the compares do not change from second to second
-  var noChange = 0;
+  let noChange = 0;
   diffPixels.forEach((diff) => {
     if (diff == 0) {
       noChange++;
