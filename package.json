@@ -70,6 +70,7 @@
     "@types/lodash": "^4.14.170",
     "@types/node": "^12.20.37",
     "@types/pixelmatch": "^5.2.4",
+    "@types/pngjs": "^6.0.1",
     "@types/puppeteer-core": "^5.4.0",
     "@types/react": "^17.0.37",
     "@types/react-color": "^3.0.6",
