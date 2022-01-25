@@ -10,22 +10,19 @@ export async function combineVideos(
   outputFilePath: string,
   notifyEvent?: EventEmitter
 ): Promise<void> {
-  winston.info('Generating videoList file');
-  notifyEvent && notifyEvent.emit('Generating videoList file');
-  tmp.setGracefulCleanup();
-  // Create a temporary list file to concatenate videos (see https://trac.ffmpeg.org/wiki/Concatenate)
-  const { path: file, cleanup } = await tmp.file({ postfix: '.txt' });
-  const contents = videoPaths.map((videoPath) => `file '${videoPath}'`).join('\n');
-  writeFileSync(file, contents);
   winston.info('Combining Videos');
   notifyEvent && notifyEvent.emit('Combining Videos');
-  const combineProcess = spawnSync(
-    paths.ffmpeg,
-    ['-f', 'concat', '-loglevel', 'error', '-safe', '0', '-i', file, '-c', 'copy', outputFilePath],
-    {
-      stdio: 'pipe',
-    }
-  );
+  const args: string[] = ['-v', 'error'];
+  const filterComplex: string[] = [];
+  for (let i = 0; i < videoPaths.length; i++) {
+    args.push('-i', videoPaths[i]);
+    filterComplex.push(`[${i}:0]`, `[${i}:1]`);
+  }
+  filterComplex.push(`concat=n=${videoPaths.length}:v=1:a=1`, '[v]', '[a]');
+  args.push('-filter_complex', filterComplex.join(' '), '-map', '[v]', '-map', '[a]', outputFilePath);
+  const combineProcess = spawnSync(paths.ffmpeg, args, {
+    stdio: 'pipe',
+  });
   const stderr = combineProcess.stderr.toString();
   if (stderr !== '') {
     winston.error(stderr);
@@ -34,5 +31,4 @@ export async function combineVideos(
     winston.info('Videos Combined');
     notifyEvent && notifyEvent.emit('Videos Combined');
   }
-  cleanup();
 }
