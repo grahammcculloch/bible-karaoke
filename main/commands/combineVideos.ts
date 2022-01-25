@@ -1,7 +1,5 @@
 import { spawnSync } from 'child_process';
 import { EventEmitter } from 'events';
-import { writeFileSync } from 'fs';
-import tmp from 'tmp-promise';
 import winston from 'winston';
 import { paths } from '../path-constants';
 
@@ -14,6 +12,7 @@ export async function combineVideos(
   notifyEvent && notifyEvent.emit('Combining Videos');
   const args: string[] = ['-v', 'error'];
   const filterComplex: string[] = [];
+  // create FFmpeg command to combine the videos (https://ffmpeg.org/ffmpeg-filters.html#concat)
   for (let i = 0; i < videoPaths.length; i++) {
     args.push('-i', videoPaths[i]);
     filterComplex.push(`[${i}:0]`, `[${i}:1]`);
