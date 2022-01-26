@@ -1,7 +1,7 @@
-import _ from "lodash";
 import { observer } from "mobx-react";
 import React from "react";
 import { HTMLSelect } from "../blueprint";
+import { PROJECT_TYPE } from "../constants";
 import { Project, useStores } from "../store";
 import { useAnalytics } from "./Analytics";
 
@@ -26,20 +26,47 @@ const ProjectSelector = observer((): JSX.Element => {
     },
     [appState, analytics]
   );
-  const projectOptions = [
-    { value: "", label: "Select a project..." },
-    ..._.map(appState.projects.items, (p: Project) => ({ value: p.name, label: p.name })),
-  ];
 
+  appState.projects.items.forEach((p) => console.log(p.sourceType));
+
+  const hearThisProjects = appState.projects.items
+    .filter((p: Project) => p.sourceType === PROJECT_TYPE.hearThis)
+    .map((p: Project) => (
+      <option value={p.name} key={`${p.sourceType}: ${p.name}`}>
+        {"\u00A0\u00A0" + p.name}
+      </option>
+    ));
+  const SABProjects = appState.projects.items
+    .filter((p: Project) => p.sourceType === PROJECT_TYPE.scriptureAppBuilder)
+    .map((p: Project) => (
+      <option value={p.name} key={`${p.sourceType}: ${p.name}`}>
+        {"\u00A0\u00A0" + p.name}
+      </option>
+    ));
   return (
     <HTMLSelect
       fill
       large={!appState.projects.activeProjectName}
       id="select-project"
-      options={projectOptions}
       value={appState.projects.activeProjectName}
       onChange={onChange}
-    />
+    >
+      <option value="" key="Select a project...">
+        Select a project...
+      </option>
+      {hearThisProjects.length > 0 && (
+        <option disabled={true} value="" key="HearThis Disabled Label">
+          HearThis
+        </option>
+      )}
+      {hearThisProjects}
+      {SABProjects.length > 0 && (
+        <option disabled={true} value="" key="SAB Disabled Label">
+          SAB
+        </option>
+      )}
+      {SABProjects}
+    </HTMLSelect>
   );
 });
 
