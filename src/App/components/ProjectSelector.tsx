@@ -10,7 +10,7 @@ const ProjectSelector = observer((): JSX.Element => {
   const { analytics } = useAnalytics();
   const onChange = React.useCallback(
     (event) => {
-      if (!event.target.value && appState.projects.activeProjectName) {
+      if (!event.target.value && appState.projects.activeProjectPath) {
         // Do not allow user to 'un-select' a project
         return;
       }
@@ -27,28 +27,26 @@ const ProjectSelector = observer((): JSX.Element => {
     [appState, analytics]
   );
 
-  appState.projects.items.forEach((p) => console.log(p.sourceType));
-
   const hearThisProjects = appState.projects.items
     .filter((p: Project) => p.sourceType === PROJECT_TYPE.hearThis)
     .map((p: Project) => (
-      <option value={p.name} key={`${p.sourceType}: ${p.name}`}>
+      <option value={p.folderPath} key={p.folderPath}>
         {"\u00A0\u00A0" + p.name}
       </option>
     ));
   const SABProjects = appState.projects.items
     .filter((p: Project) => p.sourceType === PROJECT_TYPE.scriptureAppBuilder)
     .map((p: Project) => (
-      <option value={p.name} key={`${p.sourceType}: ${p.name}`}>
+      <option value={p.folderPath} key={p.folderPath}>
         {"\u00A0\u00A0" + p.name}
       </option>
     ));
   return (
     <HTMLSelect
       fill
-      large={!appState.projects.activeProjectName}
+      large={!appState.projects.activeProjectPath}
       id="select-project"
-      value={appState.projects.activeProjectName}
+      value={appState.projects.activeProjectPath}
       onChange={onChange}
     >
       <option value="" key="Select a project...">

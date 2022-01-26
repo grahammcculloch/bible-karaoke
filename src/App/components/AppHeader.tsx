@@ -88,7 +88,7 @@ const AppHeader = observer((): JSX.Element => {
   const { appState } = useStores();
   return (
     <HeaderBackground>
-      <HeaderWrapper className={classnames("header", { "header--minimized": !!appState.projects.activeProjectName })}>
+      <HeaderWrapper className={classnames("header", { "header--minimized": !!appState.projects.activeProjectPath })}>
         <img className="header__item header__item--logo" alt="logo" src="./logo512.png" />
         <H2 className="header__item header__item--title">Bible Karaoke</H2>
         <Box className="header__item header__item--select">

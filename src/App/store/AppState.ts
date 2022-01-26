@@ -234,11 +234,11 @@ class ProjectList {
   items: Project[] = [];
 
   @observable
-  activeProjectName = '';
+  activeProjectPath = '';
 
   @computed({ keepAlive: true })
   get activeProject(): Project {
-    return _.find(this.items, { name: this.activeProjectName }) as Project;
+    return _.find(this.items, { folderPath: this.activeProjectPath }) as Project;
   }
 
   @computed({ keepAlive: true })
@@ -258,15 +258,15 @@ class ProjectList {
   setProjects(projectList: BKProject[]): void {
     this.items = projectList.map((project) => new Project(project));
     if (projectList.length === 1) {
-      this.activeProjectName = projectList[0].name;
-    } else if (!_.find(this.items, { name: this.activeProjectName })) {
-      this.activeProjectName = '';
+      this.activeProjectPath = projectList[0].name;
+    } else if (!_.find(this.items, { folderPath: this.activeProjectPath })) {
+      this.activeProjectPath = '';
     }
   }
 
   @action.bound
-  setActiveProject(projectName = ''): void {
-    this.activeProjectName = projectName;
+  setActiveProject(projectPath = ''): void {
+    this.activeProjectPath = projectPath;
     this.items.forEach((project) => project.setActiveBook(''));
   }
 }
