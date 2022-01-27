@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 import path from 'path';
-import { path as chromiumPath } from 'chromium';
-import puppeteer from 'puppeteer-core';
+import puppeteer from 'puppeteer';
 
 // function defined in render.html
 declare function renderNextFrame(
@@ -16,9 +15,8 @@ export async function record(
   notifyEvent?: EventEmitter
 ): Promise<void> {
   const browser = await puppeteer.launch({
-    // chromium.path may or may not provide a path in an asar archive.  If it does
-    // it is unusable, and we'll attempt to swap it out for the un-archived version
-    executablePath: chromiumPath.replace('app.asar', 'app.asar.unpacked'),
+    // For a built app the path changes to the unpacked location.
+    executablePath: puppeteer['executablePath']().replace('app.asar', 'app.asar.unpacked'),
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
