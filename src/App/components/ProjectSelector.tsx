@@ -31,14 +31,14 @@ const ProjectSelector = observer((): JSX.Element => {
     .filter((p: Project) => p.sourceType === PROJECT_TYPE.hearThis)
     .map((p: Project) => (
       <option value={p.folderPath} key={p.folderPath}>
-        {"\u00A0\u00A0" + p.name}
+        {p.name}
       </option>
     ));
   const SABProjects = appState.projects.items
     .filter((p: Project) => p.sourceType === PROJECT_TYPE.scriptureAppBuilder)
     .map((p: Project) => (
       <option value={p.folderPath} key={p.folderPath}>
-        {"\u00A0\u00A0" + p.name}
+        {p.name}
       </option>
     ));
   return (
@@ -52,18 +52,8 @@ const ProjectSelector = observer((): JSX.Element => {
       <option value="" key="Select a project...">
         Select a project...
       </option>
-      {hearThisProjects.length > 0 && (
-        <option disabled={true} value="" key="HearThis Disabled Label">
-          HearThis
-        </option>
-      )}
-      {hearThisProjects}
-      {SABProjects.length > 0 && (
-        <option disabled={true} value="" key="SAB Disabled Label">
-          SAB
-        </option>
-      )}
-      {SABProjects}
+      <optgroup label="HearThis">{hearThisProjects}</optgroup>
+      <optgroup label="SAB">{SABProjects}</optgroup>
     </HTMLSelect>
   );
 });
