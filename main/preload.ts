@@ -5,13 +5,14 @@ import { OpenDialogOptions, SaveDialogOptions } from '../src/App/components/file
 import { RootDirectories } from '../src/models/store.model';
 import { SubmissionArgs, SubmissionReturn } from '../src/models/submission.model';
 
+export type API = typeof api;
 export const api = {
   /**
    * Here you can expose functions to the renderer process
    * so they can interact with the main (electron) side
    * without security problems.
    *
-   * The functions below can accessed using `window.api.fnName`
+   * The functions below can be accessed using `window.api.<fnName>`
    */
 
   getBKProject: (rootDirectories: RootDirectories): void => {

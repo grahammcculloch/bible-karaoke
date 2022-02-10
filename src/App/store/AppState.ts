@@ -3,6 +3,7 @@ import { observable, computed, action, reaction, toJS, makeObservable } from 'mo
 import { persist } from 'mobx-persist';
 import { ProgressState } from '../../../main/models/progressState.model';
 import { BKProject, BKBook, BKChapter, BKAudio, BKSegment } from '../../../main/models/projectFormat.model';
+import { API } from '../../../main/preload';
 import {
   BackgroundSettings,
   BackgroundType,
@@ -14,6 +15,12 @@ import { SubmissionArgs, SubmissionReturn } from '../../models/submission.model'
 import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR } from '../constants';
 import { getChapterDisplayName } from '../util';
 import Store from '.';
+
+declare global {
+  interface Window {
+    api: API;
+  }
+}
 
 const SAMPLE_VERSES = [
   'In the beginning, God created the heavens and the earth.',
