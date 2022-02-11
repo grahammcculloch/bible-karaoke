@@ -3,7 +3,7 @@ import path from 'path';
 import test from 'ava';
 import tmp from 'tmp-promise';
 import { testPaths } from '../test/test-path-constants';
-import { combineFrames, mergeWavFiles } from './ffmpeg';
+import { combineFrames, mergeWavFiles } from './combineFrames';
 
 test('mergeWavFiles smoke test: multiple files: success', async (t) => {
   const wavFiles = [
@@ -19,7 +19,7 @@ test('mergeWavFiles smoke test: multiple files: success', async (t) => {
 test('ffmpeg combineFrames creates video', async (t) => {
   tmp.setGracefulCleanup();
   const { path: directory, cleanup } = await tmp.dir({ unsafeCleanup: true });
-  const ffmpegSettings = {
+  const settings = {
     audioFiles: [
       path.join(testPaths.exampleHearThisProjectPath, 'Book1', '1', '1.wav'),
       path.join(testPaths.exampleHearThisProjectPath, 'Book1', '1', '2.wav'),
@@ -33,8 +33,8 @@ test('ffmpeg combineFrames creates video', async (t) => {
     backgroundUrl: '',
   };
 
-  await combineFrames(ffmpegSettings);
+  await combineFrames(settings);
 
-  t.true(fs.existsSync(ffmpegSettings.outputName));
+  t.true(fs.existsSync(settings.outputName));
   cleanup();
 });

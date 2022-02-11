@@ -1,5 +1,5 @@
 import test from 'ava';
-import { getGlobFormat } from './ffmpeg';
+import { getGlobFormat } from './combineFrames';
 
 test('getGlobFormat: nothing skipped: expected format', (t) => {
   const mp3Files = ['one.mp3', 'two.mp3'];

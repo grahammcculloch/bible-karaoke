@@ -1,4 +1,4 @@
-export interface FfmpegSettings {
+export interface CombineFramesSettings {
   readonly audioFiles: string[];
   readonly audioDuration: number; // seconds
   readonly imagesPath: string;

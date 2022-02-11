@@ -3,10 +3,10 @@ import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp-promise';
 import winston from 'winston';
-import { FfmpegSettings } from '../models/ffmpegSettings.model';
+import { CombineFramesSettings } from '../models/combineFramesSettings.model';
 import { paths } from '../path-constants';
 
-export async function combineFrames(settings: FfmpegSettings): Promise<void> {
+export async function combineFrames(settings: CombineFramesSettings): Promise<void> {
   const executeAudioPath = await combineAudioIfNecessary(settings.audioFiles);
 
   const args = ['-v', 'error'];

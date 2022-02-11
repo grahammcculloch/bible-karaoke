@@ -9,8 +9,8 @@ import { Timings } from '../models/timings.model';
 import { RecordFrameEventData } from '../rendering/recordFrames';
 import { render } from '../rendering/renderFrames';
 import { chapterFormatToTimings } from '../rendering/timings';
+import { combineFrames } from './combineFrames';
 import { combineVideos } from './combineVideos';
-import { combineFrames } from './ffmpeg';
 
 export async function convert(
   project: BKProject,
