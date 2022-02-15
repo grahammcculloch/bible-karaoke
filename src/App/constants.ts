@@ -1,5 +1,3 @@
-import os from 'os';
-import path from 'path';
 import { BackgroundType, TextLocationLocation } from '../models/animationSettings.model';
 
 export const DEFAULT_BG_COLOR = '#000';
@@ -21,30 +19,14 @@ export const TEXT_LOCATION: { subtitle: TextLocationLocation; center: TextLocati
   center: 'center',
 };
 
-export const DEFAULT_OUTPUT_DIRECTORY = (function (): string {
-  const BK_DIR_NAME = 'Bible Karaoke Videos';
-  switch (process.platform) {
-    case 'win32': {
-      const version = os.release();
-      // if windows 7
-      if (/^6\.1/.test(version)) {
-        return path.join(os.homedir(), 'My Videos', BK_DIR_NAME);
-      } else {
-        return path.join(os.homedir(), 'Videos', BK_DIR_NAME);
-      }
-    }
-    case 'darwin':
-      return path.join(os.homedir(), BK_DIR_NAME);
-    case 'linux':
-    default:
-      return path.join(os.homedir(), 'Videos', BK_DIR_NAME);
-  }
-})();
-
 const allFiles = {
   name: 'All files',
   extensions: ['*'],
 };
+
+export const IMAGE_BG_EXTS = ['jpg', 'png', 'jpeg'];
+
+export const VIDEO_BG_EXTS = ['mp4', 'webm', 'mov'];
 
 export const fileFilters = {
   text: [
@@ -71,7 +53,7 @@ export const fileFilters = {
   background: [
     {
       name: 'Background files',
-      extensions: ['jpg', 'png', 'mp4', 'webm', 'mov'],
+      extensions: [...IMAGE_BG_EXTS, ...VIDEO_BG_EXTS],
     },
   ],
   output: [

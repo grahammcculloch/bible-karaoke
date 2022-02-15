@@ -12,7 +12,7 @@ import {
   TextSettings,
 } from '../../models/animationSettings.model';
 import { SubmissionArgs, SubmissionReturn } from '../../models/submission.model';
-import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR } from '../constants';
+import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR, VIDEO_BG_EXTS } from '../constants';
 import { getChapterDisplayName } from '../util';
 import Store from '.';
 
@@ -32,7 +32,7 @@ const SAMPLE_VERSES = [
     'And there was evening and there was morning, the first day.',
 ];
 
-const isVideo = _.memoize((ext: string): boolean => ['mp4', 'webm', 'mov', 'avi'].includes(ext.toLowerCase()));
+const isVideo = _.memoize((ext: string): boolean => VIDEO_BG_EXTS.includes(ext.toLowerCase()));
 
 class Background implements BackgroundSettings {
   constructor() {

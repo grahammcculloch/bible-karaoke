@@ -1,7 +1,12 @@
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
 import { contextBridge, ipcRenderer } from 'electron';
+import _ from 'lodash';
 import { ProgressState } from '../main/models/progressState.model';
 import { BKProject } from '../main/models/projectFormat.model';
 import { OpenDialogOptions, SaveDialogOptions } from '../src/App/components/file-dialog.model';
+import { IMAGE_BG_EXTS, VIDEO_BG_EXTS } from '../src/App/constants';
 import { RootDirectories } from '../src/models/store.model';
 import { SubmissionArgs, SubmissionReturn } from '../src/models/submission.model';
 
@@ -69,6 +74,84 @@ export const api = {
     ipcRenderer.on('did-finish-conversion', (_event: Event, result: SubmissionReturn) => {
       callback(result);
     });
+  },
+
+  getImageSrc: _.memoize((file: string): string => {
+    if (!file) {
+      return '';
+    }
+    try {
+      const ext: string = file.split('.').pop() || '';
+      if (IMAGE_BG_EXTS.includes(ext.toLowerCase())) {
+        const img = fs.readFileSync(file);
+        const img64 = Buffer.from(img).toString('base64');
+        return `url(data:image/${ext};base64,${img64})`;
+      }
+    } catch (err) {
+      console.error(`Failed to load image from '${file}'`);
+    }
+    return '';
+  }),
+
+  getViewBlob: (file: string): string => {
+    if (!file) {
+      return '';
+    }
+    // eslint-disable-next-line no-undef
+    const URL = window.URL || window.webkitURL;
+    let video = null;
+    try {
+      const ext: string = file.split('.').pop() || '';
+      if (VIDEO_BG_EXTS.includes(ext.toLowerCase())) {
+        video = fs.readFileSync(file);
+        // eslint-disable-next-line no-undef
+        const fileURL = URL.createObjectURL(new Blob([video], { type: 'video/mp4' }));
+        return fileURL;
+      }
+    } catch (err) {
+      console.error(`Failed to load video from '${file}'`);
+    }
+    return '';
+  },
+
+  getDefaultOutputDirectory: (): string => {
+    const BK_DIR_NAME = 'Bible Karaoke Videos';
+    switch (process.platform) {
+      case 'win32': {
+        const version = os.release();
+        // if windows 7
+        if (/^6\.1/.test(version)) {
+          return path.join(os.homedir(), 'My Videos', BK_DIR_NAME);
+        } else {
+          return path.join(os.homedir(), 'Videos', BK_DIR_NAME);
+        }
+      }
+      case 'darwin':
+        return path.join(os.homedir(), BK_DIR_NAME);
+      case 'linux':
+      default:
+        return path.join(os.homedir(), 'Videos', BK_DIR_NAME);
+    }
+  },
+
+  getDefaultHearThisDirectory: (): string => {
+    switch (process.platform) {
+      case 'win32':
+        return 'C:\\ProgramData\\SIL\\HearThis\\';
+      case 'darwin':
+      default:
+        return `${os.homedir()}/hearThisProjects/`;
+    }
+  },
+
+  getDefaultScriptureAppBuilderDirectory: (): string => {
+    switch (process.platform) {
+      case 'win32':
+        return path.join(os.homedir(), 'Documents', 'App Builder', 'Scripture Apps', 'App Projects');
+      case 'darwin':
+      default:
+        return `${os.homedir()}/Documents/AppBuilder/Scripture Apps/App Projects/`;
+    }
   },
 };
 

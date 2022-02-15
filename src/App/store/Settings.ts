@@ -1,30 +1,8 @@
-import os from 'os';
-import path from 'path';
 import { observable, computed, action, makeObservable } from 'mobx';
 import { persist } from 'mobx-persist';
 import { RootDirectories } from '../../models/store.model';
-import { PROJECT_TYPE, DEFAULT_OUTPUT_DIRECTORY } from '../constants';
+import { PROJECT_TYPE } from '../constants';
 import Store from '.';
-
-export const getDefaultHearThisDirectory = (): string => {
-  switch (process.platform) {
-    case 'win32':
-      return 'C:\\ProgramData\\SIL\\HearThis\\';
-    case 'darwin':
-    default:
-      return `${os.homedir()}/hearThisProjects/`;
-  }
-};
-
-export const getDefaultScriptureAppBuilderDirectory = (): string => {
-  switch (process.platform) {
-    case 'win32':
-      return path.join(os.homedir(), 'Documents', 'App Builder', 'Scripture Apps', 'App Projects');
-    case 'darwin':
-    default:
-      return `${os.homedir()}/Documents/AppBuilder/Scripture Apps/App Projects/`;
-  }
-};
 
 class Settings {
   root: Store;
@@ -36,15 +14,15 @@ class Settings {
 
   @persist('list')
   @observable
-  hearThisRootDirectories: string[] = [getDefaultHearThisDirectory()];
+  hearThisRootDirectories: string[] = [window.api.getDefaultHearThisDirectory()];
 
   @persist('list')
   @observable
-  scriptureAppBuilderRootDirectories: string[] = [getDefaultScriptureAppBuilderDirectory()];
+  scriptureAppBuilderRootDirectories: string[] = [window.api.getDefaultScriptureAppBuilderDirectory()];
 
   @persist
   @observable
-  outputDirectory: string = DEFAULT_OUTPUT_DIRECTORY;
+  outputDirectory: string = window.api.getDefaultOutputDirectory();
 
   @persist
   @observable

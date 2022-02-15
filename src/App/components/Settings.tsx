@@ -8,9 +8,7 @@ import { Flex } from "reflexbox";
 import styled from "styled-components";
 import { repository } from "../../../package.json";
 import { H5, Colors, Text, Card, Button, Checkbox } from "../blueprint";
-import { DEFAULT_OUTPUT_DIRECTORY } from "../constants";
 import { useStores } from "../store";
-import { getDefaultHearThisDirectory, getDefaultScriptureAppBuilderDirectory } from "../store/Settings";
 import { useAnalytics } from "./Analytics";
 import FileSelector from "./FileSelector";
 
@@ -22,8 +20,8 @@ const DirectoryHeading = styled(Flex)`
 
 const descriptionTextClass = classnames(Classes.TEXT_SMALL, Classes.TEXT_MUTED);
 
-const defaultHearThisDirectory = getDefaultHearThisDirectory();
-const defaultAppBuilderDirectory = getDefaultScriptureAppBuilderDirectory();
+const defaultHearThisDirectory = window.api.getDefaultHearThisDirectory();
+const defaultAppBuilderDirectory = window.api.getDefaultScriptureAppBuilderDirectory();
 
 interface DirectoriesCardInterface {
   name: string;
@@ -95,7 +93,7 @@ const Settings = observer((): JSX.Element => {
   const { settings } = useStores();
   const { analytics } = useAnalytics();
   const repoUrl = repository.url.replace(/\.git$/, "");
-  const resetOutputDir = (): void => settings.setOutputDirectory(DEFAULT_OUTPUT_DIRECTORY);
+  const resetOutputDir = (): void => settings.setOutputDirectory(window.api.getDefaultOutputDirectory());
   React.useEffect(() => {
     analytics.trackScreenview("Settings");
   }, [analytics]);

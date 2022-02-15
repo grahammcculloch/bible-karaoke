@@ -1,4 +1,3 @@
-import fs from "fs";
 import type CSS from "csstype";
 import classnames from "classnames";
 import _ from "lodash";
@@ -7,7 +6,6 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Flex, Box } from "reflexbox";
 import styled from "styled-components";
-import { BackgroundSettings } from "../../models/animationSettings.model";
 import { TEXT_LOCATION } from "../constants";
 import { useStores } from "../store";
 import AnimatedVisibility from "./AnimatedVisibility";
@@ -85,22 +83,6 @@ const PreviewWord = styled.div`
 const HIGHLIGHT_VERSE_INDEX = 0;
 const HIGHLIGHT_WORD_INDEXES = [0, 1, 2];
 
-const getImageSrc = _.memoize((file: string): string => {
-  if (!file) {
-    return "";
-  }
-  try {
-    const ext: string = file.split(".").pop() || "";
-    if (["png", "jpg", "jpeg", "gif"].includes(ext.toLowerCase())) {
-      const img = fs.readFileSync(file).toString("base64");
-      return `url(data:image/${ext};base64,${img})`;
-    }
-  } catch (err) {
-    console.log(`Failed to load image from '${file}'`);
-  }
-  return "";
-});
-
 const PreviewVerse = (prop: { verse: string; highlightVerse: boolean; highlightColor: string }): JSX.Element => {
   return (
     <>
@@ -117,21 +99,6 @@ const PreviewVerse = (prop: { verse: string; highlightVerse: boolean; highlightC
       })}
     </>
   );
-};
-
-const getViewBlob = (background: BackgroundSettings): string => {
-  if (!background.file) {
-    return "";
-  }
-  const URL = window.URL || window.webkitURL;
-  let video = null;
-  try {
-    video = fs.readFileSync(background.file);
-    const fileURL = URL.createObjectURL(new Blob([video], { type: "video/mp4" }));
-    return fileURL;
-  } catch (err) {
-    return "";
-  }
 };
 
 const Preview = observer((): JSX.Element => {
@@ -157,7 +124,7 @@ const Preview = observer((): JSX.Element => {
   const styles = {
     background: {
       backgroundColor: background.color || "transparent",
-      backgroundImage: getImageSrc(toJS(appState.background.file)),
+      backgroundImage: window.api.getImageSrc(toJS(background.file)),
     },
     speechBubble: {
       opacity: speechBubble.opacity,
@@ -165,7 +132,7 @@ const Preview = observer((): JSX.Element => {
     },
   };
 
-  const file: string = getViewBlob(background);
+  const file: string = window.api.getViewBlob(background.file);
   const versesClassName: string = classnames({
     subtitle: textLocation.location === TEXT_LOCATION.subtitle,
   });
