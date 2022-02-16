@@ -30,7 +30,7 @@ export const api = {
   },
 
   onFileSave: (callback: (saveFilePath: string) => void): void => {
-    ipcRenderer.on('did-finish-file-save-dialog', (_event: Event, saveFilePath: string) => {
+    ipcRenderer.once('did-finish-file-save-dialog', (_event: Event, saveFilePath: string) => {
       callback(saveFilePath);
     });
   },
@@ -40,7 +40,7 @@ export const api = {
   },
 
   onFileOpen: (callback: (openFilePath: string) => void): void => {
-    ipcRenderer.on('did-finish-file-open-dialog', (_event: Event, openFilePaths: string) => {
+    ipcRenderer.once('did-finish-file-open-dialog', (_event: Event, openFilePaths: string) => {
       callback(openFilePaths);
     });
   },
