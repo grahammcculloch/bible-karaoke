@@ -1,9 +1,9 @@
-import { Intent } from "@blueprintjs/core";
+import { Alignment, Intent } from "@blueprintjs/core";
 import _ from "lodash";
 import { observer } from "mobx-react";
 import React from "react";
 import { Flex } from "reflexbox";
-import { Button, Card, CardProps, H3, Tag } from "../blueprint";
+import { Button, Card, CardProps, Checkbox, H3, Tag } from "../blueprint";
 import { Book, useStores } from "../store";
 
 const BookSelector = observer((props: CardProps): JSX.Element | null => {
@@ -14,7 +14,18 @@ const BookSelector = observer((props: CardProps): JSX.Element | null => {
   }
   return (
     <Card {...props}>
-      <H3>{project.name}</H3>
+      <Flex alignItems="center" justifyContent="space-between">
+        <H3>{project.name}</H3>
+        <Checkbox
+          label={project.isSelected ? "Un-select all" : "Select all"}
+          alignIndicator={Alignment.RIGHT}
+          onChange={(): void => {
+            project.toggleAllChapters();
+          }}
+          checked={project.allSelected}
+          indeterminate={project.isSelected && !project.allSelected}
+        />
+      </Flex>
       <Flex flexWrap="wrap" m={-1}>
         {project.books.map((book: Book): JSX.Element => {
           let selectionCount = null;

@@ -134,7 +134,7 @@ export class Book implements BKBook {
 
   @action.bound
   toggleAllChapters(): void {
-    const isSelected = this.allSelected;
+    const isSelected = this.isSelected;
     this.chapters.forEach((chapter: Chapter) => chapter.setIsSelected(!isSelected));
   }
 
@@ -192,6 +192,30 @@ export class Project implements BKProject {
       },
       0
     );
+  }
+
+  @computed({ keepAlive: true })
+  get isSelected(): boolean {
+    return this.books.some((b: Book) => {
+      return _.some(b.chapters, 'isSelected');
+    });
+  }
+
+  @computed({ keepAlive: true })
+  get allSelected(): boolean {
+    return this.books.every((b: Book) => {
+      return _.every(b.chapters, 'isSelected');
+    });
+  }
+
+  @action.bound
+  toggleAllChapters(): void {
+    const isSelected = this.isSelected;
+    this.books.forEach((b: Book) => {
+      b.chapters.forEach((c: Chapter) => {
+        c.isSelected = !isSelected;
+      });
+    });
   }
 
   @computed({ keepAlive: true })
