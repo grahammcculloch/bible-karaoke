@@ -17,7 +17,7 @@ const ChapterSelector = observer((props: CardProps): JSX.Element => {
           <Flex alignItems="center" justifyContent="space-between">
             <H3>{book.name}</H3>
             <Checkbox
-              label={book.isSelected ? "Un-select all" : "Select all"}
+              label={book.isSelected ? "Clear all" : "Select all"}
               alignIndicator={Alignment.RIGHT}
               onChange={(): void => {
                 book.toggleAllChapters();
