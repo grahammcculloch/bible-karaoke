@@ -1,11 +1,12 @@
 import { join } from 'path';
 import test from 'ava';
+import { SOURCE_TYPES } from '../../src/App/constants';
 import { BKProject } from '../models/projectFormat.model';
 import { testPaths } from '../test/test-path-constants';
 import SourceIndex from './index';
 
 test('read-and-import-ht-project', (t) => {
-  const source = SourceIndex.getSource('hearThis');
+  const source = SourceIndex.getSource(SOURCE_TYPES.hearThis);
   const project = source != null ? source.getBKProjects([testPaths.fixtures]) : [];
   const actual = source != null ? source.reloadProject(project[0]) : [];
   t.deepEqual(actual, expected);

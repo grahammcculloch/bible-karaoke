@@ -1,7 +1,7 @@
 import { observable, computed, action, makeObservable } from 'mobx';
 import { persist } from 'mobx-persist';
 import { RootDirectories } from '../../models/store.model';
-import { PROJECT_TYPE } from '../constants';
+import { SOURCE_TYPES } from '../constants';
 import Store from '.';
 
 class Settings {
@@ -35,8 +35,8 @@ class Settings {
   @computed({ keepAlive: true })
   get rootDirectories(): RootDirectories {
     return {
-      [PROJECT_TYPE.hearThis]: this.hearThisRootDirectories.slice(),
-      [PROJECT_TYPE.scriptureAppBuilder]: this.scriptureAppBuilderRootDirectories.slice(),
+      [SOURCE_TYPES.hearThis]: this.hearThisRootDirectories.slice(),
+      [SOURCE_TYPES.scriptureAppBuilder]: this.scriptureAppBuilderRootDirectories.slice(),
     };
   }
 

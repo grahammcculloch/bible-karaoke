@@ -3,11 +3,10 @@ import path from 'path';
 import { JSDOM } from 'jsdom';
 import _ from 'lodash';
 import usfm from 'usfm-js';
+import { SOURCE_TYPES } from '../../src/App/constants';
 import { BKBook, BKChapter, BKProject, BKSegment } from '../models/projectFormat.model';
 import ProjectSource from '../models/projectSource.model';
 import { getDirectories } from './util';
-
-const SOURCE_TYPE = 'scriptureAppBuilder';
 
 interface SfmJson {
   chapters?: {
@@ -23,9 +22,7 @@ interface SfmJson {
 }
 
 class ScriptureAppBuilder implements ProjectSource {
-  get SOURCE_TYPE(): string {
-    return SOURCE_TYPE;
-  }
+  readonly SOURCE_TYPE = SOURCE_TYPES.scriptureAppBuilder;
 
   getBKProjects(rootDirectories: string[]): BKProject[] {
     try {

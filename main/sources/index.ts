@@ -3,8 +3,8 @@ import hearThis from './hear-this';
 import scriptureAppBuilder from './scripture-app-builder';
 
 export default class SourceIndex {
-  static getSource(projectType: string): ProjectSource | undefined {
-    switch (projectType) {
+  static getSource(sourceType: string): ProjectSource | undefined {
+    switch (sourceType) {
       case hearThis.SOURCE_TYPE:
         return hearThis;
       case scriptureAppBuilder.SOURCE_TYPE:

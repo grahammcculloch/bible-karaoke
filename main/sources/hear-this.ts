@@ -4,13 +4,11 @@ import path from 'path';
 import { flatten } from 'lodash';
 import winston from 'winston';
 import { xml2json } from 'xml-js';
-import { fileFilters } from '../../src/App/constants';
+import { fileFilters, SOURCE_TYPES } from '../../src/App/constants';
 import { BKBook, BKChapter, BKProject } from '../models/projectFormat.model';
 import ProjectSource from '../models/projectSource.model';
 import { paths } from '../path-constants';
 import { getDirectories, isValidAudioFile, sortInCanonicalOrder } from './util';
-
-const SOURCE_TYPE = 'hearThis';
 
 export const DEFAULT_HEARTHIS_XML_FILE = 'info.xml';
 
@@ -24,9 +22,7 @@ interface ScriptLine {
 }
 
 class HearThis implements ProjectSource {
-  get SOURCE_TYPE(): string {
-    return SOURCE_TYPE;
-  }
+  readonly SOURCE_TYPE = SOURCE_TYPES.hearThis;
 
   getBKProjects(rootDirectories: string[]): BKProject[] {
     try {

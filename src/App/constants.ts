@@ -8,8 +8,7 @@ export const BACKGROUND_TYPE: { image: BackgroundType; video: BackgroundType; co
   color: 'color',
 };
 
-// HACK: These values must match the PROJECT_TYPE values in main/sources/*.ts
-export const PROJECT_TYPE = {
+export const SOURCE_TYPES = {
   hearThis: 'hearThis',
   scriptureAppBuilder: 'scriptureAppBuilder',
 };

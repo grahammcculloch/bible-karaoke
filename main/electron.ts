@@ -15,6 +15,7 @@ import {
 import fontList from 'font-list';
 import { map, flatten } from 'lodash';
 import winston from 'winston';
+import { RootDirectories } from '../src/models/store.model';
 import { SubmissionArgs, SubmissionReturn } from '../src/models/submission.model';
 import isDev from '../src/utility/isDev';
 import { convert } from './commands/convert';
@@ -96,22 +97,12 @@ export function handleGetFonts(): void {
   });
 }
 
-// NOTE: RootDirectories type is the [rootDirectories] property of App/store/Settings.ts
-// {
-//   [constants.ts - PROJECT_TYPE.hearThis]: string[]
-//   [constants.ts - PROJECT_TYPE.scriptureAppBuilder]: string[]
-// }
-interface RootDirectories {
-  hearThis: string[];
-  scriptureAppBuilder: string[];
-}
-
 export function handleGetProjects(): void {
   ipcMain.on('did-start-getbkproject', (event: IpcMainEvent, rootDirectories: RootDirectories): void => {
     const projects = flatten(
       map(rootDirectories, (directories: string[], sourceType: string): BKProject[] => {
-        // .getBKProject is in /main/sources/hear-this.ts or scripture-app-builder.ts
         const source = SourceIndex.getSource(sourceType);
+        // .getBKProject is in /main/sources/hear-this.ts or scripture-app-builder.ts
         return source != null ? source.getBKProjects(directories) : [];
       })
     );

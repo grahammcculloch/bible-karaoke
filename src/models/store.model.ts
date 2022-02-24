@@ -1,3 +1,3 @@
 export interface RootDirectories {
-  [projectType: string]: string[];
+  [sourceType: string]: string[];
 }

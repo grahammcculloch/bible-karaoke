@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { HTMLSelect } from "../blueprint";
-import { PROJECT_TYPE } from "../constants";
+import { SOURCE_TYPES } from "../constants";
 import { Project, useStores } from "../store";
 import { useAnalytics } from "./Analytics";
 
@@ -28,14 +28,14 @@ const ProjectSelector = observer((): JSX.Element => {
   );
 
   const hearThisProjects = appState.projects.items
-    .filter((p: Project) => p.sourceType === PROJECT_TYPE.hearThis)
+    .filter((p: Project) => p.sourceType === SOURCE_TYPES.hearThis)
     .map((p: Project) => (
       <option value={p.folderPath} key={p.folderPath}>
         {p.name}
       </option>
     ));
   const SABProjects = appState.projects.items
-    .filter((p: Project) => p.sourceType === PROJECT_TYPE.scriptureAppBuilder)
+    .filter((p: Project) => p.sourceType === SOURCE_TYPES.scriptureAppBuilder)
     .map((p: Project) => (
       <option value={p.folderPath} key={p.folderPath}>
         {p.name}
