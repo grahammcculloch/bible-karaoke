@@ -64,9 +64,6 @@ export const Radio: StyledComponent<typeof BP.Radio, object, {} & SLFProps> = st
 export const HTMLSelect: StyledComponent<typeof BP.HTMLSelect, object, {} & SLFProps> = styled(BP.HTMLSelect)`
   ${space} ${layout} ${flexbox}
 `;
-export const Tag: StyledComponent<typeof BP.Tag, object, {} & SLFPProps> = styled(BP.Tag)`
-  ${space} ${layout} ${flexbox} ${position}
-`;
 
 export const Colors: { [x: string]: string } = {
   logo: '#006666',
