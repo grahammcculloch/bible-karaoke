@@ -196,24 +196,24 @@ export class Project implements BKProject {
 
   @computed({ keepAlive: true })
   get isSelected(): boolean {
-    return this.books.some((b: Book) => {
-      return _.some(b.chapters, 'isSelected');
+    return this.books.some((book: Book) => {
+      return book.isSelected;
     });
   }
 
   @computed({ keepAlive: true })
   get allSelected(): boolean {
-    return this.books.every((b: Book) => {
-      return _.every(b.chapters, 'isSelected');
+    return this.books.every((book: Book) => {
+      return book.allSelected;
     });
   }
 
   @action.bound
   toggleAllChapters(): void {
     const isSelected = this.isSelected;
-    this.books.forEach((b: Book) => {
-      b.chapters.forEach((c: Chapter) => {
-        c.isSelected = !isSelected;
+    this.books.forEach((book: Book) => {
+      book.chapters.forEach((chapter: Chapter) => {
+        chapter.isSelected = !isSelected;
       });
     });
   }
