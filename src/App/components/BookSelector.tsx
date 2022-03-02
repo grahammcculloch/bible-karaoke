@@ -1,5 +1,4 @@
 import { Alignment, Intent } from "@blueprintjs/core";
-import _ from "lodash";
 import { observer } from "mobx-react";
 import React from "react";
 import { Flex } from "reflexbox";
