@@ -196,16 +196,12 @@ export class Project implements BKProject {
 
   @computed({ keepAlive: true })
   get isSelected(): boolean {
-    return this.books.some((book: Book) => {
-      return book.isSelected;
-    });
+    return this.books.some((book: Book) => book.isSelected);
   }
 
   @computed({ keepAlive: true })
   get allSelected(): boolean {
-    return this.books.every((book: Book) => {
-      return book.allSelected;
-    });
+    return this.books.every((book: Book) => book.allSelected);
   }
 
   @action.bound
