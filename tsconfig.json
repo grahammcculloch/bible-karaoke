@@ -1,13 +1,17 @@
 {
   "extends": "./tsconfig.spec.json",
   "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "isolatedModules": true,
-    "outDir": "build",
     "noEmit": true,
     "useDefineForClassFields": true
   },
-  "include": ["main/**/*", "typings"],
+  "include": ["src", "typings"],
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.integration.ts"]
 }

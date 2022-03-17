@@ -1,7 +1,7 @@
 import { Drawer, Classes, Tooltip, Position } from "@blueprintjs/core";
 import React from "react";
 import { Flex } from "reflexbox";
-import { version } from "../../../package.json";
+import packageData from "../../../package.json";
 import { Button, Text } from "../blueprint";
 import Settings from "./Settings";
 
@@ -21,7 +21,7 @@ export default function SettingsButton(): JSX.Element {
           <Flex justifyContent="space-between" alignItems="center">
             Settings
             <Text fontSize="70%" mr={2} className={Classes.TEXT_MUTED}>
-              v{version}
+              v{packageData.version}
             </Text>
           </Flex>
         }

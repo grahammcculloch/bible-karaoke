@@ -19,7 +19,6 @@ import { map, flatten } from 'lodash';
 import winston from 'winston';
 import { RootDirectories } from '../src/models/store.model';
 import { SubmissionArgs, SubmissionReturn } from '../src/models/submission.model';
-import isDev from '../src/utility/isDev';
 import { convert } from './commands/convert';
 import { prepareLogger } from './commands/logger';
 import { ProgressState } from './models/progressState.model';
@@ -42,11 +41,29 @@ export function createWindow(): void {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
-  mainWindow.loadURL(isDev() ? 'http://localhost:3000' : `file://${path.join(__dirname, '../index.html')}`);
-  if (isDev()) {
-    mainWindow.webContents.openDevTools();
-  } else {
+
+  if (app.isPackaged) {
+    // 'build/index.html'
+    mainWindow.loadURL(`file://${path.join(__dirname, '../index.html')}`);
     Menu.setApplicationMenu(null);
+  } else {
+    mainWindow.loadURL('http://localhost:3000/index.html');
+    mainWindow.webContents.openDevTools();
+
+    // Hot Reloading on 'node_modules/.bin/electronPath'
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    require('electron-reload')(__dirname, {
+      electron: path.join(
+        __dirname,
+        '..',
+        '..',
+        'node_modules',
+        '.bin',
+        'electron' + (process.platform === 'win32' ? '.cmd' : '')
+      ),
+      forceHardReset: true,
+      hardResetMethod: 'exit',
+    });
   }
 
   mainWindow.maximize();
@@ -158,7 +175,16 @@ export function handleSubmission(): void {
   });
 }
 
-app.whenReady().then((): void => {
+app.whenReady().then(async (): Promise<void> => {
+  if (!app.isPackaged) {
+    const electronDevtoolsInstallerModule = await import('electron-devtools-installer');
+    const installExtension = electronDevtoolsInstallerModule.default;
+    const { REACT_DEVELOPER_TOOLS } = electronDevtoolsInstallerModule;
+    installExtension(REACT_DEVELOPER_TOOLS)
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((err) => console.log('An error occurred: ', err));
+  }
+
   createWindow();
   handleSubmission();
   handleGetProjects();
@@ -170,10 +196,10 @@ app.whenReady().then((): void => {
       createWindow();
     }
   });
-});
 
-app.on('window-all-closed', (): void => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  app.on('window-all-closed', (): void => {
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
 });

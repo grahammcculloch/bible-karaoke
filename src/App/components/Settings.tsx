@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Flex } from "reflexbox";
 import styled from "styled-components";
-import { repository } from "../../../package.json";
+import packageData from "../../../package.json";
 import { H5, Colors, Text, Card, Button, Checkbox } from "../blueprint";
 import { useStores } from "../store";
 import { useAnalytics } from "./Analytics";
@@ -92,7 +92,7 @@ DirectoriesCard.propTypes = {
 const Settings = observer((): JSX.Element => {
   const { settings } = useStores();
   const { analytics } = useAnalytics();
-  const repoUrl = repository.url.replace(/\.git$/, "");
+  const repoUrl = packageData.repository.url.replace(/\.git$/, "");
   const resetOutputDir = (): void => settings.setOutputDirectory(window.api.getDefaultOutputDirectory());
   React.useEffect(() => {
     analytics.trackScreenview("Settings");

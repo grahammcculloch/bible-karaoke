@@ -19,8 +19,6 @@ type SLFProps = SpaceProps & LayoutProps & FlexboxProps;
 
 type SLPProps = SpaceProps & LayoutProps & PositionProps;
 
-type SLFPProps = SpaceProps & LayoutProps & FlexboxProps & PositionProps;
-
 export const Text: StyledComponent<typeof BP.Text, Record<string, unknown>, STLProps> = styled(BP.Text)`
   ${space} ${typography} ${layout}
 `;

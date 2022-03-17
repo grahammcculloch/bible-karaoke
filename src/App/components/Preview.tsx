@@ -1,5 +1,5 @@
-import type CSS from "csstype";
 import classnames from "classnames";
+import type CSS from "csstype";
 import _ from "lodash";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";

@@ -3,12 +3,12 @@ import os from 'os';
 import path from 'path';
 import { contextBridge, ipcRenderer } from 'electron';
 import _ from 'lodash';
-import { ProgressState } from '../main/models/progressState.model';
-import { BKProject } from '../main/models/projectFormat.model';
 import { OpenDialogOptions, SaveDialogOptions } from '../src/App/components/file-dialog.model';
 import { IMAGE_BG_EXTS, VIDEO_BG_EXTS } from '../src/App/constants';
 import { RootDirectories } from '../src/models/store.model';
 import { SubmissionArgs, SubmissionReturn } from '../src/models/submission.model';
+import { ProgressState } from './models/progressState.model';
+import { BKProject } from './models/projectFormat.model';
 
 export type API = typeof api;
 export const api = {

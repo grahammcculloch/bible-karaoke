@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
+    "target": "es5",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
@@ -9,7 +10,7 @@
     "preserveConstEnums": true,
     "strict": true,
     "suppressImplicitAnyIndexErrors": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "resolveJsonModule": true,
     "sourceMap": true
   },
