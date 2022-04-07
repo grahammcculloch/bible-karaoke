@@ -17,10 +17,10 @@ const Wrapper = styled(Box)`
 
 interface AnimatedVisibilityProps {
   visible: boolean;
-  children: JSX.Element[] | JSX.Element;
+  children: React.JSX.Element[] | React.JSX.Element;
 }
 
-export default function AnimatedVisibility(prop: AnimatedVisibilityProps): JSX.Element {
+export default function AnimatedVisibility(prop: AnimatedVisibilityProps): React.JSX.Element {
   return (
     <Wrapper flex={1} className={classnames({ visible: prop.visible })}>
       {prop.children}

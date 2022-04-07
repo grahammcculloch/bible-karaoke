@@ -14,7 +14,7 @@ const EditRadio = styled(Radio).attrs({
   mb: 0,
 })``;
 
-const BackgroundEditor = observer((props: EditPopoverProps): JSX.Element => {
+const BackgroundEditor = observer((props: EditPopoverProps): React.JSX.Element => {
   const { appState } = useStores();
   const { background } = appState;
   return (

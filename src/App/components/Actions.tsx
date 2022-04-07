@@ -58,7 +58,7 @@ const TextWrapper = styled(Flex).attrs({
   flexDirection: "column",
 })``;
 
-const ProgressText = (prop: { progress?: Progress }): JSX.Element => {
+const ProgressText = (prop: { progress?: Progress }): React.JSX.Element => {
   if (prop.progress == null) {
     return <Text></Text>;
   }
@@ -85,7 +85,7 @@ const Action = observer(
     combined: boolean;
     mainText: string;
     subText: string;
-  }): JSX.Element => {
+  }): React.JSX.Element => {
     const { appState } = useStores();
     const progress: Progress | undefined = appState.progress.combined === prop.combined ? appState.progress : undefined;
     const inProgress = _.get(progress, "inProgress");
@@ -120,7 +120,7 @@ const Action = observer(
   }
 );
 
-const Actions = observer((): JSX.Element => {
+const Actions = observer((): React.JSX.Element => {
   const { appState } = useStores();
   const { analytics } = useAnalytics();
 

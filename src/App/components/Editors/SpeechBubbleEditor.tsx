@@ -13,7 +13,7 @@ const StyleColorPicker = styled(ColorPicker).attrs({
   mr: 3,
 })``;
 
-const SpeechBubbleEditor = observer((props: EditPopoverProps): JSX.Element => {
+const SpeechBubbleEditor = observer((props: EditPopoverProps): React.JSX.Element => {
   const { appState } = useStores();
 
   const setSpeechBubbleColor = (color: ColorResult): void => {

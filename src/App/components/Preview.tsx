@@ -99,7 +99,7 @@ async function getViewBlob(file: string): Promise<string> {
   return "";
 }
 
-const PreviewVerse = (prop: { verse: string; highlightVerse: boolean; highlightColor: string }): JSX.Element => {
+const PreviewVerse = (prop: { verse: string; highlightVerse: boolean; highlightColor: string }): React.JSX.Element => {
   return (
     <>
       {prop.verse.split(" ").map((word, index) => {
@@ -117,7 +117,7 @@ const PreviewVerse = (prop: { verse: string; highlightVerse: boolean; highlightC
   );
 };
 
-const Preview = observer((): JSX.Element => {
+const Preview = observer((): React.JSX.Element => {
   const { appState } = useStores();
   const firstChapter = _.get(appState, ["projects", "firstSelectedChapter"]);
   const { verses, background, speechBubble, text, textLocation } = appState;

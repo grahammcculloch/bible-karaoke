@@ -18,8 +18,8 @@ interface AnalyticsProviderSettings {
 
 export function AnalyticsProvider(prop: {
   settings: AnalyticsProviderSettings;
-  children: JSX.Element[] | JSX.Element;
-}): JSX.Element {
+  children: React.JSX.Element[] | React.JSX.Element;
+}): React.JSX.Element {
   const [analyticsNoticeDisplayed, setAnalyticsNoticeDisplayed] = React.useState(localStorage.analyticsNoticeDisplayed);
   const [analytics] = React.useState<AnalyticsInterface>(new Analytics(prop.settings));
 

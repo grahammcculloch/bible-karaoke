@@ -12,7 +12,7 @@ const FONT_SIZES = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((n) => ({
   label: `${n}pt`,
 }));
 
-const FontEditor = observer((props: EditPopoverProps): JSX.Element => {
+const FontEditor = observer((props: EditPopoverProps): React.JSX.Element => {
   const { appState } = useStores();
   const [fonts, setFonts] = React.useState<OptionProps[]>();
 

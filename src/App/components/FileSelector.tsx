@@ -12,7 +12,7 @@ const FileSelector = (prop: {
   file?: string;
   options: SaveDialogOptions | OpenDialogOptions;
   onFileSelected: (file: string) => void;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const selectFile = async (): Promise<void> => {
     if (prop.save) {
       window.api.onFileSave((saveFilePath: string) => {
@@ -22,7 +22,7 @@ const FileSelector = (prop: {
       });
       window.api.saveFile(prop.options as SaveDialogOptions);
     } else {
-      window.api.onFileOpen(( openFilePaths: string) => {
+      window.api.onFileOpen((openFilePaths: string) => {
         const openFilePath = openFilePaths && openFilePaths.length === 1 ? openFilePaths[0] : "";
         if (openFilePath) {
           prop.onFileSelected(openFilePath);

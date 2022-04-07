@@ -82,7 +82,7 @@ export default class ColorPicker extends React.Component<ColorPickerProps> {
     };
   }
 
-  render(): JSX.Element {
+  render(): React.JSX.Element {
     return (
       <Popover disabled={this.props.disabled}>
         <Swatch

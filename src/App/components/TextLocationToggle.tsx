@@ -17,7 +17,7 @@ const Wrapper = styled(Box)`
   }
 `;
 
-const TextLocationToggle = observer((props: PositionProps | BoxProps): JSX.Element => {
+const TextLocationToggle = observer((props: PositionProps | BoxProps): React.JSX.Element => {
   const { appState } = useStores();
   const toggleTextLocation = React.useCallback(() => {
     appState.setTextLocation({

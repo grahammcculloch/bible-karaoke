@@ -5,7 +5,7 @@ import { Flex } from "reflexbox";
 import { Button, Card, CardProps, Checkbox, H3 } from "../blueprint";
 import { Book, useStores } from "../store";
 
-const BookSelector = observer((props: CardProps): JSX.Element | null => {
+const BookSelector = observer((props: CardProps): React.JSX.Element | null => {
   const { appState } = useStores();
   const project = appState.projects.activeProject;
   if (!project) {
@@ -26,7 +26,7 @@ const BookSelector = observer((props: CardProps): JSX.Element | null => {
         />
       </Flex>
       <Flex flexWrap="wrap" m={-1}>
-        {project.books.map((book: Book): JSX.Element => {
+        {project.books.map((book: Book): React.JSX.Element => {
           return (
             <Button
               position="relative"

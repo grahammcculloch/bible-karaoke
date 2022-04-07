@@ -5,7 +5,7 @@ import { SOURCE_TYPES } from "../constants";
 import { Project, useStores } from "../store";
 import { useAnalytics } from "./Analytics";
 
-const ProjectSelector = observer((): JSX.Element => {
+const ProjectSelector = observer((): React.JSX.Element => {
   const { appState } = useStores();
   const { analytics } = useAnalytics();
   const onChange = React.useCallback(
