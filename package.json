@@ -44,7 +44,7 @@
     "classnames": "^2.3.1",
     "datauri": "^2.0.0",
     "date-fns": "^2.27.0",
-    "electron-ga-uuid": "^1.0.2",
+    "electron-ga-uuid": "^1.0.3",
     "font-list": "^1.4.2",
     "fs-extra": "^10.0.0",
     "jsdom": "^19.0.0",
