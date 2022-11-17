@@ -1,7 +1,7 @@
 import { Popover } from "@blueprintjs/core";
 import PropTypes from "prop-types";
 import React from "react";
-import { Color, ColorChangeHandler, ColorResult, SketchPicker } from "react-color";
+import { Color, ColorChangeHandler, SketchPicker } from "react-color";
 import { PresetColor } from "react-color/lib/components/sketch/Sketch";
 import { Box, BoxProps } from "reflexbox";
 import styled from "styled-components";
@@ -56,10 +56,6 @@ interface ColorPickerProps extends SwatchProps {
 }
 
 export default class ColorPicker extends React.Component<ColorPickerProps> {
-  defaultOnChange = (color: ColorResult): void => {
-    this.setState({ color: color.rgb });
-  };
-
   get propTypes(): {
     // eslint-disable-next-line @typescript-eslint/ban-types
     value?: PropTypes.Requireable<string | object>;
@@ -97,7 +93,7 @@ export default class ColorPicker extends React.Component<ColorPickerProps> {
           presetColors={this.props.presetColors}
           disableAlpha={this.props.disableAlpha}
           color={this.props.value}
-          onChange={this.props.onChange || this.defaultOnChange}
+          onChange={this.props.onChange}
         />
       </Popover>
     );
