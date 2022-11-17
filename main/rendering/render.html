@@ -87,8 +87,8 @@
           let lyrics = "";
           let i = 0;
           // we need to store these to access later easily when building the animations
-          wordTiming = [];
-          phraseTiming = [];
+          const wordTiming = [];
+          const phraseTiming = [];
           timings.forEach((line) => {
             let j = 0;
             let text = "";
@@ -166,8 +166,6 @@
             previousDuration,
             duration
           ) {
-            const currentLine = line;
-
             const elem = document.querySelector("#p" + line + " ." + container);
             const wordAnimateOn = elem.animate(
               {
