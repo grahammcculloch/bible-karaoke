@@ -1,17 +1,17 @@
 import _ from 'lodash';
 import { observable, computed, action, reaction, toJS, makeObservable } from 'mobx';
 import { persist } from 'mobx-persist';
-import { ProgressState } from '../../../main/models/progressState.model';
-import { BKProject, BKBook, BKChapter, BKAudio, BKSegment } from '../../../main/models/projectFormat.model';
-import { API } from '../../../main/preload';
-import {
+import type { ProgressState } from '../../../main/models/progressState.model';
+import type { BKProject, BKBook, BKChapter, BKAudio, BKSegment } from '../../../main/models/projectFormat.model';
+import type { API } from '../../../main/preload';
+import type {
   BackgroundSettings,
   BackgroundType,
   SpeechBubbleSettings,
   TextLocationSettings,
   TextSettings,
 } from '../../models/animationSettings.model';
-import { SubmissionArgs, SubmissionReturn } from '../../models/submission.model';
+import type { SubmissionArgs, SubmissionReturn } from '../../models/submission.model';
 import { TEXT_LOCATION, BACKGROUND_TYPE, DEFAULT_BG_COLOR, VIDEO_BG_EXTS } from '../constants';
 import { getChapterDisplayName } from '../util';
 import Store from '.';
