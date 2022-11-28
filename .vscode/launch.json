@@ -14,8 +14,9 @@
       "name": "Debug AVA test file",
       "preLaunchTask": "npm: preintegration",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ava",
-      "runtimeArgs": ["--serial", "${fileDirname}/${fileBasenameNoExtension}.*", "${file}"],
+      "runtimeArgs": ["--serial", "${workspaceFolder}/build/${relativeFileDirname}/${fileBasenameNoExtension}.*"],
       "outputCapture": "std",
+      "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**/*.js"]
     }
   ]
