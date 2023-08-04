@@ -20,9 +20,6 @@ const DirectoryHeading = styled(Flex)`
 
 const descriptionTextClass = classnames(Classes.TEXT_SMALL, Classes.TEXT_MUTED);
 
-const defaultHearThisDirectory = window.api.getDefaultHearThisDirectory();
-const defaultAppBuilderDirectory = window.api.getDefaultScriptureAppBuilderDirectory();
-
 interface DirectoriesCardInterface {
   name: string;
   directories: string[];
@@ -90,10 +87,21 @@ DirectoriesCard.propTypes = {
 };
 
 const Settings = observer((): JSX.Element => {
+  const [defaultHearThisDirectory, setDefaultHearThisDirectory] = React.useState("");
+  const [defaultAppBuilderDirectory, setDefaultAppBuilderDirectory] = React.useState("");
   const { settings } = useStores();
   const { analytics } = useAnalytics();
   const repoUrl = packageData.repository.url.replace(/\.git$/, "");
-  const resetOutputDir = (): void => settings.setOutputDirectory(window.api.getDefaultOutputDirectory());
+  const resetOutputDir = React.useCallback(
+    async (): Promise<void> => settings.setOutputDirectory(await window.api.getDefaultOutputDirectory()),
+    [settings]
+  );
+  React.useEffect(() => {
+    window.api.getDefaultHearThisDirectory().then((directory) => setDefaultHearThisDirectory(directory));
+  }, []);
+  React.useEffect(() => {
+    window.api.getDefaultScriptureAppBuilderDirectory().then((directory) => setDefaultAppBuilderDirectory(directory));
+  }, []);
   React.useEffect(() => {
     analytics.trackScreenview("Settings");
   }, [analytics]);

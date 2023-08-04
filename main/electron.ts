@@ -95,6 +95,32 @@ function createWindow(): void {
   });
 }
 
+function handleDirectories() {
+  ipcMain.handle('getDefaultOutputDirectory', (): string => {
+    return path.join(app.getPath('videos'), 'Bible Karaoke Videos');
+  });
+
+  ipcMain.handle('getDefaultHearThisDirectory', (): string => {
+    switch (process.platform) {
+      case 'win32':
+        return 'C:\\ProgramData\\SIL\\HearThis\\';
+      case 'darwin':
+      default:
+        return `${app.getPath('home')}/hearThisProjects/`;
+    }
+  });
+
+  ipcMain.handle('getDefaultScriptureAppBuilderDirectory', (): string => {
+    switch (process.platform) {
+      case 'win32':
+        return path.join(app.getPath('documents'), 'App Builder', 'Scripture Apps', 'App Projects');
+      case 'darwin':
+      default:
+        return path.join(app.getPath('documents'), 'AppBuilder', 'Scripture Apps', 'App Projects');
+    }
+  });
+}
+
 function handleFileDialogs(): void {
   ipcMain.on('did-start-file-save-dialog', async (event: IpcMainEvent, options: SaveDialogOptions): Promise<void> => {
     if (mainWindow != null) {
@@ -190,6 +216,7 @@ app.whenReady().then(async (): Promise<void> => {
   handleGetProjects();
   handleGetFonts();
   handleFileDialogs();
+  handleDirectories();
 
   app.on('activate', (): void => {
     if (BrowserWindow.getAllWindows().length === 0) {
