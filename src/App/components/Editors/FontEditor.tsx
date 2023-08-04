@@ -1,4 +1,4 @@
-import { IOptionProps } from "@blueprintjs/core/lib/esm/common/props";
+import { OptionProps } from "@blueprintjs/core/lib/esm/common/props";
 import { observer } from "mobx-react";
 import React from "react";
 import { ColorResult } from "react-color";
@@ -14,13 +14,13 @@ const FONT_SIZES = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((n) => ({
 
 const FontEditor = observer((props: EditPopoverProps): JSX.Element => {
   const { appState } = useStores();
-  const [fonts, setFonts] = React.useState<IOptionProps[]>();
+  const [fonts, setFonts] = React.useState<OptionProps[]>();
 
   React.useEffect(() => {
     window.api.onGetFonts((newFonts: string[] | Error) => {
       if (Array.isArray(newFonts)) {
         setFonts(
-          newFonts.map((fontName: string): IOptionProps => {
+          newFonts.map((fontName: string): OptionProps => {
             return {
               value: fontName,
               label: fontName,

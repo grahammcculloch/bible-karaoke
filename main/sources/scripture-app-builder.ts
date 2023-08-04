@@ -208,14 +208,14 @@ class ScriptureAppBuilder implements ProjectSource {
       const audioFileName = xmlDoc.querySelector(fileSelector)?.textContent;
       const audioFileLength = xmlDoc.querySelector(fileSelector)?.getAttribute('len');
       const timingFileName = xmlDoc.querySelector(timingFileSelector)?.textContent;
-      // cancel if anything can't be found
+      // Skip if anything is not found.
       if (!audioFileName || !audioFileLength || !timingFileName || !chapterNumber) {
-        return [];
+        continue;
       }
 
-      const audioFile = this.calculateAudioFile(audioFileName, directory, projectName);
+      const audioFile = this.getAudioFilePath(audioFileName, directory, projectName);
       if (!audioFile) {
-        return [];
+        continue;
       }
 
       const segments: BKSegment[] = this.makeSegments(
@@ -416,7 +416,7 @@ class ScriptureAppBuilder implements ProjectSource {
         // verse number, then letter to indicate phrase number, underscore then word number
         // e.g. 1b_3; verse 1, phrase 2, word 3
         const verseRegex = /\d+([a-z]*)_?(\d*)/;
-        let match: RegExpMatchArray | null = [];
+        let match: RegExpMatchArray | null | undefined;
         let wordNum = 0;
         const extraTimingStart = timingData[currentTimingIndex].startTime;
         let extraTimingEnd = timingData[currentTimingIndex].endTime;
@@ -498,14 +498,33 @@ class ScriptureAppBuilder implements ProjectSource {
     return segments;
   }
 
-  private calculateAudioFile(oldFile: string, directory: string, projectName: string): string | undefined {
-    if (fs.existsSync(oldFile)) {
-      return oldFile;
+  /**
+   * Gets the audio file path.
+   * @param file - path to the file, may just be a filename.
+   * @param directory - path of the directory containing the project.
+   * @param projectName - name of the project.
+   * @returns the path to the audio file, or `undefined` if not found.
+   */
+  private getAudioFilePath(file: string, directory: string, projectName: string): string | undefined {
+    if (fs.existsSync(file)) {
+      return file;
     }
-    const split = oldFile.split(path.sep);
-    const dirList = fs.readdirSync(path.join(directory, projectName));
-    dirList.splice(dirList.indexOf(projectName + '.appDef'), 1);
-    dirList.splice(dirList.indexOf(projectName + '_data'), 1);
+
+    const split = file.split(path.sep);
+    const projectPath = path.join(directory, projectName);
+    const projectDataDirectoryName = `${projectName}_data`;
+    if (split.length === 1 && split[0] === file) {
+      // filePath is just a filename
+      const audioFilePath = path.join(projectPath, projectDataDirectoryName, 'audio', file);
+      if (fs.existsSync(audioFilePath)) {
+        // found in default audio file location
+        return audioFilePath;
+      }
+    }
+
+    const dirList = fs.readdirSync(projectPath);
+    dirList.splice(dirList.indexOf(`${projectName}.appDef`), 1);
+    dirList.splice(dirList.indexOf(projectDataDirectoryName), 1);
     for (const dirName in dirList) {
       if (split.includes(dirName)) {
         const audioFile = path.join(directory, projectName, ...split.slice(split.lastIndexOf(dirName)));
