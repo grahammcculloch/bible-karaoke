@@ -1,6 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { observable, computed, action, makeObservable } from 'mobx';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { persist } from 'mobx-persist';
-import { RootDirectories } from '../../models/store.model';
+import type { RootDirectories } from '../../models/store.model';
 import { SOURCE_TYPES } from '../constants';
 import Store from '.';
 

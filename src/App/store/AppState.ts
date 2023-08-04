@@ -1,5 +1,7 @@
 import _ from 'lodash';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { observable, computed, action, reaction, toJS, makeObservable } from 'mobx';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { persist } from 'mobx-persist';
 import type { ProgressState } from '../../../main/models/progressState.model';
 import type { BKProject, BKBook, BKChapter, BKAudio, BKSegment } from '../../../main/models/projectFormat.model';
