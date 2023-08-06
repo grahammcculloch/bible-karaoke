@@ -1,7 +1,7 @@
-import os from 'os';
 import { join } from 'path';
 import util from 'util';
 import { format as dateFormat } from 'date-fns';
+import { app } from 'electron';
 import fs from 'fs-extra';
 import winston from 'winston';
 import isDev from '../../src/utility/isDev';
@@ -9,21 +9,8 @@ import isDev from '../../src/utility/isDev';
 // Sets up the logger. Should be called when opening the app.
 export async function prepareLogger(numLogsToKeep = 10, pathToLogDir = ''): Promise<void> {
   // make sure the logging directory exists
-  const homedir = os.homedir();
   if (pathToLogDir === '') {
-    switch (process.platform) {
-      case 'darwin':
-        pathToLogDir = join(homedir, 'Library', 'Logs', 'bible-karaoke');
-        break;
-
-      case 'win32':
-        pathToLogDir = join(homedir, 'AppData', 'Roaming', 'bible-karaoke', 'logs');
-        break;
-
-      default:
-        pathToLogDir = join(homedir, '.config', 'bible-karaoke', 'logs');
-        break;
-    }
+    pathToLogDir = app.getPath('logs');
   }
   fs.mkdirsSync(pathToLogDir);
 
@@ -74,6 +61,8 @@ export async function prepareLogger(numLogsToKeep = 10, pathToLogDir = ''): Prom
             const metaWithoutSymbols = Object.keys(meta)
               .filter((key) => typeof key !== 'symbol')
               .reduce((obj, key) => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 obj[key] = meta[key];
                 return obj;
               }, {});

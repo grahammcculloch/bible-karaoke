@@ -353,6 +353,8 @@ class ScriptureAppBuilder implements ProjectSource {
         if (parseInt(verseNumber) === parseInt(verseBridge[0])) {
           startTime = timingData[currentTimingIndex].startTime;
         }
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         verseTextArray.push(getVerseText(chapterJson[verseNumber]));
         if (parseInt(verseNumber) < parseInt(verseBridge[1])) {
           continue;
@@ -385,6 +387,8 @@ class ScriptureAppBuilder implements ProjectSource {
       startTime = timingData[currentTimingIndex].startTime;
       endTime = timingData[currentTimingIndex].endTime;
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const verseText = getVerseText(chapterJson[verseNumber]);
 
       if (!verseText || startTime == null || endTime == null) {

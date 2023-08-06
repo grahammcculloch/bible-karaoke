@@ -2,7 +2,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { contextBridge, ipcRenderer } from 'electron';
-import _ from 'lodash';
+import memoize from 'lodash/memoize';
 import { OpenDialogOptions, SaveDialogOptions } from '../src/App/components/file-dialog.model';
 import { IMAGE_BG_EXTS, VIDEO_BG_EXTS } from '../src/App/constants';
 import { RootDirectories } from '../src/models/store.model';
@@ -76,7 +76,7 @@ export const api = {
     });
   },
 
-  getImageSrc: _.memoize((file: string): string => {
+  getImageSrc: memoize((file: string): string => {
     if (!file) {
       return '';
     }
