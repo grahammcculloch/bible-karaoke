@@ -9,7 +9,6 @@
     "experimentalDecorators": true,
     "preserveConstEnums": true,
     "strict": true,
-    "suppressImplicitAnyIndexErrors": true,
     "jsx": "react-jsx",
     "resolveJsonModule": true,
     "outDir": "build",

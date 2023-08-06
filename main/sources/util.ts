@@ -15,6 +15,8 @@ export function sortInCanonicalOrder(bookNames: string[], key = 'bookName'): str
 
   const sortedBooks: string[] = [];
   bookNamesAndIds.forEach((book) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const index = bookNames.indexOf(book[key]);
     if (index >= 0) {
       // move bookName from bookNames into sortedBooks

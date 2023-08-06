@@ -16,6 +16,8 @@ export async function record(
 ): Promise<void> {
   const browser = await puppeteer.launch({
     // For a built app the path changes to the unpacked location.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     executablePath: puppeteer['executablePath']().replace('app.asar', 'app.asar.unpacked'),
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });

@@ -27,7 +27,7 @@ import SourceIndex from './sources/index';
 
 let mainWindow: BrowserWindow | undefined;
 
-export function createWindow(): void {
+function createWindow(): void {
   prepareLogger();
   mainWindow = new BrowserWindow({
     width: 1100,
@@ -112,7 +112,7 @@ function handleFileDialogs(): void {
   });
 }
 
-export function handleGetFonts(): void {
+function handleGetFonts(): void {
   ipcMain.on('did-start-getfonts', async (event: IpcMainEvent): Promise<void> => {
     winston.log('info', 'Getting system fonts');
     try {
@@ -128,7 +128,7 @@ export function handleGetFonts(): void {
   });
 }
 
-export function handleGetProjects(): void {
+function handleGetProjects(): void {
   ipcMain.on('did-start-getbkproject', (event: IpcMainEvent, rootDirectories: RootDirectories): void => {
     const projects = flatten(
       map(rootDirectories, (directories: string[], sourceType: string): BKProject[] => {
@@ -141,7 +141,7 @@ export function handleGetProjects(): void {
   });
 }
 
-export function handleSubmission(): void {
+function handleSubmission(): void {
   ipcMain.on('did-start-conversion', async (event: IpcMainEvent, args: SubmissionArgs) => {
     const onProgress = ({ status, percent, remainingTime }: ProgressState): void => {
       const progress: ProgressState = { status: `${status} ${percent}%`, percent, remainingTime };
