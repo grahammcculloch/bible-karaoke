@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp-promise';
 import winston from 'winston';
+import { BACKGROUND_TYPE } from '../../src/App/constants';
 import { CombineFramesSettings } from '../models/combineFramesSettings.model';
 import { paths } from '../path-constants';
 
@@ -12,7 +13,7 @@ export async function combineFrames(settings: CombineFramesSettings): Promise<vo
   const args = ['-v', 'error'];
 
   if (settings.backgroundUrl) {
-    if (settings.backgroundType === 'image') {
+    if (settings.backgroundType === BACKGROUND_TYPE.image) {
       args.push('-framerate', settings.framerateIn.toString());
     }
     args.push('-stream_loop', '-1', '-t', settings.audioDuration.toString(), '-i', settings.backgroundUrl);
@@ -25,7 +26,7 @@ export async function combineFrames(settings: CombineFramesSettings): Promise<vo
   }
 
   // combine background image/video with bkframes
-  if (settings.backgroundType === 'image' || settings.backgroundType === 'video') {
+  if (settings.backgroundType === BACKGROUND_TYPE.image || settings.backgroundType === BACKGROUND_TYPE.video) {
     args.push(
       '-filter_complex',
       '[0:v] scale=round(iw*max(720/iw\\,480/ih)):round(ih*max(720/iw\\,480/ih)), crop=720:480 [crop]; [crop][1:v] overlay [layered]',

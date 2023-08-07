@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Flex, Box } from "reflexbox";
 import styled from "styled-components";
-import { TEXT_LOCATION } from "../constants";
+import { BACKGROUND_TYPE, TEXT_LOCATION } from "../constants";
 import { useStores } from "../store";
 import AnimatedVisibility from "./AnimatedVisibility";
 import { BackgroundEditor, FontEditor, SpeechBubbleEditor } from "./Editors";
@@ -83,6 +83,22 @@ const PreviewWord = styled.div`
 const HIGHLIGHT_VERSE_INDEX = 0;
 const HIGHLIGHT_WORD_INDEXES = [0, 1, 2];
 
+async function getViewBlob(file: string): Promise<string> {
+  if (!file) {
+    return "";
+  }
+  try {
+    const video: Buffer | undefined = await window.api.getVideo(file);
+    if (video) {
+      const fileURL = URL.createObjectURL(new Blob([video], { type: "video/mp4" }));
+      return fileURL;
+    }
+  } catch (err) {
+    console.error(`Failed to load video from '${file}'`);
+  }
+  return "";
+}
+
 const PreviewVerse = (prop: { verse: string; highlightVerse: boolean; highlightColor: string }): JSX.Element => {
   return (
     <>
@@ -121,10 +137,33 @@ const Preview = observer((): JSX.Element => {
     fontStyle: text.italic ? "italic" : undefined,
   };
 
+  const [backgroundImage, setBackgroundImage] = React.useState("");
+  const [videoSrc, setVideoSrc] = React.useState("");
+  React.useEffect(() => {
+    // Deal with race conditions, see https://stackoverflow.com/questions/61751728/asynchronous-calls-with-react-usememo
+    let isActive = true;
+    load();
+    return () => {
+      isActive = false;
+    };
+
+    async function load() {
+      if (background.type === BACKGROUND_TYPE.image) {
+        const image = await window.api.getImageSrc(toJS(background.file));
+        if (!isActive) return;
+        setBackgroundImage(image);
+      } else if (background.type === BACKGROUND_TYPE.video) {
+        const blob = await getViewBlob(background.file);
+        if (!isActive) return;
+        setVideoSrc(blob);
+      }
+    }
+  }, [background.file, background.type]);
+
   const styles = {
     background: {
       backgroundColor: background.color || "transparent",
-      backgroundImage: window.api.getImageSrc(toJS(background.file)),
+      backgroundImage,
     },
     speechBubble: {
       opacity: speechBubble.opacity,
@@ -132,7 +171,6 @@ const Preview = observer((): JSX.Element => {
     },
   };
 
-  const file: string = window.api.getViewBlob(background.file);
   const versesClassName: string = classnames({
     subtitle: textLocation.location === TEXT_LOCATION.subtitle,
   });
@@ -145,7 +183,7 @@ const Preview = observer((): JSX.Element => {
     <AnimatedVisibility visible={!!firstChapter}>
       <Background className="preview" style={styles.background}>
         <BackgroundEditor />
-        {background.type === "video" && <PreviewVideo src={file} id="myVideo" />}
+        {background.type === BACKGROUND_TYPE.video && <PreviewVideo src={videoSrc} id="myVideo" />}
         <Verses className={versesClassName}>
           {verses.map((verse: string, index: number) => (
             <Verse
