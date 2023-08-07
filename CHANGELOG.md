@@ -6,6 +6,15 @@
 - :thumbsup: Improvement
 - :boom: Bug fix
 
+## v1.1.2
+
+This is a bugfix release:
+
+- :thumbsup: Improved security of the app
+- :boom: It asks the OS for folder locations, rather than assuming default OS locations
+- :boom: It can find audio files in the default SAB location
+- :boom: It will show chapters with audio even if not every chapter in the book has audio
+
 ## v1.1.1
 
 This is a patch feature and bugfix release:
