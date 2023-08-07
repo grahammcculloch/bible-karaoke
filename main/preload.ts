@@ -1,6 +1,4 @@
 import fs from 'fs';
-import os from 'os';
-import path from 'path';
 import { contextBridge, ipcRenderer } from 'electron';
 import memoize from 'lodash/memoize';
 import { OpenDialogOptions, SaveDialogOptions } from '../src/App/components/file-dialog.model';
@@ -114,45 +112,12 @@ export const api = {
     return '';
   },
 
-  getDefaultOutputDirectory: (): string => {
-    const BK_DIR_NAME = 'Bible Karaoke Videos';
-    switch (process.platform) {
-      case 'win32': {
-        const version = os.release();
-        // if windows 7
-        if (/^6\.1/.test(version)) {
-          return path.join(os.homedir(), 'My Videos', BK_DIR_NAME);
-        } else {
-          return path.join(os.homedir(), 'Videos', BK_DIR_NAME);
-        }
-      }
-      case 'darwin':
-        return path.join(os.homedir(), BK_DIR_NAME);
-      case 'linux':
-      default:
-        return path.join(os.homedir(), 'Videos', BK_DIR_NAME);
-    }
-  },
+  getDefaultOutputDirectory: (): Promise<string> => ipcRenderer.invoke('getDefaultOutputDirectory'),
 
-  getDefaultHearThisDirectory: (): string => {
-    switch (process.platform) {
-      case 'win32':
-        return 'C:\\ProgramData\\SIL\\HearThis\\';
-      case 'darwin':
-      default:
-        return `${os.homedir()}/hearThisProjects/`;
-    }
-  },
+  getDefaultHearThisDirectory: (): Promise<string> => ipcRenderer.invoke('getDefaultHearThisDirectory'),
 
-  getDefaultScriptureAppBuilderDirectory: (): string => {
-    switch (process.platform) {
-      case 'win32':
-        return path.join(os.homedir(), 'Documents', 'App Builder', 'Scripture Apps', 'App Projects');
-      case 'darwin':
-      default:
-        return `${os.homedir()}/Documents/AppBuilder/Scripture Apps/App Projects/`;
-    }
-  },
+  getDefaultScriptureAppBuilderDirectory: (): Promise<string> =>
+    ipcRenderer.invoke('getDefaultScriptureAppBuilderDirectory'),
 };
 
 contextBridge.exposeInMainWorld('api', api);

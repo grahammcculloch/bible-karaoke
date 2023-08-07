@@ -12,19 +12,26 @@ class Settings {
   constructor(root: Store) {
     makeObservable(this);
     this.root = root;
+    this.init();
+  }
+
+  private async init(): Promise<void> {
+    this.setOutputDirectory(await window.api.getDefaultOutputDirectory());
+    this.setHearThisRootDirectories([await window.api.getDefaultHearThisDirectory()]);
+    this.setScriptureAppBuilderRootDirectories([await window.api.getDefaultScriptureAppBuilderDirectory()]);
   }
 
   @persist('list')
   @observable
-  hearThisRootDirectories: string[] = [window.api.getDefaultHearThisDirectory()];
+  hearThisRootDirectories: string[] = [];
 
   @persist('list')
   @observable
-  scriptureAppBuilderRootDirectories: string[] = [window.api.getDefaultScriptureAppBuilderDirectory()];
+  scriptureAppBuilderRootDirectories: string[] = [];
 
   @persist
   @observable
-  outputDirectory: string = window.api.getDefaultOutputDirectory();
+  outputDirectory = '';
 
   @persist
   @observable
