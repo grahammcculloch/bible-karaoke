@@ -9,7 +9,6 @@ import {
   ipcMain,
   IpcMainEvent,
   Menu,
-  NewWindowWebContentsEvent,
   OpenDialogOptions,
   SaveDialogOptions,
   shell,
@@ -17,6 +16,7 @@ import {
 import fontList from 'font-list';
 import { map, flatten } from 'lodash';
 import winston from 'winston';
+import packageData from '../package.json';
 import { IMAGE_BG_EXTS, VIDEO_BG_EXTS } from '../src/App/constants';
 import { RootDirectories } from '../src/models/store.model';
 import { SubmissionArgs, SubmissionReturn } from '../src/models/submission.model';
@@ -25,6 +25,8 @@ import { prepareLogger } from './commands/logger';
 import { ProgressState } from './models/progressState.model';
 import { BKProject } from './models/projectFormat.model';
 import SourceIndex from './sources/index';
+
+const repoUrl = packageData.repository.url.replace(/\.git$/, '');
 
 let mainWindow: BrowserWindow | undefined;
 
@@ -36,10 +38,6 @@ function createWindow(): void {
     show: false,
     backgroundColor: '#30404d',
     webPreferences: {
-      nodeIntegration: false,
-      webSecurity: true,
-      contextIsolation: true,
-      sandbox: true,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
@@ -74,15 +72,14 @@ function createWindow(): void {
     mainWindow = undefined;
   });
 
-  // see https://github.com/electron/electron/issues/27967 and https://www.electronjs.org/docs/latest/api/window-open
-  mainWindow.webContents.on('new-window', (event: NewWindowWebContentsEvent) => {
+  mainWindow.webContents.on('will-attach-webview', (event: Event) => {
     event.preventDefault();
   });
   mainWindow.webContents.on('will-navigate', (event: Event) => {
     event.preventDefault();
   });
   mainWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
-    if (details.url.startsWith('http:') || details.url.startsWith('https:')) {
+    if (details.url.startsWith(repoUrl)) {
       setImmediate(() => {
         shell.openExternal(details.url);
       });
