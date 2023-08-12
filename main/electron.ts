@@ -17,6 +17,7 @@ import {
 import fontList from 'font-list';
 import { map, flatten } from 'lodash';
 import winston from 'winston';
+import { IMAGE_BG_EXTS, VIDEO_BG_EXTS } from '../src/App/constants';
 import { RootDirectories } from '../src/models/store.model';
 import { SubmissionArgs, SubmissionReturn } from '../src/models/submission.model';
 import { convert } from './commands/convert';
@@ -38,6 +39,7 @@ function createWindow(): void {
       nodeIntegration: false,
       webSecurity: true,
       contextIsolation: true,
+      sandbox: true,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
@@ -95,7 +97,7 @@ function createWindow(): void {
   });
 }
 
-function handleDirectories() {
+function handleDirectories(): void {
   ipcMain.handle('getDefaultOutputDirectory', (): string => {
     return path.join(app.getPath('videos'), 'Bible Karaoke Videos');
   });
@@ -118,6 +120,41 @@ function handleDirectories() {
       default:
         return path.join(app.getPath('documents'), 'AppBuilder', 'Scripture Apps', 'App Projects');
     }
+  });
+}
+
+function handleFiles(): void {
+  ipcMain.handle('getImageSrc', (_events, file: string): string => {
+    if (!file) {
+      return '';
+    }
+    try {
+      const ext: string = file.split('.').pop() || '';
+      if (IMAGE_BG_EXTS.includes(ext.toLowerCase())) {
+        const img = fs.readFileSync(file);
+        const img64 = Buffer.from(img).toString('base64');
+        return `url(data:image/${ext};base64,${img64})`;
+      }
+    } catch (err) {
+      console.error(`Failed to load image from '${file}'`);
+    }
+    return '';
+  });
+
+  ipcMain.handle('getVideo', (_events, file: string): Buffer | undefined => {
+    if (!file) {
+      return;
+    }
+    try {
+      const ext: string = file.split('.').pop() || '';
+      if (VIDEO_BG_EXTS.includes(ext.toLowerCase())) {
+        const video = fs.readFileSync(file);
+        return video;
+      }
+    } catch (err) {
+      console.error(`Failed to load video from '${file}'`);
+    }
+    return;
   });
 }
 
@@ -216,6 +253,7 @@ app.whenReady().then(async (): Promise<void> => {
   handleGetProjects();
   handleGetFonts();
   handleFileDialogs();
+  handleFiles();
   handleDirectories();
 
   app.on('activate', (): void => {

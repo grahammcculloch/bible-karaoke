@@ -1,8 +1,5 @@
-import fs from 'fs';
 import { contextBridge, ipcRenderer } from 'electron';
-import memoize from 'lodash/memoize';
 import { OpenDialogOptions, SaveDialogOptions } from '../src/App/components/file-dialog.model';
-import { IMAGE_BG_EXTS, VIDEO_BG_EXTS } from '../src/App/constants';
 import { RootDirectories } from '../src/models/store.model';
 import { SubmissionArgs, SubmissionReturn } from '../src/models/submission.model';
 import { ProgressState } from './models/progressState.model';
@@ -74,43 +71,9 @@ export const api = {
     });
   },
 
-  getImageSrc: memoize((file: string): string => {
-    if (!file) {
-      return '';
-    }
-    try {
-      const ext: string = file.split('.').pop() || '';
-      if (IMAGE_BG_EXTS.includes(ext.toLowerCase())) {
-        const img = fs.readFileSync(file);
-        const img64 = Buffer.from(img).toString('base64');
-        return `url(data:image/${ext};base64,${img64})`;
-      }
-    } catch (err) {
-      console.error(`Failed to load image from '${file}'`);
-    }
-    return '';
-  }),
+  getImageSrc: (file: string): Promise<string> => ipcRenderer.invoke('getImageSrc', file),
 
-  getViewBlob: (file: string): string => {
-    if (!file) {
-      return '';
-    }
-    // eslint-disable-next-line no-undef
-    const URL = window.URL || window.webkitURL;
-    let video = null;
-    try {
-      const ext: string = file.split('.').pop() || '';
-      if (VIDEO_BG_EXTS.includes(ext.toLowerCase())) {
-        video = fs.readFileSync(file);
-        // eslint-disable-next-line no-undef
-        const fileURL = URL.createObjectURL(new Blob([video], { type: 'video/mp4' }));
-        return fileURL;
-      }
-    } catch (err) {
-      console.error(`Failed to load video from '${file}'`);
-    }
-    return '';
-  },
+  getVideo: (file: string): Promise<Buffer | undefined> => ipcRenderer.invoke('getVideo', file),
 
   getDefaultOutputDirectory: (): Promise<string> => ipcRenderer.invoke('getDefaultOutputDirectory'),
 
