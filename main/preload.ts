@@ -20,9 +20,7 @@ export const api = {
   },
 
   onBKProject: (callback: (project: BKProject[]) => void): void => {
-    ipcRenderer.on('did-finish-getbkproject', (_event: Event, projects: BKProject[]) => {
-      callback(projects);
-    });
+    ipcRenderer.on('did-finish-getbkproject', (_event, projects: BKProject[]) => callback(projects));
   },
 
   saveFile: (options: SaveDialogOptions): void => {
@@ -30,9 +28,7 @@ export const api = {
   },
 
   onFileSave: (callback: (saveFilePath: string) => void): void => {
-    ipcRenderer.once('did-finish-file-save-dialog', (_event: Event, saveFilePath: string) => {
-      callback(saveFilePath);
-    });
+    ipcRenderer.once('did-finish-file-save-dialog', (_event, saveFilePath: string) => callback(saveFilePath));
   },
 
   openFile: (options: OpenDialogOptions): void => {
@@ -40,9 +36,7 @@ export const api = {
   },
 
   onFileOpen: (callback: (openFilePath: string) => void): void => {
-    ipcRenderer.once('did-finish-file-open-dialog', (_event: Event, openFilePaths: string) => {
-      callback(openFilePaths);
-    });
+    ipcRenderer.once('did-finish-file-open-dialog', (_event, openFilePaths: string) => callback(openFilePaths));
   },
 
   getFonts: (): void => {
@@ -50,9 +44,7 @@ export const api = {
   },
 
   onGetFonts: (callback: (newFonts: string[] | Error) => void): void => {
-    ipcRenderer.on('did-finish-getfonts', (_event: Event, newFonts: string[] | Error) => {
-      callback(newFonts);
-    });
+    ipcRenderer.on('did-finish-getfonts', (_event, newFonts: string[] | Error) => callback(newFonts));
   },
 
   startConversion: (settings: SubmissionArgs): void => {
@@ -60,15 +52,11 @@ export const api = {
   },
 
   onProgress: (callback: (progress: ProgressState) => void): void => {
-    ipcRenderer.on('on-progress', (_event: Event, progress: ProgressState) => {
-      callback(progress);
-    });
+    ipcRenderer.on('on-progress', (_event, progress: ProgressState) => callback(progress));
   },
 
   onConversionFinish: (callback: (result: SubmissionReturn) => void): void => {
-    ipcRenderer.on('did-finish-conversion', (_event: Event, result: SubmissionReturn) => {
-      callback(result);
-    });
+    ipcRenderer.on('did-finish-conversion', (_event, result: SubmissionReturn) => callback(result));
   },
 
   getImageSrc: (file: string): Promise<string> => ipcRenderer.invoke('getImageSrc', file),
