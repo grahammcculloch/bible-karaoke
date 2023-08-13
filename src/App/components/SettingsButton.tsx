@@ -5,7 +5,7 @@ import packageData from "../../../package.json";
 import { Button, Text } from "../blueprint";
 import Settings from "./Settings";
 
-export default function SettingsButton(): JSX.Element {
+export default function SettingsButton(): React.JSX.Element {
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   return (
     <React.Fragment>

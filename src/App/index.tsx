@@ -18,7 +18,7 @@ const AppWrapper: StyledComponent<BoxType, Record<string, unknown>> = styled(Fle
   position: relative;
 `;
 
-const App = observer((): JSX.Element => {
+const App = observer((): React.JSX.Element => {
   const { settings } = useStores();
   const analyticsContext: AnalyticsContext = useAnalytics();
 

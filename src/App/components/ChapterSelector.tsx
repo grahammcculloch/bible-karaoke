@@ -7,7 +7,7 @@ import { Button, Card, CardProps, Checkbox, H3 } from "../blueprint";
 import { Chapter, useStores } from "../store";
 import { getChapterDisplayName } from "../util";
 
-const ChapterSelector = observer((props: CardProps): JSX.Element => {
+const ChapterSelector = observer((props: CardProps): React.JSX.Element => {
   const { appState } = useStores();
   const book = _.get(appState.projects, ["activeProject", "activeBook"]);
   return (

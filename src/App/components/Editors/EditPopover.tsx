@@ -17,11 +17,16 @@ export const EditRow = styled(Flex).attrs({
 
 export interface EditPopoverProps extends PositionProps, BoxProps {
   icon?: IconName | MaybeElement;
-  title?: string | JSX.Element;
-  children?: JSX.Element | JSX.Element[];
+  title?: string | React.JSX.Element;
+  children?: React.JSX.Element | React.JSX.Element[];
 }
 
-export default function EditPopover({ icon = "annotation", title, children, ...props }: EditPopoverProps): JSX.Element {
+export default function EditPopover({
+  icon = "annotation",
+  title,
+  children,
+  ...props
+}: EditPopoverProps): React.JSX.Element {
   return (
     <Wrapper top="8px" right="8px" {...props}>
       <Popover position={PopoverPosition.RIGHT_TOP} interactionKind={PopoverInteractionKind.CLICK}>

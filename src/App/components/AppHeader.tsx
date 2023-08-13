@@ -84,7 +84,7 @@ const HeaderWrapper = styled(Flex)`
   }
 `;
 
-const AppHeader = observer((): JSX.Element => {
+const AppHeader = observer((): React.JSX.Element => {
   const { appState } = useStores();
   return (
     <HeaderBackground>

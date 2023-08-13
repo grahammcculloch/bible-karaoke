@@ -27,7 +27,7 @@ interface DirectoriesCardInterface {
   defaultDirectory: string;
 }
 
-const DirectoriesCard = (prop: DirectoriesCardInterface): JSX.Element => {
+const DirectoriesCard = (prop: DirectoriesCardInterface): React.JSX.Element => {
   const addDirectory = (folder: string): void => {
     prop.onSetDirectories(_.uniq([...prop.directories, folder]));
   };
@@ -86,7 +86,7 @@ DirectoriesCard.propTypes = {
   defaultDirectory: PropTypes.string,
 };
 
-const Settings = observer((): JSX.Element => {
+const Settings = observer((): React.JSX.Element => {
   const [defaultHearThisDirectory, setDefaultHearThisDirectory] = React.useState("");
   const [defaultAppBuilderDirectory, setDefaultAppBuilderDirectory] = React.useState("");
   const { settings } = useStores();
