@@ -82,21 +82,12 @@ npm run electron-pack-linux
 
 ### Releasing
 
-1. Create a branch of the form `release/*`, e.g. `release/v0.3.5`, or `release/v0.3.5-rc1`.
-2. Update the _version_ in your project's `package.json` file (e.g. _0.3.5_).
+1. Update the _version_ in your project's `package.json` file (e.g. _0.3.5_).
 3. Run `npm i` to update `package-lock.json`.
 4. Update `CHANGELOG.md` with changes in this release.
-5. Commit these changes to your release branch.
-6. Tag your commit. Make sure your tag name's format is `v*.*.*`.
-7. Create a new draft GitHub **Release**, ensure the following are included:
-   - a _Tag version_, e.g. `v0.3.4`.
-   - a copy of the change log.
+6. Tag your commit. Make sure your tag name's format is `v*.*.*`.  GitHub Actions will build a signed installer and draft a GitHub release for you.
    - add the ffmpeg license instructions copied from a previous release.
-8. Push the tag then the commit to GitHub.
-9. Once the build Action has finished, it will add build artifact files to the draft release. Remove the `.blockmap` and `.yml` files and leave the `.exe`.
-10. Publish the release.
-11. In Team City, on the Bible Karaoke project, manually run the **Sign Installer** build.
-12. Replace the GitHub release `.exe` with the signed one from Team City downloaded from the Artifacts folder (keep the original GitHub filename).
+   - Customize the release description to your liking
 
 ### Style Guides
 
